@@ -1,6 +1,7 @@
 package com.piti.ptm.item;
 
 import com.piti.ptm.PitisTech;
+import com.piti.ptm.block.modBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -26,11 +27,14 @@ public class ModCreativeModTabs
                     })
                     .build());
 
+
     public static final RegistryObject<CreativeModeTab> PTMBLOCKS_TAB = CREATIVE_MODE_TABS.register("ptmblocks_tab",
-            ()-> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.GEIGERCOUNTER.get()))
+            ()-> CreativeModeTab.builder().icon(() -> new ItemStack(modBlocks.BRICK_CONCRETE.get()))
                     .title(Component.translatable("creativetab.ptmblocks_tab"))
                     .displayItems((pParameters, pOutput) ->{
-                        pOutput.accept(ModItems.GEIGERCOUNTER.get());
+                        pOutput.accept(modBlocks.BRICK_CONCRETE.get());
+                        pOutput.accept(modBlocks.CONCRETE.get());
                     })
                     .build());
+
 }

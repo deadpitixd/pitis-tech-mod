@@ -3,6 +3,7 @@ package com.piti.ptm;
 import com.mojang.logging.LogUtils;
 import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
+import com.piti.ptm.block.modBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,6 +34,7 @@ public class PitisTech
         ModCreativeModTabs.register(modEventBus);
 
         ModItems.register(modEventBus);
+        modBlocks.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
