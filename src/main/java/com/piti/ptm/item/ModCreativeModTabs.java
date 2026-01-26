@@ -25,4 +25,12 @@ public class ModCreativeModTabs
                         pOutput.accept(ModItems.GEIGERCOUNTER.get());
                     })
                     .build());
+
+    public static final RegistryObject<CreativeModeTab> PTMBLOCKS_TAB = CREATIVE_MODE_TABS.register("ptmblocks_tab",
+            ()-> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.GEIGERCOUNTER.get()))
+                    .title(Component.translatable("creativetab.ptmblocks_tab"))
+                    .displayItems((pParameters, pOutput) ->{
+                        pOutput.accept(ModItems.GEIGERCOUNTER.get());
+                    })
+                    .build());
 }
