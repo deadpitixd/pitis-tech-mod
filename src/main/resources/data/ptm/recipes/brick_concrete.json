@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "ptm:concrete" },
+    { "item": "ptm:concrete" },
+    { "item": "ptm:concrete" },
+    { "item": "ptm:concrete" },
+
+    { "item": "minecraft:clay_ball" }
+  ],
+  "result": {
+    "item": "ptm:brick_concrete",
+    "count": 16
+  }
+}
