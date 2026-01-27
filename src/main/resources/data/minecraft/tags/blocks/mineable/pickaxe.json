@@ -2,6 +2,7 @@
   "values": [
     "ptm:brick_concrete",
     "ptm:concrete",
-    "ptm:reinforced_light"
+    "ptm:reinforced_light",
+    "ptm:uranium_ore"
   ]
 }

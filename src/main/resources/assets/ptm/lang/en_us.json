@@ -1,8 +1,11 @@
 {
   "item.ptm.geigercounter": "Geiger Counter",
-  "creativetab.ptmitems_tab": "Pitis Tech Mod - Items",
-  "creativetab.ptmblocks_tab": "Pitis Tech Mod - Building Blocks",
+  "creativetab.ptmitems_tab": "Piti's Tech Mod - Items",
+  "creativetab.ptmblocks_tab": "Piti's Tech Mod - Building Blocks",
   "block.ptm.brick_concrete": "Concrete Bricks",
   "block.ptm.concrete": "Concrete",
-  "block.ptm.reinforced_light": "Reinforced Sea Lantern"
+  "block.ptm.reinforced_light": "Reinforced Sea Lantern",
+  "block.ptm.uranium_ore": "Uranium Ore",
+  "item.ptm.uranium_ingot": "Uranium Ingot",
+  "creativetab.ptm.fuelmachines_tab": "Piti's Tech Mod - Fuel and Machines"
 }
