@@ -3,5 +3,6 @@
   "creativetab.ptmitems_tab": "Pitis Tech Mod - Items",
   "creativetab.ptmblocks_tab": "Pitis Tech Mod - Building Blocks",
   "block.ptm.brick_concrete": "Concrete Bricks",
-  "block.ptm.concrete": "Concrete"
+  "block.ptm.concrete": "Concrete",
+  "block.ptm.reinforced_light": "Reinforced Sea Lantern"
 }
