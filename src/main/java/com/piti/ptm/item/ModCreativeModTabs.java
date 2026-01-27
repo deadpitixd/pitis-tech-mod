@@ -34,6 +34,7 @@ public class ModCreativeModTabs
                     .displayItems((pParameters, pOutput) ->{
                         pOutput.accept(modBlocks.BRICK_CONCRETE.get());
                         pOutput.accept(modBlocks.CONCRETE.get());
+                        pOutput.accept(modBlocks.REINFORCED_LIGHT.get());
                     })
                     .build());
 
