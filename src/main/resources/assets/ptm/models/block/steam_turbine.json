@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "ptm:block/steam_turbine_steel",
+    "down": "ptm:block/steam_turbine_steel",
+    "up": "ptm:block/steam_turbine_rotor",
+    "north": "ptm:block/steam_turbine_fluid_port",
+    "south": "ptm:block/steam_turbine_fluid_port",
+    "east": "ptm:block/steam_turbine_cable_port",
+    "west": "ptm:block/steam_turbine_steel"
+  }
+}

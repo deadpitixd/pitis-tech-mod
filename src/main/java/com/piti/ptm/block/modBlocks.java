@@ -36,6 +36,9 @@ public class modBlocks {
     public static final RegistryObject<Block> URANIUM_ORE = registerBlock("uranium_ore",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_ORE)
                     .strength(3.0f)));
+    public static final RegistryObject<Block> STEAM_TURBINE = registerBlock("steam_turbine",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)
+                    .strength(5.0f,5)));
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
         return ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(), new Item.Properties()));
