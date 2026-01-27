@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "ptm:block/brick_concrete"
+    }
+  }
+}
