@@ -33,6 +33,9 @@ public class modBlocks {
                     .sound(SoundType.STONE)
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 260)));
+    public static final RegistryObject<Block> URANIUM_ORE = registerBlock("uranium_ore",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_ORE)
+                    .strength(3.0f)));
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
         return ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(), new Item.Properties()));

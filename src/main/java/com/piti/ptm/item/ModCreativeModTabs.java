@@ -38,4 +38,13 @@ public class ModCreativeModTabs
                     })
                     .build());
 
+    public static final RegistryObject<CreativeModeTab> PTMFUELMACHINES_TAB = CREATIVE_MODE_TABS.register("ptmfuelmachines_tab",
+            ()-> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.URANIUM_INGOT.get()))
+                    .title(Component.translatable("creativetab.ptm.fuelmachines_tab"))
+                    .displayItems((pParameters, pOutput) ->{
+                        pOutput.accept(modBlocks.URANIUM_ORE.get());
+                        pOutput.accept(ModItems.URANIUM_INGOT.get());
+                    })
+                    .build());
+
 }
