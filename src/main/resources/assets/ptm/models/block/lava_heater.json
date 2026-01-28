@@ -4,8 +4,8 @@
 	"parent": "block/cube",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "Pitis NTM:block/lavaHeater/mainTexture",
-		"particle": "Pitis NTM:block/networks/fluidPort"
+		"1": "ptm:block/lava_heater",
+		"particle": "ptm:block/fluidport"
 	},
 	"elements": [
 		{

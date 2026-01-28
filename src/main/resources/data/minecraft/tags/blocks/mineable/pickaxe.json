@@ -3,6 +3,8 @@
     "ptm:brick_concrete",
     "ptm:concrete",
     "ptm:reinforced_light",
-    "ptm:uranium_ore"
+    "ptm:uranium_ore",
+    "ptm:lava_heater",
+    "ptm:steam_turbine"
   ]
 }

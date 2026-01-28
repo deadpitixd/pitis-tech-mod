@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "ptm:block/steam_turbine" }
+    "facing=north": { "model": "ptm:block/steam_turbine" },
+    "facing=south": { "model": "ptm:block/steam_turbine", "y": 180 },
+    "facing=west":  { "model": "ptm:block/steam_turbine", "y": 270 },
+    "facing=east":  { "model": "ptm:block/steam_turbine", "y": 90 }
   }
 }

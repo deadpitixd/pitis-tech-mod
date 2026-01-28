@@ -9,5 +9,6 @@
   "item.ptm.uranium_ingot": "Uranium Ingot",
   "block.ptm.steam_turbine": "Steam Turbine",
   "creativetab.ptm.fuelmachines_tab": "Piti's Tech Mod - Fuel and Machines",
-  "tooltip.ptm.radioactive.tooltip":"§a[RADIOACTIVE]"
+  "tooltip.ptm.radioactive.tooltip":"§a[RADIOACTIVE]",
+  "block.ptm.lava_heater": "Lava Steam Heater"
 }
