@@ -1,6 +1,7 @@
 package com.piti.ptm.item;
 
 import com.piti.ptm.PitisTech;
+import com.piti.ptm.item.custom.RadioactiveItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -13,8 +14,11 @@ public class ModItems {
 
     public static final RegistryObject<Item> GEIGERCOUNTER = ITEMS.register("geigercounter",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> URANIUM_INGOT = ITEMS.register("uranium_ingot",
-            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> URANIUM_INGOT = ModItems.ITEMS.register(
+            "uranium_ingot",
+            () -> new RadioactiveItem(new Item.Properties(), 1.0)
+    );
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "ptm:block/steam_turbine" }
+  }
+}
