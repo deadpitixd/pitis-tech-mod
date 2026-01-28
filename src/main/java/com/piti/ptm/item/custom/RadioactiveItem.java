@@ -29,7 +29,7 @@ public class RadioactiveItem extends Item {
             rad = stack.getTag().getDouble("RadPerSecond");
         }
 
-        tooltip.add(Component.literal(String.format("Rad/s: %.2f", rad)));
+        tooltip.add(Component.literal(String.format("§2Rad/s: %.2f", rad)));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 
