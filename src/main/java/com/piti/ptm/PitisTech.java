@@ -1,6 +1,7 @@
 package com.piti.ptm;
 
 import com.mojang.logging.LogUtils;
+import com.piti.ptm.block.entity.ModBlockEntities;
 import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.block.modBlocks;
@@ -35,6 +36,8 @@ public class PitisTech
 
         ModItems.register(modEventBus);
         modBlocks.register(modEventBus);
+
+        ModBlockEntities.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

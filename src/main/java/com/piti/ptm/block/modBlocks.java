@@ -2,6 +2,7 @@ package com.piti.ptm.block;
 
 import com.piti.ptm.PitisTech;
 import com.piti.ptm.block.custom.RotatableBlock;
+import com.piti.ptm.block.custom.lavaHeater;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.item.custom.RadioactiveBlockItem;
 import net.minecraft.world.item.BlockItem;
@@ -42,7 +43,7 @@ public class modBlocks {
             () -> new RotatableBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
                     .strength(5.0f,5)));
     public static final RegistryObject<Block> LAVA_HEATER = registerBlock("lava_heater",
-            () -> new RotatableBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
+            () -> new lavaHeater(BlockBehaviour.Properties.copy(Blocks.STONE)
                     .strength(5.0f,5).noOcclusion()));
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
