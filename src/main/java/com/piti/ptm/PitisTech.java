@@ -1,10 +1,15 @@
 package com.piti.ptm;
 
 import com.mojang.logging.LogUtils;
+import com.piti.ptm.block.entity.ModBlockEntities;
 import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.block.modBlocks;
+import com.piti.ptm.screen.LavaHeaterMenu;
+import com.piti.ptm.screen.LavaHeaterScreen;
+import com.piti.ptm.screen.ModMenuTypes;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -35,6 +40,9 @@ public class PitisTech
 
         ModItems.register(modEventBus);
         modBlocks.register(modEventBus);
+
+        ModBlockEntities.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
 
 
         modEventBus.addListener(this::commonSetup);
@@ -74,6 +82,8 @@ public class PitisTech
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+            MenuScreens.register(ModMenuTypes.LAVA_HEATER_MENU.get(), LavaHeaterScreen::new);
+
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
