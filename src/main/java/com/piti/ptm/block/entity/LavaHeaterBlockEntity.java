@@ -36,6 +36,11 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider {
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     protected final ContainerData data;
+
+    public ContainerData getContainerData() {
+        return this.data;
+    }
+
     private int temp = 0;
     private int maxTemp = 2500;
     private int lava = 0;
@@ -72,6 +77,7 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider {
         }
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
+
 
     public LavaHeaterBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.LAVA_HEATER_BE.get(), pPos, pBlockState);
@@ -128,7 +134,6 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-
         tag.put("inventory", itemHandler.serializeNBT());
 
         tag.putInt("lava", lava);
@@ -142,11 +147,9 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("maxTemp", maxTemp);
     }
 
-
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-
         itemHandler.deserializeNBT(tag.getCompound("inventory"));
 
         lava = tag.getInt("lava");
@@ -161,26 +164,44 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider {
     }
 
 
+
     public static void tick(Level level, BlockPos pos, BlockState state, LavaHeaterBlockEntity be) {
+        boolean changed = false;
 
         if (be.hasRecipe()) {
             be.exchangeLava();
+            changed = true;
         }
 
         if (be.lava > 5) {
             be.lava -= 5;
-            be.temp = Math.min(be.temp, be.maxTemp);
+            be.temp = Math.min(be.temp + 500, be.maxTemp);
+            changed = true;
         }
 
+        // Generate steam from water
         if (be.temp > 150 && be.water > 5) {
-            be.steam += 5;
+            be.steam = Math.min(be.steam + 5, be.maxSteam);
             be.water -= 5;
             be.temp -= 1;
+            changed = true;
         }
 
-        System.out.println("Temp: " + be.temp);
-        be.setChanged();
+        if (be.temp > 0 && be.lava <= 5) {
+            be.temp = Math.max(be.temp - 1, 0);
+            changed = true;
+        }
+
+        be.data.set(0, be.lava);
+        be.data.set(2, be.water);
+        be.data.set(4, be.temp);
+        be.data.set(6, be.steam);
+
+        if (changed) {
+            be.setChanged();
+        }
     }
+
 
 
     private void exchangeLava() {

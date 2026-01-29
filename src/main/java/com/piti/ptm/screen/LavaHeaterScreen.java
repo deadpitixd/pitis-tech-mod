@@ -27,12 +27,15 @@ public class LavaHeaterScreen extends AbstractContainerScreen<LavaHeaterMenu> {
 
     private void renderProgressSquare(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(TEXTURE,
-                    x + 85, y + 30 + (52 - menu.getScaledProgress()),
-                    176, 31 + (52 - menu.getScaledProgress()),
-                    5, menu.getScaledProgress());
+            guiGraphics.blit(
+                    TEXTURE,
+                    x, y + (52 - menu.getScaledProgress()),   // top-left of the dynamic part
+                    176, 31 + (52 - menu.getScaledProgress()), // source texture offset
+                    5, menu.getScaledProgress()               // width & height
+            );
         }
     }
+
 
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
@@ -44,6 +47,6 @@ public class LavaHeaterScreen extends AbstractContainerScreen<LavaHeaterMenu> {
         int y = (height - imageHeight) / 2;
 
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        renderProgressSquare(pGuiGraphics, 22,17);
+        renderProgressSquare(pGuiGraphics, 254,114);
     }
 }

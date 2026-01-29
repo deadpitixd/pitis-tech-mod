@@ -42,7 +42,7 @@ public class LavaHeaterMenu extends AbstractContainerMenu {
     }
 
     public boolean isCrafting() {
-        return data.get(4) > 0 && data.get(2) > 0;
+        return data.get(4) > 0;
     }
 
     public int getScaledProgress() {
