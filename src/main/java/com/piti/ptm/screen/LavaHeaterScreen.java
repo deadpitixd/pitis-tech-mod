@@ -2,6 +2,7 @@ package com.piti.ptm.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.piti.ptm.PitisTech;
+import com.piti.ptm.util.ModGuiUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -10,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class LavaHeaterScreen extends AbstractContainerScreen<LavaHeaterMenu> {
-
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(PitisTech.MOD_ID, "textures/gui/lava_heater.png");
 
@@ -25,37 +25,29 @@ public class LavaHeaterScreen extends AbstractContainerScreen<LavaHeaterMenu> {
         this.titleLabelY = 1000;
     }
 
-
-    private static final int ARROW_HEIGHT = 52;
-    private static final int ARROW_WIDTH = 5;
-
-    private void renderProgressSquare(GuiGraphics guiGraphics, int x, int y) {
-        if (!menu.isCrafting()) return;
-
-        int progress = menu.getScaledProgress();
-
-        guiGraphics.blit(
-                TEXTURE,
-                x,
-                y + (ARROW_HEIGHT - progress),
-                176,
-                31 + (ARROW_HEIGHT - progress),
-                ARROW_WIDTH,
-                progress
-        );
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, delta);
+        renderTooltip(guiGraphics, mouseX, mouseY);
     }
-
-
 
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        renderProgressSquare(pGuiGraphics, leftPos + 22, topPos + 17);
+
+        ModGuiUtils.renderFluidBox(pGuiGraphics, font, pMouseX, pMouseY, x, y, 56, 17, 55, 16, menu.blockEntity.waterTank, "Water");
+        ModGuiUtils.renderFluidBox(pGuiGraphics, font, pMouseX, pMouseY, x, y, 56, 41, 38, 16, menu.blockEntity.lavaTank, "Lava");
+        ModGuiUtils.renderFluidBox(pGuiGraphics, font, pMouseX, pMouseY, x, y, 127, 17, 36, 17, menu.blockEntity.steamTank, "Steam");
+
+        renderTemperatureBar(pGuiGraphics, x + 22, y + 17);
+    }
+
+    private void renderTemperatureBar(GuiGraphics guiGraphics, int x, int y) {
+        int scaledTemp = menu.getScaledProgress();
+        guiGraphics.blit(TEXTURE, x, y + (52 - scaledTemp), 176, 31 + (52 - scaledTemp), 5, scaledTemp);
     }
 }

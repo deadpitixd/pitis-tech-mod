@@ -1,8 +1,8 @@
 package com.piti.ptm.screen;
 
 import com.piti.ptm.block.entity.LavaHeaterBlockEntity;
-import com.piti.ptm.block.entity.ModBlockEntities;
 import com.piti.ptm.block.modBlocks;
+import com.piti.ptm.fluid.IFluidHandlingBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,28 +14,27 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class LavaHeaterMenu extends AbstractContainerMenu {
-
     public final LavaHeaterBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public LavaHeaterMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData){
+    public LavaHeaterMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
         this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(8));
     }
 
-    public LavaHeaterMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data){
+    public LavaHeaterMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.LAVA_HEATER_MENU.get(), pContainerId);
         checkContainerSize(inv, 2);
-        blockEntity = ((LavaHeaterBlockEntity) entity);
+        blockEntity = (LavaHeaterBlockEntity) entity;
         this.level = inv.player.level();
         this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
-            this.addSlot(new SlotItemHandler(iItemHandler, 0, 78, 61));
-            this.addSlot(new SlotItemHandler(iItemHandler, 1, 137, 42));
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            this.addSlot(new SlotItemHandler(handler, 0, 78, 61));
+            this.addSlot(new SlotItemHandler(handler, 1, 137, 42));
         });
 
         addDataSlots(data);
@@ -45,48 +44,46 @@ public class LavaHeaterMenu extends AbstractContainerMenu {
         return data.get(4) > 0;
     }
 
+    public IFluidHandlingBlockEntity getFluidHandler() {
+        if ((Object)this.blockEntity instanceof IFluidHandlingBlockEntity handler) {
+            return handler;
+        }
+        return null;
+    }
+
+
+
     public int getScaledProgress() {
         int progress = this.data.get(4);
-        int maxProgress = this.data.get(5);  // Max Progress
-        int progressArrowSize = 52; // This is the height in pixels of your arrow
-
+        int maxProgress = this.data.get(5);
+        int progressArrowSize = 52;
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
-    private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
-    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    public boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
+        return pMouseX >= (x + offsetX) && pMouseX <= (x + offsetX + width) &&
+                pMouseY >= (y + offsetY) && pMouseY <= (y + offsetY + height);
+    }
 
-    // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must be the number of slots you have!
     @Override
     public ItemStack quickMoveStack(Player playerIn, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
+        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
-        // Check if the slot clicked is one of the vanilla container slots
-        if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;  // EMPTY_ITEM
+        if (pIndex < 36) {
+            if (!moveItemStackTo(sourceStack, 36, 38, false)) {
+                return ItemStack.EMPTY;
             }
-        } else if (pIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+        } else if (pIndex < 38) {
+            if (!moveItemStackTo(sourceStack, 0, 36, false)) {
                 return ItemStack.EMPTY;
             }
         } else {
-            System.out.println("Invalid slotIndex:" + pIndex);
             return ItemStack.EMPTY;
         }
-        // If stack size == 0 (the entire stack was moved) set slot contents to null
+
         if (sourceStack.getCount() == 0) {
             sourceSlot.set(ItemStack.EMPTY);
         } else {
@@ -96,12 +93,12 @@ public class LavaHeaterMenu extends AbstractContainerMenu {
         return copyOfSourceStack;
     }
 
-
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
                 pPlayer, modBlocks.LAVA_HEATER.get());
     }
+
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
@@ -116,4 +113,3 @@ public class LavaHeaterMenu extends AbstractContainerMenu {
         }
     }
 }
-

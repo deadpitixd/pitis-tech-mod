@@ -24,21 +24,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class LavaHeaterBlock extends BaseEntityBlock{
+public class LavaHeaterBlock extends BaseEntityBlock {
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public LavaHeaterBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
-
     }
-
-    @Override
-    public RenderShape getRenderShape(BlockState pState){
-        return RenderShape.MODEL;
-    }
-
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -51,47 +43,46 @@ public class LavaHeaterBlock extends BaseEntityBlock{
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (pState.getBlock() != pNewState.getBlock()){
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof LavaHeaterBlockEntity){
-                ((LavaHeaterBlockEntity) blockEntity).drops();
-            }
-        }
-        super.onRemove(pState,pLevel,pPos,pNewState,pMovedByPiston);
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
     }
 
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if (pState.getBlock() != pNewState.getBlock()) {
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof LavaHeaterBlockEntity heater) {
+                heater.drops();
+            }
+        }
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+    }
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof LavaHeaterBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (LavaHeaterBlockEntity)entity, pPos);
+            if (entity instanceof LavaHeaterBlockEntity heater) {
+                NetworkHooks.openScreen(((ServerPlayer) pPlayer), heater, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
-
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
+    @Nullable
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pLevel.isClientSide()){
-            return null;
-        }
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        if (pLevel.isClientSide()) return null;
 
-        return createTickerHelper(
-                pBlockEntityType,
-                ModBlockEntities.LAVA_HEATER_BE.get(),
-                LavaHeaterBlockEntity::tick
-        );
-
+        return createTickerHelper(pBlockEntityType, ModBlockEntities.LAVA_HEATER_BE.get(),
+                LavaHeaterBlockEntity::tick);
     }
 
+    @Nullable
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new LavaHeaterBlockEntity(pPos, pState);
     }
 }
