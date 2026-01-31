@@ -1,7 +1,7 @@
 package com.piti.ptm.block.entity;
 
-
 import com.piti.ptm.fluid.IFluidHandlingBlockEntity;
+import com.piti.ptm.fluid.ModFluids;
 import com.piti.ptm.screen.LavaHeaterMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -41,7 +42,6 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
     private static final int MAGMA_SLOT = 1;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
 
     private final IFluidHandler inputHandler = new IFluidHandler() {
         @Override
@@ -64,8 +64,12 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
 
         @Override
         public int fill(FluidStack resource, FluidAction action) {
-            if (waterTank.isFluidValid(resource)) return waterTank.fill(resource, action);
-            if (lavaTank.isFluidValid(resource)) return lavaTank.fill(resource, action);
+            if (resource.getFluid().isSame(Fluids.WATER)) {
+                return waterTank.fill(resource, action);
+            }
+            if (resource.getFluid().isSame(Fluids.LAVA)) {
+                return lavaTank.fill(resource, action);
+            }
             return 0;
         }
 
@@ -81,12 +85,21 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
 
     public final FluidTank waterTank = createTank(4000, Fluids.WATER);
     public final FluidTank lavaTank = createTank(4000, Fluids.LAVA);
-    public final FluidTank steamTank = new FluidTank(8000);
+    public final FluidTank steamTank = new FluidTank(8000,
+            stack -> stack.getFluid().isSame(ModFluids.STEAM_SOURCE.get())) {
+        @Override
+        protected void onContentsChanged() {
+            setChanged();
+            if (level != null && !level.isClientSide) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+    };
 
     private int temp = 0;
     private int maxTemp = 2500;
 
-    private FluidTank createTank(int capacity, net.minecraft.world.level.material.Fluid fluidType) {
+    private FluidTank createTank(int capacity, Fluid fluidType) {
         return new FluidTank(capacity) {
             @Override
             protected void onContentsChanged() {
@@ -98,7 +111,7 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
 
             @Override
             public boolean isFluidValid(FluidStack stack) {
-                return stack.getFluid().isSame(fluidType);
+                return !stack.isEmpty() && stack.getFluid().isSame(fluidType);
             }
         };
     }
@@ -135,6 +148,7 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
             }
         };
     }
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
@@ -202,13 +216,13 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
-        saveAdditional(nbt); // Save tank data into the tag
+        saveAdditional(nbt);
         return nbt;
     }
 
     @Override
     public void handleUpdateTag(CompoundTag tag) {
-        load(tag); // Load tank data on the client
+        load(tag);
     }
 
     @Nullable
@@ -259,10 +273,12 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
         }
 
         if (be.temp > 150 && be.waterTank.getFluidAmount() >= 10) {
-            int filled = be.steamTank.fill(new FluidStack(Fluids.WATER, 20), IFluidHandler.FluidAction.SIMULATE);
+            FluidStack steamStack = new FluidStack(ModFluids.STEAM_SOURCE.get(), 20);
+            int filled = be.steamTank.fill(steamStack, IFluidHandler.FluidAction.SIMULATE);
+
             if (filled == 20) {
                 be.waterTank.drain(10, IFluidHandler.FluidAction.EXECUTE);
-                be.steamTank.fill(new FluidStack(Fluids.WATER, 20), IFluidHandler.FluidAction.EXECUTE);
+                be.steamTank.fill(steamStack, IFluidHandler.FluidAction.EXECUTE);
                 be.temp -= 1;
                 changed = true;
             }
