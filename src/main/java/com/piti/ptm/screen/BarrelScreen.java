@@ -2,7 +2,7 @@ package com.piti.ptm.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.piti.ptm.PitisTech;
-import com.piti.ptm.util.FluidRenderer;
+import com.piti.ptm.util.ModGuiUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -34,11 +34,14 @@ public class BarrelScreen extends AbstractContainerScreen<BarrelMenu> {
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
-        if (isHovering(69, 9, 47, 61, mouseX, mouseY)) {
-            guiGraphics.renderComponentTooltip(this.font,
-                    FluidRenderer.getFluidTooltip(menu.blockEntity.tank.getFluid(), menu.getMaxFluid()),
-                    mouseX, mouseY);
-        }
+        int x = leftPos;
+        int y = topPos;
+
+        String fluidName = menu.blockEntity.tank.getFluid().isEmpty()
+                ? "Empty"
+                : menu.blockEntity.tank.getFluid().getDisplayName().getString();
+
+        ModGuiUtils.renderFluidBox(guiGraphics, this.font, mouseX, mouseY, x, y, 70, 10, 45, 59, menu.blockEntity.tank, fluidName);
     }
 
     @Override
@@ -51,8 +54,5 @@ public class BarrelScreen extends AbstractContainerScreen<BarrelMenu> {
         int y = topPos;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-
-        FluidRenderer.renderFluid(guiGraphics, menu.blockEntity.tank.getFluid(),
-                x + 69, y + 9, 47, 61, menu.getMaxFluid());
     }
 }

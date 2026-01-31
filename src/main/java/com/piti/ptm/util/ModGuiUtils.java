@@ -2,6 +2,7 @@ package com.piti.ptm.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -36,7 +37,6 @@ public class ModGuiUtils {
             float b = (color & 0xFF) / 255f;
             float a = ((color >> 24) & 0xFF) / 255f;
 
-            // 1. Setup Render System
             RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
             RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f); // We bake color into vertices below
@@ -52,15 +52,12 @@ public class ModGuiUtils {
 
             buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-            // 2. Loop to tile the texture (prevents stretching)
             for (int i = 0; i < width; i += 16) {
                 for (int j = 0; j < renderHeight; j += 16) {
 
-                    // "Cut" the texture if we are near the edge
                     int drawWidth = Math.min(width - i, 16);
                     int drawHeight = Math.min(renderHeight - j, 16);
 
-                    // Calculate precise UVs so we only draw the part we need
                     float u0 = sprite.getU0();
                     float u1 = sprite.getU(drawWidth);
                     float v0 = sprite.getV0();
@@ -69,7 +66,6 @@ public class ModGuiUtils {
                     int screenX = guiX + x + i;
                     int screenY = guiY + y + yOffset + j;
 
-                    // Draw the Quad (Bottom-Left, Bottom-Right, Top-Right, Top-Left)
                     buffer.vertex(matrix, screenX, screenY + drawHeight, 0).uv(u0, v1).color(r, g, b, a).endVertex();
                     buffer.vertex(matrix, screenX + drawWidth, screenY + drawHeight, 0).uv(u1, v1).color(r, g, b, a).endVertex();
                     buffer.vertex(matrix, screenX + drawWidth, screenY, 0).uv(u1, v0).color(r, g, b, a).endVertex();
@@ -79,14 +75,13 @@ public class ModGuiUtils {
             tesselator.end();
         }
 
-        // 3. Tooltip Logic
         if (mouseX >= (guiX + x) && mouseX <= (guiX + x + width) &&
                 mouseY >= (guiY + y) && mouseY <= (guiY + y + height)) {
 
             Component fluidName = tank.isEmpty() ? Component.literal(emptyLabel) : tank.getFluid().getDisplayName();
             graphics.renderComponentTooltip(font, List.of(
                     fluidName,
-                    Component.literal(tank.getFluidAmount() + " / " + tank.getCapacity() + " mB")
+                    Component.literal(tank.getFluidAmount() + " / " + tank.getCapacity() + " mB").withStyle(ChatFormatting.GOLD)
             ), mouseX, mouseY);
         }
     }
