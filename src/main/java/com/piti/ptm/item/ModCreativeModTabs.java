@@ -24,6 +24,7 @@ public class ModCreativeModTabs
                     .title(Component.translatable("creativetab.ptmitems_tab"))
                     .displayItems((pParameters, pOutput) ->{
                         pOutput.accept(ModItems.GEIGERCOUNTER.get());
+                        pOutput.accept(ModItems.INFINITE_WATER.get());
                     })
                     .build());
 
