@@ -21,6 +21,10 @@ public class BarrelMenu extends AbstractContainerMenu {
     public BarrelMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
         this(containerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
+    @Override
+    public void broadcastChanges() {
+        super.broadcastChanges();
+    }
 
     public BarrelMenu(int containerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.BARREL_MENU.get(), containerId);

@@ -34,17 +34,30 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (level != null && !level.isClientSide) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
     };
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public final FluidTank tank = new FluidTank(16000);
+    public final FluidTank tank = new FluidTank(16000) {
+        @Override
+        protected void onContentsChanged() {
+            setChanged();
+            if (level != null && !level.isClientSide) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+    };
     private int fluidID = 0; // ID of the fluid in tank
     private int maxFluid = 16000;
 
     public final ContainerData data;
 
     private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
+
+
 
     public BarrelBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.BARREL_BE.get(), pos, state);
@@ -63,9 +76,8 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
             public void set(int index, int value) {
                 switch (index) {
                     case 0 -> {
-                        FluidStack current = tank.getFluid();
-                        if (!current.isEmpty()) {
-                            tank.setFluid(new FluidStack(current.getFluid(), value));
+                        if (!tank.getFluid().isEmpty()) {
+                            tank.getFluid().setAmount(value);
                         }
                     }
                     case 1 -> tank.setCapacity(value);
@@ -159,19 +171,18 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
         return tank.getFluid();
     }
 
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag nbt = super.getUpdateTag();
-        saveAdditional(nbt); // Save tank and inventory to the tag
-        return nbt;
-    }
 
-    @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = new CompoundTag();
+        saveAdditional(nbt);
+        return nbt;
+    }
     private static boolean hasFluidItemInInputSlot(BarrelBlockEntity pEntity) {
         return pEntity.itemHandler.getStackInSlot(2).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
     }
