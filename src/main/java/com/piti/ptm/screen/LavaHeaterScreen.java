@@ -25,21 +25,30 @@ public class LavaHeaterScreen extends AbstractContainerScreen<LavaHeaterMenu> {
         this.titleLabelY = 1000;
     }
 
+
+    private static final int ARROW_HEIGHT = 52;
+    private static final int ARROW_WIDTH = 5;
+
     private void renderProgressSquare(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isCrafting()) {
-            guiGraphics.blit(
-                    TEXTURE,
-                    x, y + (52 - menu.getScaledProgress()),   // top-left of the dynamic part
-                    176, 31 + (52 - menu.getScaledProgress()), // source texture offset
-                    5, menu.getScaledProgress()               // width & height
-            );
-        }
+        if (!menu.isCrafting()) return;
+
+        int progress = menu.getScaledProgress();
+
+        guiGraphics.blit(
+                TEXTURE,
+                x,
+                y + (ARROW_HEIGHT - progress),
+                176,
+                31 + (ARROW_HEIGHT - progress),
+                ARROW_WIDTH,
+                progress
+        );
     }
+
 
 
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        System.out.println("CLIENT SCALED = " + menu.getScaledProgress());
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -47,6 +56,6 @@ public class LavaHeaterScreen extends AbstractContainerScreen<LavaHeaterMenu> {
         int y = (height - imageHeight) / 2;
 
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        renderProgressSquare(pGuiGraphics, 254,114);
+        renderProgressSquare(pGuiGraphics, leftPos + 22, topPos + 17);
     }
 }
