@@ -1,6 +1,7 @@
 package com.piti.ptm.block;
 
 import com.piti.ptm.PitisTech;
+import com.piti.ptm.block.custom.BarrelBlock;
 import com.piti.ptm.block.custom.LavaHeaterBlock;
 import com.piti.ptm.block.custom.RotatableBlock;
 import com.piti.ptm.item.ModItems;
@@ -44,6 +45,9 @@ public class modBlocks {
                     .strength(5.0f,5)));
     public static final RegistryObject<Block> LAVA_HEATER = registerBlock("lava_heater",
             () -> new LavaHeaterBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
+                    .strength(5.0f,5).noOcclusion()));
+    public static final RegistryObject<Block> BARREL_STEEL = registerBlock("barrel_steel",
+            () -> new BarrelBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL)
                     .strength(5.0f,5).noOcclusion()));
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){

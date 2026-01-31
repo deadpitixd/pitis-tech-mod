@@ -1,10 +1,11 @@
 {
-	"format_version": "1.21.11",
+	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"parent": "block/cube",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "Pitis NTM:block/barrels/barrelSteel"
+		"particle": "ptm:block/steam_turbine_steel",
+		"1": "ptm:block/barrel_steel"
 	},
 	"elements": [
 		{

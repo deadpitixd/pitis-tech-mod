@@ -46,6 +46,7 @@ public class ModCreativeModTabs
                         pOutput.accept(modBlocks.URANIUM_ORE.get());
                         pOutput.accept(ModItems.URANIUM_INGOT.get());
                         pOutput.accept(modBlocks.LAVA_HEATER.get());
+                        pOutput.accept(modBlocks.BARREL_STEEL.get());
                     })
                     .build());
 

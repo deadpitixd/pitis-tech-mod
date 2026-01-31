@@ -17,6 +17,11 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(LavaHeaterBlockEntity::new,
                             modBlocks.LAVA_HEATER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<LavaHeaterBlockEntity>> BARREL_BE =
+            BLOCK_ENTITIES.register("barrel_be", () ->
+                    BlockEntityType.Builder.of(LavaHeaterBlockEntity::new,
+                            modBlocks.BARREL_STEEL.get()).build(null));
+
     public static void register(IEventBus eventBus){
         BLOCK_ENTITIES.register(eventBus);
     }
