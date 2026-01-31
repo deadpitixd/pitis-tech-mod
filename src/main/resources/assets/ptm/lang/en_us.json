@@ -11,5 +11,6 @@
   "creativetab.ptm.fuelmachines_tab": "Piti's Tech Mod - Fuel and Machines",
   "tooltip.ptm.radioactive.tooltip":"§a[RADIOACTIVE]",
   "block.ptm.lava_heater": "Lava Steam Heater",
-  "block.ptm.barrel_steel": "Steel Barrel"
+  "block.ptm.barrel_steel": "Steel Barrel",
+  "gui.ptm.empty": "Empty"
 }

@@ -5,6 +5,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +30,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(5); // slots: fluid ID, input, container, output1, output2
+    private final ItemStackHandler itemHandler = new ItemStackHandler(6){
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+    };
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     public final FluidTank tank = new FluidTank(16000);
@@ -83,7 +91,9 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            return lazyItemHandler.cast();
+        }
         return super.getCapability(cap, side);
     }
 
@@ -107,6 +117,13 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
 
         tag.put("fluid", tank.writeToNBT(new CompoundTag()));
     }
+    public void drops() {
+        net.minecraft.world.SimpleContainer inventory = new net.minecraft.world.SimpleContainer(itemHandler.getSlots());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            inventory.setItem(i, itemHandler.getStackInSlot(i));
+        }
+        net.minecraft.world.Containers.dropContents(this.level, this.worldPosition, inventory);
+    }
 
     @Override
     public void load(CompoundTag tag) {
@@ -115,25 +132,47 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
         tank.readFromNBT(tag.getCompound("fluid"));
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, BarrelBlockEntity be) {
+    public static void tick(Level level, BlockPos pos, BlockState state, BarrelBlockEntity pEntity) {
         if (level.isClientSide) return;
 
-        boolean changed = false;
-
-        ItemStack inputStack = be.itemHandler.getStackInSlot(2);
-        if (!inputStack.isEmpty()) {
-            changed |= fillTankFromItem(be, inputStack);
+        if (hasFluidItemInInputSlot(pEntity)) {
+            if (fillTankFromItem(pEntity, pEntity.itemHandler.getStackInSlot(2))) {
+                pEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
         }
 
-        ItemStack outputStack = be.itemHandler.getStackInSlot(4);
-        if (!outputStack.isEmpty()) {
-            changed |= fillItemFromTank(be, outputStack);
+        if (hasOutputItemInInputSlot(pEntity)) {
+            if (fillItemFromTank(pEntity, pEntity.itemHandler.getStackInSlot(4))) {
+                pEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
         }
+    }
 
-        if (changed) {
-            be.setChanged();
-            level.sendBlockUpdated(pos, state, state, 3);
-        }
+    public FluidStack getFluidStack() {
+        return tank.getFluid();
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = super.getUpdateTag();
+        saveAdditional(nbt); // Save tank and inventory to the tag
+        return nbt;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    private static boolean hasFluidItemInInputSlot(BarrelBlockEntity pEntity) {
+        return pEntity.itemHandler.getStackInSlot(2).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
+    }
+
+    private static boolean hasOutputItemInInputSlot(BarrelBlockEntity pEntity) {
+        return pEntity.itemHandler.getStackInSlot(4).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
     }
 
     private static boolean fillTankFromItem(BarrelBlockEntity be, ItemStack stack) {

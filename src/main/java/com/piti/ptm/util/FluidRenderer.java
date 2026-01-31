@@ -36,7 +36,13 @@ public class FluidRenderer {
         int renderHeight = (int) Math.min(height, ((long) stored * height) / capacity);
         int yOffset = height - renderHeight;
 
-        graphics.blit(x, y + yOffset, 0, width, renderHeight, sprite);
+        for (int i = 0; i < width; i += 16) {
+            for (int j = 0; j < renderHeight; j += 16) {
+                int drawWidth = Math.min(width - i, 16);
+                int drawHeight = Math.min(renderHeight - j, 16);
+                graphics.blit(x + i, y + yOffset + j, 0, drawWidth, drawHeight, sprite);
+            }
+        }
 
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }

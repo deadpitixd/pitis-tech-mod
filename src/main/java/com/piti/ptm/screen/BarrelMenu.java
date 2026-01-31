@@ -33,12 +33,12 @@ public class BarrelMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 8, 17));
+            this.addSlot(new SlotItemHandler(handler, 0, 8, 10));
             this.addSlot(new SlotItemHandler(handler, 1, 8, 53));
-            this.addSlot(new SlotItemHandler(handler, 2, 44, 17));
-            this.addSlot(new SlotItemHandler(handler, 3, 44, 53));
-            this.addSlot(new SlotItemHandler(handler, 4, 134, 17));
-            this.addSlot(new SlotItemHandler(handler, 5, 134, 53));
+            this.addSlot(new SlotItemHandler(handler, 2, 38, 10));
+            this.addSlot(new SlotItemHandler(handler, 3, 38, 53));
+            this.addSlot(new SlotItemHandler(handler, 4, 137, 10));
+            this.addSlot(new SlotItemHandler(handler, 5, 137, 53));
         });
 
         addDataSlots(data);

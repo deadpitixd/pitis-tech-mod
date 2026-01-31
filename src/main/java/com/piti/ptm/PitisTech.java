@@ -6,6 +6,7 @@ import com.piti.ptm.fluid.ModFluids;
 import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.block.modBlocks;
+import com.piti.ptm.screen.BarrelScreen;
 import com.piti.ptm.screen.LavaHeaterMenu;
 import com.piti.ptm.screen.LavaHeaterScreen;
 import com.piti.ptm.screen.ModMenuTypes;
@@ -85,7 +86,7 @@ public class PitisTech
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             MenuScreens.register(ModMenuTypes.LAVA_HEATER_MENU.get(), LavaHeaterScreen::new);
-
+            MenuScreens.register(ModMenuTypes.BARREL_MENU.get(), BarrelScreen::new);
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());

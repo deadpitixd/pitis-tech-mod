@@ -34,7 +34,7 @@ public class BarrelScreen extends AbstractContainerScreen<BarrelMenu> {
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
 
-        if (isHovering(71, 17, 34, 52, mouseX, mouseY)) {
+        if (isHovering(69, 9, 47, 61, mouseX, mouseY)) {
             guiGraphics.renderComponentTooltip(this.font,
                     FluidRenderer.getFluidTooltip(menu.blockEntity.tank.getFluid(), menu.getMaxFluid()),
                     mouseX, mouseY);
@@ -53,6 +53,6 @@ public class BarrelScreen extends AbstractContainerScreen<BarrelMenu> {
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
         FluidRenderer.renderFluid(guiGraphics, menu.blockEntity.tank.getFluid(),
-                x + 71, y + 17, 34, 52, menu.getMaxFluid());
+                x + 69, y + 9, 47, 61, menu.getMaxFluid());
     }
 }
