@@ -1,5 +1,6 @@
 package com.piti.ptm.block.entity;
 
+import com.piti.ptm.screen.BarrelMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -9,12 +10,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -23,33 +27,40 @@ import org.jetbrains.annotations.Nullable;
 
 public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2);
+    private final ItemStackHandler itemHandler = new ItemStackHandler(5); // slots: fluid ID, input, container, output1, output2
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    private final FluidTank fluidTank = new FluidTank(16000); // 16k mB capacity
-    private final ContainerData data;
+    public final FluidTank tank = new FluidTank(16000);
+    private int fluidID = 0; // ID of the fluid in tank
+    private int maxFluid = 16000;
+
+    public final ContainerData data;
+
+    private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
 
     public BarrelBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.BARREL_BE.get(), pos, state);
 
-        // ContainerData exposes fluid amount and capacity for GUI
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {
-                    case 0 -> fluidTank.getFluidAmount();
-                    case 1 -> fluidTank.getCapacity();
+                    case 0 -> tank.getFluidAmount();
+                    case 1 -> tank.getCapacity();
                     default -> 0;
                 };
             }
 
             @Override
             public void set(int index, int value) {
-                if(index == 0) {
-                    FluidStack stack = fluidTank.getFluid();
-                    if(stack.isEmpty()) return;
-                    stack.setAmount(value);
-                    fluidTank.setFluid(stack);
+                switch (index) {
+                    case 0 -> {
+                        FluidStack current = tank.getFluid();
+                        if (!current.isEmpty()) {
+                            tank.setFluid(new FluidStack(current.getFluid(), value));
+                        }
+                    }
+                    case 1 -> tank.setCapacity(value);
                 }
             }
 
@@ -60,37 +71,19 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
         };
     }
 
-    public FluidTank getFluidTank() {
-        return fluidTank;
-    }
-
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.ptm.barrel");
     }
 
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
-        return new BarrelMenu(id, playerInventory, this, data);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("inventory", itemHandler.serializeNBT());
-        tag.put("fluid", fluidTank.writeToNBT(new CompoundTag()));
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        itemHandler.deserializeNBT(tag.getCompound("inventory"));
-        fluidTank.readFromNBT(tag.getCompound("fluid"));
+    public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+        return new BarrelMenu(containerId, playerInventory, this, this.data);
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
+        if (cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
         return super.getCapability(cap, side);
     }
 
@@ -104,5 +97,71 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+
+        tag.put("inventory", itemHandler.serializeNBT());
+
+        tag.put("fluid", tank.writeToNBT(new CompoundTag()));
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        itemHandler.deserializeNBT(tag.getCompound("inventory"));
+        tank.readFromNBT(tag.getCompound("fluid"));
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, BarrelBlockEntity be) {
+        if (level.isClientSide) return;
+
+        boolean changed = false;
+
+        ItemStack inputStack = be.itemHandler.getStackInSlot(2);
+        if (!inputStack.isEmpty()) {
+            changed |= fillTankFromItem(be, inputStack);
+        }
+
+        ItemStack outputStack = be.itemHandler.getStackInSlot(4);
+        if (!outputStack.isEmpty()) {
+            changed |= fillItemFromTank(be, outputStack);
+        }
+
+        if (changed) {
+            be.setChanged();
+            level.sendBlockUpdated(pos, state, state, 3);
+        }
+    }
+
+    private static boolean fillTankFromItem(BarrelBlockEntity be, ItemStack stack) {
+        return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(handler -> {
+            FluidStack drainable = handler.drain(1000, IFluidHandler.FluidAction.SIMULATE);
+            if (!drainable.isEmpty() && be.tank.isFluidValid(drainable)) {
+                int filled = be.tank.fill(drainable, IFluidHandler.FluidAction.EXECUTE);
+                if (filled > 0) {
+                    handler.drain(filled, IFluidHandler.FluidAction.EXECUTE);
+                    be.itemHandler.setStackInSlot(2, handler.getContainer());
+                    return true;
+                }
+            }
+            return false;
+        }).orElse(false);
+    }
+
+    private static boolean fillItemFromTank(BarrelBlockEntity be, ItemStack stack) {
+        return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(handler -> {
+            if (!be.tank.getFluid().isEmpty()) {
+                int filled = handler.fill(be.tank.getFluid(), IFluidHandler.FluidAction.EXECUTE);
+                if (filled > 0) {
+                    be.tank.drain(filled, IFluidHandler.FluidAction.EXECUTE);
+                    be.itemHandler.setStackInSlot(4, handler.getContainer());
+                    return true;
+                }
+            }
+            return false;
+        }).orElse(false);
     }
 }

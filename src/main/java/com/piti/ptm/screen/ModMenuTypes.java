@@ -16,6 +16,8 @@ public class ModMenuTypes {
 
     public static final RegistryObject<MenuType<LavaHeaterMenu>> LAVA_HEATER_MENU =
             registerMenuType("lava_heater_menu", LavaHeaterMenu::new);
+    public static final RegistryObject<MenuType<BarrelMenu>> BARREL_MENU =
+            registerMenuType("barrel_menu", BarrelMenu::new);
 
 
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {

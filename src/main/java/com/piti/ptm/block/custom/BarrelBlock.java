@@ -1,5 +1,6 @@
 package com.piti.ptm.block.custom;
 
+import com.piti.ptm.block.entity.BarrelBlockEntity;
 import com.piti.ptm.block.entity.LavaHeaterBlockEntity;
 import com.piti.ptm.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -66,8 +67,8 @@ public class BarrelBlock extends BaseEntityBlock{
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof LavaHeaterBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (LavaHeaterBlockEntity)entity, pPos);
+            if(entity instanceof BarrelBlockEntity) {
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (BarrelBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

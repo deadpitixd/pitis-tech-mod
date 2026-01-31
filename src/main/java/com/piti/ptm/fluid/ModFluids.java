@@ -1,7 +1,6 @@
 package com.piti.ptm.fluid;
 
 import com.piti.ptm.PitisTech;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -9,9 +8,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModFluids {
-    
+
     public static final DeferredRegister<FluidType> FLUID_TYPES =
-            DeferredRegister.create((ResourceLocation) ForgeRegistries.FLUID_TYPES, PitisTech.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, PitisTech.MOD_ID);
 
     public static final RegistryObject<FluidType> STEAM = FLUID_TYPES.register("steam",
             () -> new FluidType(FluidType.Properties.create()) {});
