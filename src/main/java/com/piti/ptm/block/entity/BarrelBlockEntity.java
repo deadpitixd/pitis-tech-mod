@@ -94,6 +94,9 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
+        if (cap == ForgeCapabilities.FLUID_HANDLER) {
+            return lazyFluidHandler.cast();
+        }
         return super.getCapability(cap, side);
     }
 
