@@ -14,5 +14,6 @@
   "block.ptm.barrel_steel": "Steel Barrel",
   "gui.ptm.empty": "Empty",
   "item.ptm.infinite_water": "Infinite Water Barrel",
-  "tooltip.ptm.infinite_water.description": "100000B/s"
+  "tooltip.ptm.infinite_water.description": "100000B/s",
+  "block.ptm.universal_pipe": "Universal Fluid Pipe"
 }
