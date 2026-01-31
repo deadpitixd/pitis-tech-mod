@@ -43,6 +43,7 @@ public class ModCreativeModTabs
             ()-> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.URANIUM_INGOT.get()))
                     .title(Component.translatable("creativetab.ptm.fuelmachines_tab"))
                     .displayItems((pParameters, pOutput) ->{
+                        pOutput.accept(modBlocks.UNIVERSAL_PIPE.get());
                         pOutput.accept(modBlocks.STEAM_TURBINE.get());
                         pOutput.accept(modBlocks.URANIUM_ORE.get());
                         pOutput.accept(ModItems.URANIUM_INGOT.get());

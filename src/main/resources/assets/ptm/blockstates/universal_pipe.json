@@ -1,0 +1,11 @@
+{
+  "multipart": [
+    { "apply": { "model": "ptm:block/pipe_core" }},
+    { "when": { "north": "true" }, "apply": { "model": "ptm:block/pipe_extension", "y": 90 }},
+    { "when": { "east": "true" },  "apply": { "model": "ptm:block/pipe_extension", "y": 180 }},
+    { "when": { "south": "true" }, "apply": { "model": "ptm:block/pipe_extension", "y": 270 }},
+    { "when": { "west": "true" },  "apply": { "model": "ptm:block/pipe_extension" }},
+    { "when": { "up": "true" },    "apply": { "model": "ptm:block/pipe_extension_up" }},
+    { "when": { "down": "true" },  "apply": { "model": "ptm:block/pipe_extension_up", "x": 180 }}
+  ]
+}

@@ -138,7 +138,7 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
-            if (side == Direction.NORTH || side == Direction.SOUTH) {
+            if (side == Direction.WEST || side == Direction.EAST) {
                 return inputCapability.cast();
             }
             if (side == Direction.DOWN) {
