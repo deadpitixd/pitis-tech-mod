@@ -81,8 +81,12 @@ public class ModGuiUtils {
             Component fluidName = tank.isEmpty() ? Component.literal(emptyLabel) : tank.getFluid().getDisplayName();
             graphics.renderComponentTooltip(font, List.of(
                     fluidName,
-                    Component.literal(Component.literal(String.valueOf(tank.getFluidAmount())).withStyle(ChatFormatting.GOLD) + " / " + Component.literal(String.valueOf(tank.getCapacity())).withStyle(ChatFormatting.DARK_GRAY) + Component.literal(" mB").withStyle(ChatFormatting.GRAY))
-            ), mouseX, mouseY);
+                    Component.literal(String.valueOf(tank.getFluidAmount()))
+                            .withStyle(ChatFormatting.GOLD)
+                            .append(Component.literal(" / ").withStyle(ChatFormatting.GRAY))
+                            .append(Component.literal(String.valueOf(tank.getCapacity())).withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(" mB").withStyle(ChatFormatting.GRAY))),
+                    mouseX, mouseY);
         }
     }
 }
