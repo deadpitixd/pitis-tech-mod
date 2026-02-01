@@ -1,6 +1,8 @@
 package com.piti.ptm.event;
 
 import com.piti.ptm.PitisTech;
+import com.piti.ptm.block.entity.PipeBlockEntity;
+import com.piti.ptm.block.modBlocks;
 import com.piti.ptm.fluid.BaseFluidType;
 import com.piti.ptm.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
@@ -19,28 +21,48 @@ public class ModClientEvents {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((stack, tintIndex) -> {
-            if (tintIndex == 1 && stack.hasTag() && stack.getTag().contains("FluidID")) {
-                try {
-                    String fluidId = stack.getTag().getString("FluidID");
-                    Fluid fluid = ForgeRegistries.FLUIDS.getValue(ResourceLocation.parse(fluidId));
+            if (tintIndex == 1) {
+                if (stack.hasTag() && stack.getTag().contains("FluidID")) {
+                    try {
+                        String fluidId = stack.getTag().getString("FluidID");
+                        Fluid fluid = ForgeRegistries.FLUIDS.getValue(ResourceLocation.parse(fluidId));
 
-                    if (fluid != null) {
-                        int color = IClientFluidTypeExtensions.of(fluid).getTintColor();
+                        if (fluid != null && fluid != Fluids.EMPTY) {
+                            int color = IClientFluidTypeExtensions.of(fluid).getTintColor();
 
-                        if (color == -1 || color == 0xFFFFFFFF || fluid.isSame(Fluids.LAVA)) {
-                            if (fluid.getFluidType() instanceof BaseFluidType baseType) {
-                                return baseType.getTintColor();
+                            if (color == -1 || color == 0xFFFFFFFF || fluid.isSame(Fluids.LAVA)) {
+                                if (fluid.getFluidType() instanceof BaseFluidType baseType) {
+                                    return baseType.getTintColor();
+                                }
+                                if (fluid.isSame(Fluids.LAVA)) return 0xFFFF4500;
                             }
-                            if (fluid.isSame(Fluids.LAVA)) return 0xFFFF4500;
+                            return color;
                         }
-
-                        return color;
+                    } catch (Exception e) {
                     }
-                } catch (Exception e) {
-                    return -1;
                 }
+                return 0x80333333;
             }
             return -1;
         }, ModItems.FLUID_TEMPLATE.get());
+    }
+    @SubscribeEvent
+    public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+        event.register((state, level, pos, tintIndex) -> {
+            if (level != null && pos != null && level.getBlockEntity(pos) instanceof PipeBlockEntity be) {
+                String fluidId = be.getFilterFluidID();
+                if (!fluidId.isEmpty()) {
+                    try {
+                        Fluid fluid = ForgeRegistries.FLUIDS.getValue(ResourceLocation.parse(fluidId));
+                        if (fluid != null) {
+                            return IClientFluidTypeExtensions.of(fluid).getTintColor();
+                        }
+                    } catch (Exception e) {
+                        return -1;
+                    }
+                }
+            }
+            return 0x80333333; // Default gray for empty pipes
+        }, modBlocks.UNIVERSAL_PIPE.get());
     }
 }

@@ -21,6 +21,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("barrel_be", () ->
                     BlockEntityType.Builder.of(BarrelBlockEntity::new,
                             modBlocks.BARREL_STEEL.get()).build(null));
+    public static final RegistryObject<BlockEntityType<PipeBlockEntity>> PIPE =
+            BLOCK_ENTITIES.register("pipe_be", () ->
+                    BlockEntityType.Builder.of(PipeBlockEntity::new,
+                            modBlocks.UNIVERSAL_PIPE.get()).build(null));
 
     public static void register(IEventBus eventBus){
         BLOCK_ENTITIES.register(eventBus);

@@ -1,23 +1,36 @@
 package com.piti.ptm.block.custom;
 
+import com.piti.ptm.block.entity.PipeBlockEntity;
+import com.piti.ptm.item.custom.FluidTemplateItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import org.jetbrains.annotations.Nullable;
 
-public class PipeBlock extends Block {
+import java.util.HashSet;
+import java.util.Set;
+
+public class PipeBlock extends Block implements EntityBlock {
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
@@ -32,18 +45,74 @@ public class PipeBlock extends Block {
                 .setValue(WEST, false).setValue(UP, false).setValue(DOWN, false));
     }
 
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new PipeBlockEntity(pos, state);
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.getItem() instanceof FluidTemplateItem) {
+            if (!level.isClientSide) {
+                String newFluid = "";
+                if (stack.hasTag() && stack.getTag().contains("FluidID")) {
+                    newFluid = stack.getTag().getString("FluidID");
+                }
+
+                if (player.isShiftKeyDown()) {
+                    updateConnectedPipes(level, pos, newFluid, new HashSet<>());
+                } else {
+                    BlockEntity be = level.getBlockEntity(pos);
+                    if (be instanceof PipeBlockEntity pipeBE) {
+                        pipeBE.setFilterFluidID(newFluid);
+                    }
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    private void updateConnectedPipes(Level level, BlockPos pos, String fluidId, Set<BlockPos> visited) {
+        if (visited.contains(pos) || visited.size() > 512) return;
+        visited.add(pos);
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof PipeBlockEntity pipeBE) {
+            pipeBE.setFilterFluidID(fluidId);
+            for (Direction dir : Direction.values()) {
+                BlockPos nextPos = pos.relative(dir);
+                if (level.getBlockState(nextPos).getBlock() instanceof PipeBlock) {
+                    updateConnectedPipes(level, nextPos, fluidId, visited);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        if (!level.isClientSide) {
+            BlockState newState = makeConnections(level, pos, state);
+            if (newState != state) {
+                level.setBlock(pos, newState, 3);
+            }
+        }
+    }
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return makeConnections(context.getLevel(), context.getClickedPos());
+        return makeConnections(context.getLevel(), context.getClickedPos(), this.defaultBlockState());
     }
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        return makeConnections(level, pos);
+        return makeConnections(level, pos, state);
     }
 
-    public BlockState makeConnections(LevelAccessor level, BlockPos pos) {
-        return this.defaultBlockState()
+    public BlockState makeConnections(LevelAccessor level, BlockPos pos, BlockState state) {
+        return state
                 .setValue(NORTH, canConnect(level, pos.north(), Direction.SOUTH))
                 .setValue(EAST,  canConnect(level, pos.east(),  Direction.WEST))
                 .setValue(SOUTH, canConnect(level, pos.south(), Direction.NORTH))
@@ -53,17 +122,21 @@ public class PipeBlock extends Block {
     }
 
     private boolean canConnect(LevelAccessor level, BlockPos neighborPos, Direction side) {
+        BlockState state = level.getBlockState(neighborPos);
+        if (state.getBlock() instanceof PipeBlock) return true;
+
         BlockEntity be = level.getBlockEntity(neighborPos);
         if (be != null) {
             return be.getCapability(ForgeCapabilities.FLUID_HANDLER, side).isPresent();
         }
-        return level.getBlockState(neighborPos).getBlock() instanceof PipeBlock;
+        return false;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
     }
+
     private static final VoxelShape CORE_SHAPE = Block.box(5.5, 5.5, 5.5, 10.5, 10.5, 10.5);
     private static final VoxelShape NORTH_SHAPE = Block.box(5.5, 5.5, 0.0, 10.5, 10.5, 5.5);
     private static final VoxelShape SOUTH_SHAPE = Block.box(5.5, 5.5, 10.5, 10.5, 10.5, 16.0);
@@ -75,25 +148,12 @@ public class PipeBlock extends Block {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         VoxelShape shape = CORE_SHAPE;
-
         if (state.getValue(NORTH)) shape = Shapes.joinUnoptimized(shape, NORTH_SHAPE, BooleanOp.OR);
         if (state.getValue(SOUTH)) shape = Shapes.joinUnoptimized(shape, SOUTH_SHAPE, BooleanOp.OR);
         if (state.getValue(EAST))  shape = Shapes.joinUnoptimized(shape, EAST_SHAPE, BooleanOp.OR);
         if (state.getValue(WEST))  shape = Shapes.joinUnoptimized(shape, WEST_SHAPE, BooleanOp.OR);
         if (state.getValue(UP))    shape = Shapes.joinUnoptimized(shape, UP_SHAPE, BooleanOp.OR);
         if (state.getValue(DOWN))  shape = Shapes.joinUnoptimized(shape, DOWN_SHAPE, BooleanOp.OR);
-
         return shape;
-    }
-
-    // This ensures light passes through the pipe properly
-    @Override
-    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
-        return 1.0F;
-    }
-
-    @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
-        return true;
     }
 }
