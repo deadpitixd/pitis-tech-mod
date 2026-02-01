@@ -23,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
@@ -152,19 +153,30 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
-            if (side == Direction.WEST || side == Direction.EAST) {
+            Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+            if (side == null) {
                 return inputCapability.cast();
             }
+
+            Direction localSide = rotateSide(facing, side);
+
+            if (localSide == Direction.WEST || localSide == Direction.EAST) {
+                return inputCapability.cast();
+            }
+
             if (side == Direction.DOWN) {
                 return LazyOptional.of(() -> steamTank).cast();
             }
         }
 
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
-        }
-
         return super.getCapability(cap, side);
+    }
+
+    private Direction rotateSide(Direction facing, Direction side) {
+        if (side.getAxis().isVertical()) return side;
+
+        return Direction.from2DDataValue((side.get2DDataValue() - facing.get2DDataValue() + 4) % 4);
     }
 
     @Override
