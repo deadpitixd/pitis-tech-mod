@@ -1,6 +1,7 @@
 package com.piti.ptm.item;
 
 import com.piti.ptm.PitisTech;
+import com.piti.ptm.item.custom.FluidTemplateItem;
 import com.piti.ptm.item.custom.InfiniteWaterItem;
 import com.piti.ptm.item.custom.RadioactiveItem;
 import net.minecraft.world.item.Item;
@@ -20,6 +21,8 @@ public class ModItems {
             () -> new RadioactiveItem(new Item.Properties(), 1.0));
     public static final RegistryObject<Item> INFINITE_WATER = ITEMS.register("infinite_water",
             () -> new InfiniteWaterItem(new Item.Properties()));
+    public static final RegistryObject<Item> FLUID_TEMPLATE = ITEMS.register("fluid_id",
+            () -> new FluidTemplateItem(new Item.Properties()));
 
 
     public static void register(IEventBus eventBus) {

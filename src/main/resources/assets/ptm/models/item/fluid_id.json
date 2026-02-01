@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ptm:item/fluid_id_frame",
+    "layer1": "ptm:item/fluid_id_droplet"
+  }
+}

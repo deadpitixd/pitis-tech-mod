@@ -152,19 +152,18 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            return lazyItemHandler.cast();
+        }
+
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
             Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
-
-            if (side == null) {
-                return inputCapability.cast();
-            }
+            if (side == null) return inputCapability.cast();
 
             Direction localSide = rotateSide(facing, side);
-
             if (localSide == Direction.WEST || localSide == Direction.EAST) {
                 return inputCapability.cast();
             }
-
             if (side == Direction.DOWN) {
                 return LazyOptional.of(() -> steamTank).cast();
             }

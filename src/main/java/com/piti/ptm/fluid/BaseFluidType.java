@@ -17,6 +17,11 @@ public class BaseFluidType extends FluidType {
         this.tintColor = tintColor;
     }
 
+    // Add this method
+    public int getTintColor() {
+        return tintColor;
+    }
+
     @Override
     public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
         consumer.accept(new IClientFluidTypeExtensions() {

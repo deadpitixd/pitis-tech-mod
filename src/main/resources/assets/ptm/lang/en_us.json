@@ -16,5 +16,7 @@
   "item.ptm.infinite_water": "Infinite Water Barrel",
   "tooltip.ptm.infinite_water.description": "100000B/s",
   "block.ptm.universal_pipe": "Universal Fluid Pipe",
-  "fluid.ptm.steam": "Steam"
+  "fluid.ptm.steam": "Steam",
+  "item.ptm.fluid_id": "Fluid Template ID",
+  "creativetab.ptm.templates": "Piti's Tech Mod - Machine Templates"
 }

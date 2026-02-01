@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
+
 public class LavaHeaterMenu extends AbstractContainerMenu {
     public final LavaHeaterBlockEntity blockEntity;
     private final Level level;

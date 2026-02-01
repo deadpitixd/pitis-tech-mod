@@ -3,11 +3,14 @@ package com.piti.ptm.item;
 import com.piti.ptm.PitisTech;
 import com.piti.ptm.block.modBlocks;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModCreativeModTabs
@@ -51,5 +54,25 @@ public class ModCreativeModTabs
                         pOutput.accept(modBlocks.BARREL_STEEL.get());
                     })
                     .build());
+
+    public static final RegistryObject<CreativeModeTab> PTM_TAB = CREATIVE_MODE_TABS.register("ptm_machinetemplates",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("creativetab.ptm.templates"))
+                    .icon(() -> new ItemStack(ModItems.FLUID_TEMPLATE.get()))
+                    .displayItems((parameters, output) -> {
+                        output.accept(ModItems.FLUID_TEMPLATE.get());
+
+                        for (Fluid fluid : ForgeRegistries.FLUIDS) {
+                            if (fluid.isSource(fluid.defaultFluidState())) {
+                                ItemStack stack = new ItemStack(ModItems.FLUID_TEMPLATE.get());
+                                CompoundTag nbt = stack.getOrCreateTag();
+
+                                String fluidId = ForgeRegistries.FLUIDS.getKey(fluid).toString();
+                                nbt.putString("FluidID", fluidId);
+
+                                output.accept(stack);
+                            }
+                        }
+                    }).build());
 
 }
