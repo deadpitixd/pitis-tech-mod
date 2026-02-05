@@ -7,7 +7,6 @@ import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.block.modBlocks;
 import com.piti.ptm.screen.BarrelScreen;
-import com.piti.ptm.screen.LavaHeaterMenu;
 import com.piti.ptm.screen.LavaHeaterScreen;
 import com.piti.ptm.screen.ModMenuTypes;
 import net.minecraft.client.Minecraft;

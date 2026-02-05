@@ -1,5 +1,7 @@
 package com.piti.ptm.item.custom;
 
+import com.piti.ptm.block.entity.ModBlockEntities;
+import com.piti.ptm.block.entity.PipeBlockEntity;
 import com.piti.ptm.fluid.BaseFluidType;
 import com.piti.ptm.fluid.IFluidHandlingBlockEntity;
 import com.piti.ptm.item.ModItems;
@@ -15,6 +17,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -41,6 +44,17 @@ public class FluidTemplateItem extends Item {
             CompoundTag nbt = stack.getTag();
             if (nbt != null && nbt.contains("FluidID")) {
                 String fluidId = nbt.getString("FluidID");
+
+                BlockState state = level.getBlockState(pos);
+
+                if (be instanceof PipeBlockEntity pipe) {
+                    pipe.setFilterFluidID(fluidId);
+                    System.out.println("[SERVER] Right-click applied: " + fluidId + " to " + pos);
+                }
+
+                level.sendBlockUpdated(pos, state, state, 3);
+                level.blockUpdated(pos, state.getBlock());
+                level.blockEntityChanged(pos);
 
                 context.getPlayer().sendSystemMessage(Component.literal("Applied filter: " + fluidId));
                 return InteractionResult.SUCCESS;

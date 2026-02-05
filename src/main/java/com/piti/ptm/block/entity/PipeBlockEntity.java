@@ -22,9 +22,13 @@ public class PipeBlockEntity extends BlockEntity {
     public void setFilterFluidID(String id) {
         this.filterFluidID = id;
         setChanged();
-        if (level != null) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-            level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
+        System.out.println((level.isClientSide ? "[CLIENT]" : "[SERVER]") +
+                " setFilterFluidID: " + id + " at " + worldPosition);
+
+        if (level != null && !level.isClientSide) {
+            BlockState state = getBlockState();
+            level.sendBlockUpdated(worldPosition, state, state, 3);
+            System.out.println("[SERVER] sendBlockUpdated called at " + worldPosition);
         }
     }
 
@@ -38,6 +42,8 @@ public class PipeBlockEntity extends BlockEntity {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         this.filterFluidID = nbt.getString("FluidID");
+        System.out.println((level != null && level.isClientSide ? "[CLIENT]" : "[SERVER]") +
+                " load called, FluidID=" + filterFluidID + " at " + worldPosition);
     }
 
     @Override
@@ -48,5 +54,16 @@ public class PipeBlockEntity extends BlockEntity {
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(net.minecraft.network.Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
+        this.load(pkt.getTag());
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
     }
 }
