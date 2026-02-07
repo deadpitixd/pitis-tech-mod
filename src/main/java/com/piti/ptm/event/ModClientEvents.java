@@ -59,6 +59,7 @@ public class ModClientEvents {
                     try {
                         Fluid fluid = ForgeRegistries.FLUIDS.getValue(ResourceLocation.parse(fluidId));
                         if (fluid != null) {
+                            if (fluid.isSame(Fluids.LAVA)) return 0xFFFF4500;
                             return IClientFluidTypeExtensions.of(fluid).getTintColor();
                         }
                     } catch (Exception e) {
