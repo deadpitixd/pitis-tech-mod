@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -28,6 +29,7 @@ public class PipeBlockEntity extends BlockEntity {
         if (level != null && !level.isClientSide) {
             BlockState state = getBlockState();
             level.sendBlockUpdated(worldPosition, state, state, 3);
+            BlockEntity be = level.getBlockEntity(getBlockPos());
             System.out.println("[SERVER] sendBlockUpdated called at " + worldPosition);
         }
     }

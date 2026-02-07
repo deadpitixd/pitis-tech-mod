@@ -6,7 +6,6 @@ import com.piti.ptm.block.entity.PipeBlockEntity;
 import com.piti.ptm.block.modBlocks;
 import com.piti.ptm.fluid.BaseFluidType;
 import com.piti.ptm.item.ModItems;
-import com.piti.ptm.renderer.PipeBER;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -21,10 +20,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = PitisTech.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModClientEvents {
-    @SubscribeEvent
-    public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntities.PIPE.get(), PipeBER::new);
-    }
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
