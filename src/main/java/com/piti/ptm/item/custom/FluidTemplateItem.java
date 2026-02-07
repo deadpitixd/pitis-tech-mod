@@ -50,6 +50,7 @@ public class FluidTemplateItem extends Item {
                 if (be instanceof PipeBlockEntity pipe) {
                     pipe.setFilterFluidID(fluidId);
                     System.out.println("[SERVER] Right-click applied: " + fluidId + " to " + pos);
+                    level.updateNeighborsAt(pos, state.getBlock());
                 }
 
                 level.sendBlockUpdated(pos, state, state, 3);

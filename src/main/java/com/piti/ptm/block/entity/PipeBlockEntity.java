@@ -2,6 +2,7 @@ package com.piti.ptm.block.entity;
 
 import com.piti.ptm.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -29,13 +30,14 @@ public class PipeBlockEntity extends BlockEntity {
         this.filterFluidID = id;
         setChanged();
 
-        if (level != null) {
+        if (level != null && !level.isClientSide) {
             BlockState state = getBlockState();
 
             level.sendBlockUpdated(worldPosition, state, state, 3);
 
-            if (level.isClientSide) {
-                level.sendBlockUpdated(worldPosition, state, state, 3);
+            level.updateNeighborsAt(worldPosition, state.getBlock());
+            for (Direction d : Direction.values()) {
+                level.updateNeighborsAt(worldPosition.relative(d), state.getBlock());
             }
         }
     }
