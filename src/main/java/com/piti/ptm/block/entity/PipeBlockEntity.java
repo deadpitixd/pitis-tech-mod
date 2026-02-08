@@ -1,5 +1,6 @@
 package com.piti.ptm.block.entity;
 
+import com.piti.ptm.block.custom.PipeBlock;
 import com.piti.ptm.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,12 +33,9 @@ public class PipeBlockEntity extends BlockEntity {
 
         if (level != null && !level.isClientSide) {
             BlockState state = getBlockState();
-
-            level.sendBlockUpdated(worldPosition, state, state, 3);
-
-            level.updateNeighborsAt(worldPosition, state.getBlock());
-            for (Direction d : Direction.values()) {
-                level.updateNeighborsAt(worldPosition.relative(d), state.getBlock());
+            BlockState newState = ((PipeBlock) state.getBlock()).updateConnections(level, worldPosition, state);
+            if (newState != state) {
+                level.setBlock(worldPosition, newState, 3);
             }
         }
     }

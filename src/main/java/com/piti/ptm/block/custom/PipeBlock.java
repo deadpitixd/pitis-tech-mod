@@ -170,7 +170,7 @@ public class PipeBlock extends Block implements EntityBlock {
         return shape;
     }
 
-    private BlockState updateConnections(LevelAccessor level, BlockPos pos, BlockState state) {
+    public BlockState updateConnections(LevelAccessor level, BlockPos pos, BlockState state) {
         return state
                 .setValue(NORTH, canConnect(level, pos.north(), Direction.SOUTH))
                 .setValue(EAST,  canConnect(level, pos.east(),  Direction.WEST))
@@ -185,11 +185,8 @@ public class PipeBlock extends Block implements EntityBlock {
         if (!(state.getBlock() instanceof PipeBlock pipe)) return;
 
         BlockState newState = pipe.updateConnections(level, pos, state);
-
         if (newState != state) {
-            level.setBlock(pos, newState, 3);
-        } else {
-            level.sendBlockUpdated(pos, state, state, 3);
+            level.setBlock(pos, newState, 3); // triggers render
         }
     }
     @Override
