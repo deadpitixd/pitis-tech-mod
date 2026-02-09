@@ -6,6 +6,7 @@ import com.piti.ptm.item.custom.ScrewdriverItem;
 import com.piti.ptm.network.IFluidReceiver;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -21,11 +22,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,8 +102,27 @@ public class PipeBlock extends Block implements EntityBlock {
         visited.add(pos);
 
         BlockEntity be = level.getBlockEntity(pos);
+
         if (be instanceof PipeBlockEntity pipeBE) {
             pipeBE.setFilterFluidID(fluidId);
+        }
+
+        for (Direction d : Direction.values()) {
+            BlockPos neighbor = pos.relative(d);
+            if (visited.contains(neighbor)) continue;
+
+            BlockEntity neighborBE = level.getBlockEntity(neighbor);
+            boolean shouldVisit = false;
+
+            if (neighborBE instanceof PipeBlockEntity pipeNeighbor) {
+                shouldVisit = pipeNeighbor.getFilterFluidID().isEmpty() || pipeNeighbor.getFilterFluidID().equals(fluidId);
+            } else if (neighborBE instanceof IFluidReceiver receiver) {
+                shouldVisit = receiver.canAcceptFluid(fluidId);
+            }
+
+            if (shouldVisit) {
+                updateConnectedPipes(level, neighbor, fluidId, visited);
+            }
         }
     }
 
@@ -124,33 +150,41 @@ public class PipeBlock extends Block implements EntityBlock {
     private boolean canConnect(LevelAccessor level, BlockPos pos, Direction dir) {
         BlockPos otherPos = pos.relative(dir);
         BlockState otherState = level.getBlockState(otherPos);
+        BlockEntity otherBE = level.getBlockEntity(otherPos);
 
-        if (otherState.getBlock() instanceof PipeBlock) {
-            if (!(level instanceof Level realLevel)) return false;
+        if (otherBE instanceof PipeBlockEntity otherPipe) {
+            BlockEntity selfBE = level.getBlockEntity(pos);
+            if (!(selfBE instanceof PipeBlockEntity selfPipe)) return false;
 
-            BlockEntity be1 = realLevel.getBlockEntity(pos);
-            BlockEntity be2 = realLevel.getBlockEntity(otherPos);
-
-            if (!(be1 instanceof PipeBlockEntity pipe1)) return false;
-            if (!(be2 instanceof PipeBlockEntity pipe2)) return false;
-
-            String id1 = pipe1.getFilterFluidID();
-            String id2 = pipe2.getFilterFluidID();
+            String id1 = selfPipe.getFilterFluidID();
+            String id2 = otherPipe.getFilterFluidID();
 
             if (id1.isEmpty() || id2.isEmpty()) return id1.isEmpty() && id2.isEmpty();
-
             return id1.equals(id2);
         }
-        BlockEntity be = level.getBlockEntity(otherPos);
-        if (be instanceof IFluidReceiver receiver && level instanceof Level realLevel) {
-            BlockEntity selfBE = realLevel.getBlockEntity(pos);
+
+        if (otherBE != null) {
+            BlockEntity selfBE = level.getBlockEntity(pos);
             if (!(selfBE instanceof PipeBlockEntity pipe)) return false;
 
-            return receiver.canAcceptFluid(pipe.getFilterFluidID());
+            String fluidId = pipe.getFilterFluidID();
+            if (fluidId.isEmpty()) return false;
+
+            return otherBE.getCapability(ForgeCapabilities.FLUID_HANDLER, dir.getOpposite())
+                    .map(handler -> {
+                        for (int tank = 0; tank < handler.getTanks(); tank++) {
+                            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidId));
+                            if (fluid != null && handler.isFluidValid(tank, new FluidStack(fluid, 1))) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }).orElse(false);
         }
 
         return false;
     }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);

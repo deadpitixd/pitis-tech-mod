@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class PipeBlockEntity extends BlockEntity {
@@ -163,6 +164,13 @@ public class PipeBlockEntity extends BlockEntity {
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public FluidStack getFilterFluidStack() {
+        if (filterFluidID == null || filterFluidID.isEmpty()) return FluidStack.EMPTY;
+        Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(filterFluidID));
+        if (fluid == null || fluid == Fluids.EMPTY) return FluidStack.EMPTY;
+        return new FluidStack(fluid, 1);
     }
 
     @Override
