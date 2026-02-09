@@ -28,6 +28,7 @@ public class ModCreativeModTabs
                     .displayItems((pParameters, pOutput) ->{
                         pOutput.accept(ModItems.GEIGERCOUNTER.get());
                         pOutput.accept(ModItems.INFINITE_WATER.get());
+                        pOutput.accept(ModItems.SCREWDRIVER.get());
                     })
                     .build());
 

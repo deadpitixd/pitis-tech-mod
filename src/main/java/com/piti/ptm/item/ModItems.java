@@ -4,6 +4,7 @@ import com.piti.ptm.PitisTech;
 import com.piti.ptm.item.custom.FluidTemplateItem;
 import com.piti.ptm.item.custom.InfiniteWaterItem;
 import com.piti.ptm.item.custom.RadioactiveItem;
+import com.piti.ptm.item.custom.ScrewdriverItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,6 +24,8 @@ public class ModItems {
             () -> new InfiniteWaterItem(new Item.Properties()));
     public static final RegistryObject<Item> FLUID_TEMPLATE = ITEMS.register("fluid_id",
             () -> new FluidTemplateItem(new Item.Properties()));
+    public static final RegistryObject<Item> SCREWDRIVER = ITEMS.register("screwdriver",
+            () -> new ScrewdriverItem(new Item.Properties()));
 
 
     public static void register(IEventBus eventBus) {

@@ -1,5 +1,6 @@
 package com.piti.ptm.block.entity;
 
+import com.piti.ptm.network.IFluidReceiver;
 import com.piti.ptm.screen.BarrelMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -25,10 +28,11 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
+public class BarrelBlockEntity extends BlockEntity implements MenuProvider, IFluidReceiver {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(6){
         @Override
@@ -218,5 +222,15 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider {
             }
             return false;
         }).orElse(false);
+    }
+
+    @Override
+    public boolean canAcceptFluid(String fluidId) {
+        try {
+            int id = Integer.parseInt(fluidId);
+            return tank.getFluid().isEmpty() || fluidID == 0 || fluidID == id;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

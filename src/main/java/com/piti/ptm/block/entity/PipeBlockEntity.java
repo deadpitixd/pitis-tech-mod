@@ -21,10 +21,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class PipeBlockEntity extends BlockEntity {
 
     private String filterFluidID = "";
-    /* Color, i think that caching the color will be better,
-    * As there will be no color update calls every tick.
-    * */
-    public int color = 0x00000;
+    // Color, only accessed by the client. Very good for optimization.
+    public int color = 0;
+    public enum PipeMode { NEUTRAL, IMPORT, EXPORT }
+
+    private PipeMode mode = PipeMode.NEUTRAL;
 
     public PipeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.PIPE.get(), pos, state);
@@ -32,6 +33,17 @@ public class PipeBlockEntity extends BlockEntity {
 
     public String getFilterFluidID() {
         return filterFluidID;
+    }
+
+    public PipeMode getMode() { return mode; }
+    public void setMode(PipeMode newMode) {
+        if (newMode == null) newMode = PipeMode.NEUTRAL;
+        if (newMode == mode) return;
+        this.mode = newMode;
+        setChanged();
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+        }
     }
 
     public void setFilterFluidID(String id) {
@@ -123,13 +135,22 @@ public class PipeBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
         nbt.putString("FluidID", filterFluidID);
+        nbt.putInt("Color", color);
+        nbt.putString("Mode", mode.name());
     }
 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
         filterFluidID = nbt.getString("FluidID");
+        color = computeTintFromFluidId(filterFluidID);
+        try {
+            mode = PipeMode.valueOf(nbt.getString("Mode"));
+        } catch (Exception e) {
+            mode = PipeMode.NEUTRAL;
+        }
     }
+
 
     @Override
     public CompoundTag getUpdateTag() {
@@ -153,14 +174,13 @@ public class PipeBlockEntity extends BlockEntity {
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         super.handleUpdateTag(tag);
+        filterFluidID = tag.getString("FluidID");
+        color = computeTintFromFluidId(filterFluidID);
 
-        this.filterFluidID = tag.getString("FluidID");
-
-        if (level != null && level.isClientSide) {
-            this.color = computeTintFromFluidId(this.filterFluidID);
-
-            BlockState state = getBlockState();
-            level.sendBlockUpdated(worldPosition, state, state, 2);
+        try {
+            mode = PipeMode.valueOf(tag.getString("Mode"));
+        } catch (Exception e) {
+            mode = PipeMode.NEUTRAL;
         }
     }
 }
