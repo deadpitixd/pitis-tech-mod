@@ -18,5 +18,6 @@
   "block.ptm.universal_pipe": "Universal Fluid Pipe",
   "fluid.ptm.steam": "Steam",
   "item.ptm.fluid_id": "Fluid Template ID",
-  "creativetab.ptm.templates": "Piti's Tech Mod - Machine Templates"
+  "creativetab.ptm.templates": "Piti's Tech Mod - Machine Templates",
+  "item.ptm.screwdriver": "Screwdriver"
 }
