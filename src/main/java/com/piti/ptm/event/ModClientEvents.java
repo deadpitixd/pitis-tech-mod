@@ -53,21 +53,9 @@ public class ModClientEvents {
     public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
         event.register((state, level, pos, tintIndex) -> {
             if (level != null && pos != null && level.getBlockEntity(pos) instanceof PipeBlockEntity be) {
-                System.out.println("[COLOR] Tint requested at " + pos + " for " + be.getFilterFluidID());
-                String fluidId = be.getFilterFluidID();
-                if (!fluidId.isEmpty()) {
-                    try {
-                        Fluid fluid = ForgeRegistries.FLUIDS.getValue(ResourceLocation.parse(fluidId));
-                        if (fluid != null) {
-                            if (fluid.isSame(Fluids.LAVA)) return 0xFFFF4500;
-                            return IClientFluidTypeExtensions.of(fluid).getTintColor();
-                        }
-                    } catch (Exception e) {
-                        return -1;
-                    }
-                }
+                return be.color;
             }
-            return 0x80333333; // Default gray for empty pipes
+            return 0x80333333;
         }, modBlocks.UNIVERSAL_PIPE.get());
     }
 }

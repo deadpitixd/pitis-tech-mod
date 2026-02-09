@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -52,7 +52,7 @@ public class PipeBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof FluidTemplateItem) {
             if (!level.isClientSide) {
@@ -82,24 +82,9 @@ public class PipeBlock extends Block implements EntityBlock {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof PipeBlockEntity pipeBE) {
             pipeBE.setFilterFluidID(fluidId);
-            for (Direction dir : Direction.values()) {
-                BlockPos nextPos = pos.relative(dir);
-                if (level.getBlockState(nextPos).getBlock() instanceof PipeBlock) {
-                    updateConnectedPipes(level, nextPos, fluidId, visited);
-                }
-            }
         }
     }
 
-    @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-        if (!level.isClientSide) {
-            BlockState newState = makeConnections(level, pos, state);
-            if (newState != state) {
-                level.setBlock(pos, newState, 3);
-            }
-        }
-    }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
