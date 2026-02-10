@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, IFluidHandlingBlockEntity {
     private final ItemStackHandler itemHandler = new ItemStackHandler(2);
-    private static final int LAVA_SLOT = 0;
+    private static final int BUCKET_SLOT = 0;
     private static final int MAGMA_SLOT = 1;
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -272,8 +272,12 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
 
         boolean changed = false;
 
-        if (be.hasRecipe()) {
+        if (be.hasLava()) {
             be.exchangeLava();
+            changed = true;
+        }
+        if (be.hasWater()){
+            be.exchangeWater();
             changed = true;
         }
 
@@ -307,18 +311,27 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
     }
 
     private void exchangeLava() {
-        this.itemHandler.extractItem(LAVA_SLOT, 1, false);
+        this.itemHandler.extractItem(BUCKET_SLOT, 1, false);
         this.lavaTank.fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
-        this.itemHandler.setStackInSlot(LAVA_SLOT, new ItemStack(Items.BUCKET, 1));
+        this.itemHandler.setStackInSlot(BUCKET_SLOT, new ItemStack(Items.BUCKET, 1));
         ItemStack result = new ItemStack(Items.MAGMA_BLOCK, 1);
         this.itemHandler.setStackInSlot(MAGMA_SLOT, new ItemStack(result.getItem(),
                 this.itemHandler.getStackInSlot(MAGMA_SLOT).getCount() + result.getCount()));
     }
+    private void exchangeWater() {
+        this.itemHandler.extractItem(BUCKET_SLOT, 1, false);
+        this.waterTank.fill(new FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE);
+        this.itemHandler.setStackInSlot(BUCKET_SLOT, new ItemStack(Items.BUCKET, 1));
+    }
 
-    private boolean hasRecipe() {
-        return this.itemHandler.getStackInSlot(LAVA_SLOT).getItem() == Items.LAVA_BUCKET &&
+    private boolean hasLava() {
+        return this.itemHandler.getStackInSlot(BUCKET_SLOT).getItem() == Items.LAVA_BUCKET &&
                 canInsertIntoOutputSlot(1) && canInsertItemIntoOutputSlot(Items.MAGMA_BLOCK) &&
                 lavaTank.getFluidAmount() + 1000 <= lavaTank.getCapacity();
+    }
+    private boolean hasWater() {
+        return this.itemHandler.getStackInSlot(BUCKET_SLOT).getItem() == Items.WATER_BUCKET &&
+                waterTank.getFluidAmount() + 1000 <= waterTank.getCapacity();
     }
 
     private boolean canInsertIntoOutputSlot(int count) {
