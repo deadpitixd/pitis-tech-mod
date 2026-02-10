@@ -6,6 +6,7 @@ import com.piti.ptm.block.custom.LavaHeaterBlock;
 import com.piti.ptm.block.custom.PipeBlock;
 import com.piti.ptm.block.custom.RotatableBlock;
 import com.piti.ptm.item.ModItems;
+import com.piti.ptm.item.custom.RadShieldItem;
 import com.piti.ptm.item.custom.RadioactiveBlockItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -24,7 +25,7 @@ public class modBlocks {
     public static final DeferredRegister<Block> BLOCKS=
             DeferredRegister.create(ForgeRegistries.BLOCKS, PitisTech.MOD_ID);
 
-    public static final RegistryObject<Block> BRICK_CONCRETE = registerBlock("brick_concrete",
+    public static final RegistryObject<Block> BRICK_CONCRETE = registerRadShieldBlock("brick_concrete",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.LIGHT_GRAY_CONCRETE)
                     .requiresCorrectToolForDrops()
                     .strength(5.0f, 300)));
@@ -64,6 +65,15 @@ public class modBlocks {
         RegistryObject<T> regBlock = BLOCKS.register(name, blockSupplier);
 
         ModItems.ITEMS.register(name, () -> new RadioactiveBlockItem(regBlock.get(), new Item.Properties(), defaultRadPerSecond));
+
+        return regBlock;
+    }
+    private static <T extends Block> RegistryObject<T> registerRadShieldBlock(
+            String name, Supplier<T> blockSupplier) {
+
+        RegistryObject<T> regBlock = BLOCKS.register(name, blockSupplier);
+
+        ModItems.ITEMS.register(name, () -> new RadShieldItem(regBlock.get(), new Item.Properties()));
 
         return regBlock;
     }

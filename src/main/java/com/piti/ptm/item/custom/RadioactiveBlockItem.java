@@ -22,7 +22,7 @@ public class RadioactiveBlockItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level,
                                 List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.literal("[RADIOACTIVE]").withStyle(style -> style.withColor(TextColor.fromRgb(0x00FF00))));
+        tooltip.add(Component.literal("[RADIOACTIVE]").withStyle(style -> style.withColor(TextColor.fromRgb(0x5f9b58))));
 
         double rad = defaultRadPerSecond;
         if (stack.hasTag() && stack.getTag().contains("RadPerSecond")) {
