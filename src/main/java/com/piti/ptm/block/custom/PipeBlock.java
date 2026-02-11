@@ -139,47 +139,31 @@ public class PipeBlock extends Block implements EntityBlock {
 
     public BlockState makeConnections(LevelAccessor level, BlockPos pos, BlockState state) {
         return state
-                .setValue(NORTH, canConnect(level, pos.north(), Direction.SOUTH))
-                .setValue(EAST,  canConnect(level, pos.east(),  Direction.WEST))
-                .setValue(SOUTH, canConnect(level, pos.south(), Direction.NORTH))
-                .setValue(WEST,  canConnect(level, pos.west(),  Direction.EAST))
-                .setValue(UP,    canConnect(level, pos.above(), Direction.DOWN))
-                .setValue(DOWN,  canConnect(level, pos.below(), Direction.UP));
+                .setValue(NORTH, canConnect(level, pos, Direction.NORTH))
+                .setValue(EAST,  canConnect(level, pos, Direction.EAST))
+                .setValue(SOUTH, canConnect(level, pos, Direction.SOUTH))
+                .setValue(WEST,  canConnect(level, pos, Direction.WEST))
+                .setValue(UP,    canConnect(level, pos, Direction.UP))
+                .setValue(DOWN,  canConnect(level, pos, Direction.DOWN));
     }
 
-    private boolean canConnect(LevelAccessor level, BlockPos pos, Direction dir) {
-        BlockPos otherPos = pos.relative(dir);
-        BlockState otherState = level.getBlockState(otherPos);
-        BlockEntity otherBE = level.getBlockEntity(otherPos);
+    private boolean canConnect(LevelAccessor level, BlockPos selfPos, Direction dirToNeighbor) {
+        BlockEntity selfBE = level.getBlockEntity(selfPos);
+        if (!(selfBE instanceof PipeBlockEntity selfPipe)) return false;
 
-        if (otherBE instanceof PipeBlockEntity otherPipe) {
-            BlockEntity selfBE = level.getBlockEntity(pos);
-            if (!(selfBE instanceof PipeBlockEntity selfPipe)) return false;
+        BlockPos neighborPos = selfPos.relative(dirToNeighbor);
+        BlockEntity neighborBE = level.getBlockEntity(neighborPos);
 
+        if (neighborBE instanceof PipeBlockEntity otherPipe) {
             String id1 = selfPipe.getFilterFluidID();
             String id2 = otherPipe.getFilterFluidID();
 
-            if (id1.isEmpty() || id2.isEmpty()) return id1.isEmpty() && id2.isEmpty();
+            if (id1.isEmpty() || id2.isEmpty()) return true;
             return id1.equals(id2);
         }
-
-        if (otherBE != null) {
-            BlockEntity selfBE = level.getBlockEntity(pos);
-            if (!(selfBE instanceof PipeBlockEntity pipe)) return false;
-
-            String fluidId = pipe.getFilterFluidID();
-            if (fluidId.isEmpty()) return false;
-
-            return otherBE.getCapability(ForgeCapabilities.FLUID_HANDLER, dir.getOpposite())
-                    .map(handler -> {
-                        for (int tank = 0; tank < handler.getTanks(); tank++) {
-                            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(fluidId));
-                            if (fluid != null && handler.isFluidValid(tank, new FluidStack(fluid, 1))) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }).orElse(false);
+        if (neighborBE != null) {
+            return neighborBE.getCapability(ForgeCapabilities.FLUID_HANDLER, dirToNeighbor.getOpposite())
+                    .isPresent();
         }
 
         return false;
@@ -212,18 +196,19 @@ public class PipeBlock extends Block implements EntityBlock {
 
     public BlockState updateConnections(LevelAccessor level, BlockPos pos, BlockState state) {
         return state
-                .setValue(NORTH, canConnect(level, pos.north(), Direction.SOUTH))
-                .setValue(EAST,  canConnect(level, pos.east(),  Direction.WEST))
-                .setValue(SOUTH, canConnect(level, pos.south(), Direction.NORTH))
-                .setValue(WEST,  canConnect(level, pos.west(),  Direction.EAST))
-                .setValue(UP,    canConnect(level, pos.above(), Direction.DOWN))
-                .setValue(DOWN,  canConnect(level, pos.below(), Direction.UP));
+                .setValue(NORTH, canConnect(level, pos, Direction.NORTH))
+                .setValue(EAST,  canConnect(level, pos, Direction.EAST))
+                .setValue(SOUTH, canConnect(level, pos, Direction.SOUTH))
+                .setValue(WEST,  canConnect(level, pos, Direction.WEST))
+                .setValue(UP,    canConnect(level, pos, Direction.UP))
+                .setValue(DOWN,  canConnect(level, pos, Direction.DOWN));
     }
 
     private static void refreshPipe(Level level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         if (!(state.getBlock() instanceof PipeBlock pipe)) return;
 
+        pipe.makeConnections(level, pos, state);
         BlockState newState = pipe.updateConnections(level, pos, state);
         if (newState != state) {
             level.setBlock(pos, newState, 3); // triggers render
