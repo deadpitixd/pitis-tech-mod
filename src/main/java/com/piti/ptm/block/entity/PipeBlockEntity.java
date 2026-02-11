@@ -104,7 +104,7 @@ public class PipeBlockEntity extends BlockEntity {
         BlockState state = getBlockState();
         if (state.getBlock() instanceof PipeBlock pipe) {
             BlockState newState = pipe.updateConnections(level, worldPosition, state);
-            if (newState != state) {
+            if (!newState.equals(state)) {
                 level.setBlock(worldPosition, newState, 2);
             }
         }
@@ -150,6 +150,7 @@ public class PipeBlockEntity extends BlockEntity {
             mode = PipeMode.NEUTRAL;
         }
     }
+
 
 
     @Override

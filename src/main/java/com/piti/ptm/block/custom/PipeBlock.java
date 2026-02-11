@@ -41,6 +41,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PipeBlock extends Block implements EntityBlock {
+
+    // TODO: Make fluids not break pipes. - piti
+
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
@@ -129,6 +132,17 @@ public class PipeBlock extends Block implements EntityBlock {
         }
     }
 
+    // Stupid minecraft is trying to replace the pipes with fluids, like water - piti
+    @Override
+    public boolean isCollisionShapeFullBlock(BlockState state, BlockGetter level, BlockPos pos) {
+        return true;
+    }
+
+    @Override
+    public boolean canBeReplaced(BlockState state, Fluid fluid) {
+        return false;
+    }
+
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED)
@@ -142,7 +156,6 @@ public class PipeBlock extends Block implements EntityBlock {
         Level level = context.getLevel();
 
         boolean water = level.getFluidState(pos).getType() == Fluids.WATER;
-
         return makeConnections(level, pos, this.defaultBlockState())
                 .setValue(WATERLOGGED, water);
     }
@@ -162,7 +175,7 @@ public class PipeBlock extends Block implements EntityBlock {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
-        return makeConnections(level, pos, defaultBlockState());
+        return makeConnections(level, pos, state);
     }
 
     public BlockState makeConnections(LevelAccessor level, BlockPos pos, BlockState state) {
@@ -230,9 +243,9 @@ public class PipeBlock extends Block implements EntityBlock {
                 .setValue(WEST,  canConnect(level, pos, Direction.WEST))
                 .setValue(UP,    canConnect(level, pos, Direction.UP))
                 .setValue(DOWN,  canConnect(level, pos, Direction.DOWN));
-        if (state.hasProperty(BlockStateProperties.WATERLOGGED)) {
-            newState = newState.setValue(BlockStateProperties.WATERLOGGED,
-                    state.getValue(BlockStateProperties.WATERLOGGED));
+
+        if (state.hasProperty(WATERLOGGED)) {
+            newState = newState.setValue(WATERLOGGED, state.getValue(WATERLOGGED));
         }
 
         return newState;
