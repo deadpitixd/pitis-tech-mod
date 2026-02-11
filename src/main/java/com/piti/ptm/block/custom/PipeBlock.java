@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -40,6 +41,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PipeBlock extends Block implements EntityBlock {
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
@@ -51,7 +53,8 @@ public class PipeBlock extends Block implements EntityBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false)
-                .setValue(WEST, false).setValue(UP, false).setValue(DOWN, false));
+                .setValue(WEST, false).setValue(UP, false).setValue(DOWN, false)
+                .setValue(WATERLOGGED, false));
     }
 
     @Nullable
@@ -126,15 +129,40 @@ public class PipeBlock extends Block implements EntityBlock {
         }
     }
 
-
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return makeConnections(context.getLevel(), context.getClickedPos(), this.defaultBlockState());
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        return makeConnections(level, pos, state);
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockPos pos = context.getClickedPos();
+        Level level = context.getLevel();
+
+        boolean water = level.getFluidState(pos).getType() == Fluids.WATER;
+
+        return makeConnections(level, pos, this.defaultBlockState())
+                .setValue(WATERLOGGED, water);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
+                                  LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+
+        if (level instanceof Level lvl && !lvl.isClientSide) {
+            System.out.println("[PIPE DEBUG] updateShape at " + pos
+                    + " dir=" + direction
+                    + " neighbor=" + neighborPos
+                    + " state=" + state);
+        }
+
+        if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+
+        return makeConnections(level, pos, defaultBlockState());
     }
 
     public BlockState makeConnections(LevelAccessor level, BlockPos pos, BlockState state) {
@@ -171,7 +199,7 @@ public class PipeBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);
     }
 
     private static final VoxelShape CORE_SHAPE = Block.box(5.5, 5.5, 5.5, 10.5, 10.5, 10.5);
@@ -195,13 +223,19 @@ public class PipeBlock extends Block implements EntityBlock {
     }
 
     public BlockState updateConnections(LevelAccessor level, BlockPos pos, BlockState state) {
-        return state
+        BlockState newState = state
                 .setValue(NORTH, canConnect(level, pos, Direction.NORTH))
                 .setValue(EAST,  canConnect(level, pos, Direction.EAST))
                 .setValue(SOUTH, canConnect(level, pos, Direction.SOUTH))
                 .setValue(WEST,  canConnect(level, pos, Direction.WEST))
                 .setValue(UP,    canConnect(level, pos, Direction.UP))
                 .setValue(DOWN,  canConnect(level, pos, Direction.DOWN));
+        if (state.hasProperty(BlockStateProperties.WATERLOGGED)) {
+            newState = newState.setValue(BlockStateProperties.WATERLOGGED,
+                    state.getValue(BlockStateProperties.WATERLOGGED));
+        }
+
+        return newState;
     }
 
     private static void refreshPipe(Level level, BlockPos pos) {
@@ -210,19 +244,22 @@ public class PipeBlock extends Block implements EntityBlock {
 
         pipe.makeConnections(level, pos, state);
         BlockState newState = pipe.updateConnections(level, pos, state);
-        if (newState != state) {
+        if (!newState.equals(state)) {
             level.setBlock(pos, newState, 3); // triggers render
         }
     }
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
 
         if (!level.isClientSide) {
-            for (Direction d : Direction.values()) {
-                refreshPipe(level, pos.relative(d));
-            }
+            System.out.println("[PIPE DEBUG] REMOVED at " + pos
+                    + " old=" + state.getBlock().getName().getString()
+                    + " new=" + newState.getBlock().getName().getString()
+                    + " oldState=" + state
+                    + " newState=" + newState);
         }
+
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     private boolean supportsFluid(BlockEntity be, String fluidId) {

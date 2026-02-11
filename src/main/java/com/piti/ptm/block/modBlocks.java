@@ -52,7 +52,7 @@ public class modBlocks {
             () -> new BarrelBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL)
                     .strength(5.0f,5).noOcclusion()));
     public static final RegistryObject<Block> UNIVERSAL_PIPE = registerBlock("universal_pipe",
-            () -> new PipeBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL)
+            () -> new PipeBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .strength(5.0f,5).noOcclusion()));
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
