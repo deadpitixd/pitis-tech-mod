@@ -61,9 +61,9 @@
 		},
 		{
 			"name": "FluidPort",
-			"from": [5.5, 14, 5.5],
-			"to": [10.5, 17, 10.5],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 15, 8]},
+			"from": [5.5, 13, 5.5],
+			"to": [10.5, 16, 10.5],
+			"rotation": {"angle": 0, "axis": "z", "origin": [8, 14, 8]},
 			"faces": {
 				"north": {"uv": [6, 0, 10, 5], "rotation": 270, "texture": "#particle"},
 				"east": {"uv": [6, 0, 10, 5], "rotation": 270, "texture": "#particle"},
