@@ -1,8 +1,9 @@
 {
   "loader": "forge:obj",
-  "model": "ptm:block/gas_centrifuge.obj",
+  "model": "ptm:models/block/gas_centrifuge.obj",
+  "flip-v": true,
   "textures": {
-    "texture0": "<modid>:block/gas_centrifuge",
-    "particle": "<modid>:block/steam_turbine_steel"
+    "Material.001": "ptm:block/gas_centrifuge",
+    "particle": "ptm:block/steam_turbine_steel"
   }
 }

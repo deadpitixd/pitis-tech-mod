@@ -53,6 +53,7 @@ public class ModCreativeModTabs
                         pOutput.accept(ModItems.URANIUM_INGOT.get());
                         pOutput.accept(modBlocks.LAVA_HEATER.get());
                         pOutput.accept(modBlocks.BARREL_STEEL.get());
+                        pOutput.accept(modBlocks.GAS_CENTRIFUGE.get());
                     })
                     .build());
 

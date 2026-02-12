@@ -1,10 +1,7 @@
 package com.piti.ptm.block;
 
 import com.piti.ptm.PitisTech;
-import com.piti.ptm.block.custom.BarrelBlock;
-import com.piti.ptm.block.custom.LavaHeaterBlock;
-import com.piti.ptm.block.custom.PipeBlock;
-import com.piti.ptm.block.custom.RotatableBlock;
+import com.piti.ptm.block.custom.*;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.item.custom.RadShieldItem;
 import com.piti.ptm.item.custom.RadioactiveBlockItem;
@@ -44,16 +41,20 @@ public class modBlocks {
                     .strength(3.0f)),5);
     public static final RegistryObject<Block> STEAM_TURBINE = registerBlock("steam_turbine",
             () -> new RotatableBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
-                    .strength(5.0f,5)));
+                    .strength(5.0f,5).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> LAVA_HEATER = registerBlock("lava_heater",
             () -> new LavaHeaterBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
-                    .strength(5.0f,5).noOcclusion()));
+                    .strength(5.0f,5).noOcclusion().requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> BARREL_STEEL = registerBlock("barrel_steel",
             () -> new BarrelBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL)
-                    .strength(5.0f,5).noOcclusion()));
+                    .strength(5.0f,5).noOcclusion().requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> UNIVERSAL_PIPE = registerBlock("universal_pipe",
             () -> new PipeBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
-                    .strength(5.0f,5).noOcclusion()));
+                    .strength(5.0f,5).noOcclusion().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> GAS_CENTRIFUGE = registerBlock("gas_centrifuge",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .strength(5.0f, 5)
+                    .requiresCorrectToolForDrops()));
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
         return ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(), new Item.Properties()));

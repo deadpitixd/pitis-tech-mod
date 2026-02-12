@@ -15,6 +15,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.client.model.obj.ObjLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -66,6 +67,7 @@ public class ModClientEvents {
     }
     @SubscribeEvent
     public static void onModelRegister(ModelEvent.RegisterAdditional event) {
-        event.register(new ResourceLocation(PitisTech.MOD_ID, "block/pipe_toggle"));
+        event.register(ResourceLocation.fromNamespaceAndPath(PitisTech.MOD_ID, "block/pipe_toggle"));
+        event.register(ResourceLocation.fromNamespaceAndPath(PitisTech.MOD_ID, "block/gas_centrifuge"));
     }
 }
