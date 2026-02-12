@@ -20,6 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class PipeBlockEntity extends BlockEntity {
 
+    public boolean toggleActive = false;
     private String filterFluidID = "";
     // Color, only accessed by the client. Very good for optimization.
     public int color = 0;
@@ -33,6 +34,14 @@ public class PipeBlockEntity extends BlockEntity {
 
     public String getFilterFluidID() {
         return filterFluidID;
+    }
+
+    public boolean showToggle() {
+        return mode != PipeMode.NEUTRAL;
+    }
+
+    public float getToggleRotation() {
+        return mode == PipeMode.IMPORT ? 180f : 0f;
     }
 
     public PipeMode getMode() { return mode; }
