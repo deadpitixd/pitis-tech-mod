@@ -6,11 +6,13 @@ import com.piti.ptm.block.entity.PipeBlockEntity;
 import com.piti.ptm.block.modBlocks;
 import com.piti.ptm.fluid.BaseFluidType;
 import com.piti.ptm.item.ModItems;
+import com.piti.ptm.renderer.PipeBlockRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -57,5 +59,13 @@ public class ModClientEvents {
             }
             return 0x80333333;
         }, modBlocks.UNIVERSAL_PIPE.get());
+    }
+    @SubscribeEvent
+    public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModBlockEntities.PIPE.get(), PipeBlockRenderer::new);
+    }
+    @SubscribeEvent
+    public static void onModelRegister(ModelEvent.RegisterAdditional event) {
+        event.register(new ResourceLocation(PitisTech.MOD_ID, "block/pipe_toggle"));
     }
 }
