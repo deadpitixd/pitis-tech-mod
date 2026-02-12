@@ -164,7 +164,7 @@ public class LavaHeaterBlockEntity extends BlockEntity implements MenuProvider, 
             if (localSide == Direction.WEST || localSide == Direction.EAST) {
                 return inputCapability.cast();
             }
-            if (side == Direction.DOWN) {
+            if (side == Direction.UP) {
                 return LazyOptional.of(() -> steamTank).cast();
             }
         }
