@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "minecraft:coal" },
+    { "item": "minecraft:iron_ingot" }
+  ],
+  "result": {
+    "item": "ptm:steel_ingot",
+    "count": 1
+  }
+}

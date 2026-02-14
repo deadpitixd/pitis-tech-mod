@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "ptm:industrial_steel" },
+    { "item": "minecraft:glass_pane"}
+  ],
+  "result": {
+    "item": "ptm:industrial_furnace_accessport",
+    "count": 1
+  }
+}

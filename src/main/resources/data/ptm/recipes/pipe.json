@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "III",
+    "SSS"
+  ],
+  "key": {
+    "I": {
+      "item": "ptm:insulator"
+    },
+    "S": {
+      "item": "ptm:steel_ingot"
+    }
+  },
+  "result": {
+    "item": "ptm:universal_pipe",
+    "count": 16
+  }
+}

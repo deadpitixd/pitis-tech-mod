@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I ",
+    "ISI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "ptm:steel_ingot"
+    },
+    "S": {
+      "item": "ptm:industrial_steel"
+    }
+  },
+  "result": {
+    "item": "ptm:industrial_furnace_core",
+    "count": 1
+  }
+}

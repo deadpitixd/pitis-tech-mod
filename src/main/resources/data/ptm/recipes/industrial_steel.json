@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "ptm:steel_ingot" },
+    { "item": "ptm:steel_ingot" },
+    { "item": "ptm:steel_ingot" },
+    { "item": "ptm:steel_ingot" },
+    { "item": "ptm:steel_ingot" },
+    { "item": "ptm:steel_ingot" },
+    { "item": "ptm:steel_ingot" },
+    { "item": "ptm:steel_ingot" },
+    { "item": "ptm:steel_ingot" }
+  ],
+  "result": {
+    "item": "ptm:industrial_steel",
+    "count": 1
+  }
+}
