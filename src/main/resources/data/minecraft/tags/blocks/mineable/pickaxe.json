@@ -10,6 +10,7 @@
     "ptm:industrial_steel",
     "ptm:industrial_furnace_accessport",
     "ptm:industrial_furnace_cableport",
-    "ptm:industrial_furnace_core"
+    "ptm:industrial_furnace_core",
+    "ptm:universal_pipe"
   ]
 }
