@@ -1,7 +1,7 @@
 package com.piti.ptm.screen;
 
 import com.piti.ptm.block.entity.LavaHeaterBlockEntity;
-import com.piti.ptm.block.modBlocks;
+import com.piti.ptm.block.ModBlocks;
 import com.piti.ptm.fluid.IFluidHandlingBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -97,7 +97,7 @@ public class LavaHeaterMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, modBlocks.LAVA_HEATER.get());
+                pPlayer, ModBlocks.LAVA_HEATER.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

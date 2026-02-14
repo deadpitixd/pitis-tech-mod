@@ -3,10 +3,13 @@ package com.piti.ptm.event;
 import com.piti.ptm.PitisTech;
 import com.piti.ptm.block.entity.ModBlockEntities;
 import com.piti.ptm.block.entity.PipeBlockEntity;
-import com.piti.ptm.block.modBlocks;
+import com.piti.ptm.block.ModBlocks;
 import com.piti.ptm.fluid.BaseFluidType;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.renderer.PipeBlockRenderer;
+import com.piti.ptm.screen.IndustrialFurnaceScreen;
+import com.piti.ptm.screen.ModMenuTypes;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -15,9 +18,9 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.client.model.obj.ObjLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 
@@ -59,7 +62,7 @@ public class ModClientEvents {
                 return be.color;
             }
             return 0x80333333;
-        }, modBlocks.UNIVERSAL_PIPE.get());
+        }, ModBlocks.UNIVERSAL_PIPE.get());
     }
     @SubscribeEvent
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -69,5 +72,11 @@ public class ModClientEvents {
     public static void onModelRegister(ModelEvent.RegisterAdditional event) {
         event.register(ResourceLocation.fromNamespaceAndPath(PitisTech.MOD_ID, "block/pipe_toggle"));
         event.register(ResourceLocation.fromNamespaceAndPath(PitisTech.MOD_ID, "block/gas_centrifuge"));
+    }
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            MenuScreens.register(ModMenuTypes.INDUSTRIAL_FURNACE_MENU.get(), IndustrialFurnaceScreen::new);
+        });
     }
 }

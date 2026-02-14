@@ -1,7 +1,7 @@
 package com.piti.ptm.item;
 
 import com.piti.ptm.PitisTech;
-import com.piti.ptm.block.modBlocks;
+import com.piti.ptm.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -36,13 +36,13 @@ public class ModCreativeModTabs
 
 
     public static final RegistryObject<CreativeModeTab> PTMBLOCKS_TAB = CREATIVE_MODE_TABS.register("ptmblocks_tab",
-            ()-> CreativeModeTab.builder().icon(() -> new ItemStack(modBlocks.BRICK_CONCRETE.get()))
+            ()-> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.BRICK_CONCRETE.get()))
                     .title(Component.translatable("creativetab.ptmblocks_tab"))
                     .displayItems((pParameters, pOutput) ->{
-                        pOutput.accept(modBlocks.BRICK_CONCRETE.get());
-                        pOutput.accept(modBlocks.CONCRETE.get());
-                        pOutput.accept(modBlocks.REINFORCED_LIGHT.get());
-                        pOutput.accept(modBlocks.INDUSTRIAL_STEEL.get());
+                        pOutput.accept(ModBlocks.BRICK_CONCRETE.get());
+                        pOutput.accept(ModBlocks.CONCRETE.get());
+                        pOutput.accept(ModBlocks.REINFORCED_LIGHT.get());
+                        pOutput.accept(ModBlocks.INDUSTRIAL_STEEL.get());
                     })
                     .build());
 
@@ -50,20 +50,20 @@ public class ModCreativeModTabs
             ()-> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.URANIUM_INGOT.get()))
                     .title(Component.translatable("creativetab.ptm.fuelmachines_tab"))
                     .displayItems((pParameters, pOutput) ->{
-                        pOutput.accept(modBlocks.UNIVERSAL_PIPE.get());
-                        pOutput.accept(modBlocks.STEAM_TURBINE.get());
-                        pOutput.accept(modBlocks.URANIUM_ORE.get());
+                        pOutput.accept(ModBlocks.UNIVERSAL_PIPE.get());
+                        pOutput.accept(ModBlocks.STEAM_TURBINE.get());
+                        pOutput.accept(ModBlocks.URANIUM_ORE.get());
                         pOutput.accept(ModItems.URANIUM_INGOT.get());
-                        pOutput.accept(modBlocks.LAVA_HEATER.get());
-                        pOutput.accept(modBlocks.BARREL_STEEL.get());
+                        pOutput.accept(ModBlocks.LAVA_HEATER.get());
+                        pOutput.accept(ModBlocks.BARREL_STEEL.get());
                         // ONLY ENABLE THIS WHEN THE GAS CENTRIFUGE WILL BE FIXED - piti
                         //pOutput.accept(modBlocks.GAS_CENTRIFUGE.get());
-                        pOutput.accept(modBlocks.INDUSTRIAL_STEEL.get());
-                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_ACCESSPORT.get());
-                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_CABLEPORT.get());
-                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_FLUIDPORT.get());
-                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_STORAGE.get());
-                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_CORE.get());
+                        pOutput.accept(ModBlocks.INDUSTRIAL_STEEL.get());
+                        pOutput.accept(ModBlocks.INDUSTRIAL_FURNACE_ACCESSPORT.get());
+                        pOutput.accept(ModBlocks.INDUSTRIAL_FURNACE_CABLEPORT.get());
+                        pOutput.accept(ModBlocks.INDUSTRIAL_FURNACE_FLUIDPORT.get());
+                        pOutput.accept(ModBlocks.INDUSTRIAL_FURNACE_STORAGE.get());
+                        pOutput.accept(ModBlocks.INDUSTRIAL_FURNACE_CORE.get());
                     })
                     .build());
 

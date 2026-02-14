@@ -2,6 +2,7 @@ package com.piti.ptm.block;
 
 import com.piti.ptm.PitisTech;
 import com.piti.ptm.block.custom.*;
+import com.piti.ptm.block.custom.machines.*;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.item.custom.RadShieldItem;
 import com.piti.ptm.item.custom.RadioactiveBlockItem;
@@ -18,7 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
-public class modBlocks {
+public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS=
             DeferredRegister.create(ForgeRegistries.BLOCKS, PitisTech.MOD_ID);
 
@@ -60,23 +61,23 @@ public class modBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 180)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_ACCESSPORT = registerBlock("industrial_furnace_accessport",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+            () -> new IndustrialFurnaceAccessPortBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 180)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_CABLEPORT = registerBlock("industrial_furnace_cableport",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+            () -> new IndustrialCablePortBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 180)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_CORE = registerBlock("industrial_furnace_core",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+            () -> new IndustrialFurnaceCoreBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 180)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_FLUIDPORT = registerBlock("industrial_furnace_fluidport",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+            () -> new IndustrialFluidPortBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 180)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_STORAGE = registerBlock("industrial_furnace_storage",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+            () -> new IndustrialHatchBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 180)));
 

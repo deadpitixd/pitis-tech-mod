@@ -1,7 +1,7 @@
 package com.piti.ptm.screen;
 
 import com.piti.ptm.block.entity.BarrelBlockEntity;
-import com.piti.ptm.block.modBlocks;
+import com.piti.ptm.block.ModBlocks;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -63,7 +63,7 @@ public class BarrelMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, modBlocks.BARREL_STEEL.get());
+                player, ModBlocks.BARREL_STEEL.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

@@ -5,7 +5,7 @@ import com.piti.ptm.block.entity.ModBlockEntities;
 import com.piti.ptm.fluid.ModFluids;
 import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
-import com.piti.ptm.block.modBlocks;
+import com.piti.ptm.block.ModBlocks;
 import com.piti.ptm.screen.BarrelScreen;
 import com.piti.ptm.screen.LavaHeaterScreen;
 import com.piti.ptm.screen.ModMenuTypes;
@@ -18,7 +18,6 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -41,7 +40,7 @@ public class PitisTech
         ModCreativeModTabs.register(modEventBus);
 
         ModItems.register(modEventBus);
-        modBlocks.register(modEventBus);
+        ModBlocks.register(modEventBus);
         ModFluids.register(modEventBus);
 
         ModBlockEntities.register(modEventBus);

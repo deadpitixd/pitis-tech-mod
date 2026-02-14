@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "ptm:industrial_furnace_storage",
+    "ptm:industrial_furnace_fluidport"
+  ]
+}

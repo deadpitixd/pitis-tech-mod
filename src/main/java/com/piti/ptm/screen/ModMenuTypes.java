@@ -18,6 +18,8 @@ public class ModMenuTypes {
             registerMenuType("lava_heater_menu", LavaHeaterMenu::new);
     public static final RegistryObject<MenuType<BarrelMenu>> BARREL_MENU =
             registerMenuType("barrel_menu", BarrelMenu::new);
+    public static final RegistryObject<MenuType<IndustrialFurnaceMenu>> INDUSTRIAL_FURNACE_MENU =
+            registerMenuType("industrial_furnace_menu", IndustrialFurnaceMenu::new);
 
 
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
