@@ -33,6 +33,14 @@ public class ModFluids {
                     ResourceLocation.parse("block/water_still"),
                     ResourceLocation.parse("block/water_flow"),
                     0xB7DBE8));
+    public static final RegistryObject<FluidType> ELECTRICFLUID_TYPE = FLUID_TYPES.register("electricfluid",
+            () -> new BaseFluidType(FluidType.Properties.create()
+                    .descriptionId("fluid.ptm.lpsteam")
+                    .density(10)
+                    .viscosity(1000),
+                    ResourceLocation.parse("block/water_still"),
+                    ResourceLocation.parse("block/water_flow"),
+                    0xFF8CEF));
 
 
     public static final RegistryObject<ForgeFlowingFluid.Source> STEAM_SOURCE = FLUIDS.register("steam",
@@ -42,9 +50,12 @@ public class ModFluids {
             () -> new ForgeFlowingFluid.Flowing(makeSteamProperties()));
     public static final RegistryObject<ForgeFlowingFluid.Source> LPSTEAM_SOURCE = FLUIDS.register("lpsteam",
             () -> new ForgeFlowingFluid.Source(makeLPSteamProperties()));
-
     public static final RegistryObject<ForgeFlowingFluid.Flowing> LPSTEAM_FLOWING = FLUIDS.register("lpsteam_flowing",
             () -> new ForgeFlowingFluid.Flowing(makeLPSteamProperties()));
+    public static final RegistryObject<ForgeFlowingFluid.Source> ELECTRICFLUID_SOURCE = FLUIDS.register("electricfluid",
+            () -> new ForgeFlowingFluid.Source(makeElectricFluidProperties()));
+    public static final RegistryObject<ForgeFlowingFluid.Flowing> ELECTRICFLUID_FLOWING = FLUIDS.register("electricfluid_flowing",
+            () -> new ForgeFlowingFluid.Flowing(makeElectricFluidProperties()));
 
 
     private static ForgeFlowingFluid.Properties makeSteamProperties() {
@@ -52,6 +63,9 @@ public class ModFluids {
     }
     private static ForgeFlowingFluid.Properties makeLPSteamProperties() {
         return new ForgeFlowingFluid.Properties(LPSTEAM_TYPE, LPSTEAM_SOURCE, LPSTEAM_FLOWING);
+    }
+    private static ForgeFlowingFluid.Properties makeElectricFluidProperties() {
+        return new ForgeFlowingFluid.Properties(ELECTRICFLUID_TYPE, ELECTRICFLUID_SOURCE, ELECTRICFLUID_FLOWING);
     }
 
     public static void register(IEventBus eventBus) {
