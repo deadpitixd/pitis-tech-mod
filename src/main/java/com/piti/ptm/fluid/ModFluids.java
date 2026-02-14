@@ -1,6 +1,7 @@
 package com.piti.ptm.fluid;
 
 import com.piti.ptm.PitisTech;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
@@ -21,18 +22,36 @@ public class ModFluids {
                     .descriptionId("fluid.ptm.steam")
                     .density(-1000)
                     .viscosity(200),
-                    new net.minecraft.resources.ResourceLocation("block/water_still"),
-                    new net.minecraft.resources.ResourceLocation("block/water_flow"),
+                    ResourceLocation.parse("block/water_still"),
+                    ResourceLocation.parse("block/water_flow"),
                     0xA0E0E0E0));
+    public static final RegistryObject<FluidType> LPSTEAM_TYPE = FLUID_TYPES.register("lpsteam",
+            () -> new BaseFluidType(FluidType.Properties.create()
+                    .descriptionId("fluid.ptm.lpsteam")
+                    .density(-1000)
+                    .viscosity(200),
+                    ResourceLocation.parse("block/water_still"),
+                    ResourceLocation.parse("block/water_flow"),
+                    0xB7DBE8));
+
 
     public static final RegistryObject<ForgeFlowingFluid.Source> STEAM_SOURCE = FLUIDS.register("steam",
             () -> new ForgeFlowingFluid.Source(makeSteamProperties()));
 
     public static final RegistryObject<ForgeFlowingFluid.Flowing> STEAM_FLOWING = FLUIDS.register("steam_flowing",
             () -> new ForgeFlowingFluid.Flowing(makeSteamProperties()));
+    public static final RegistryObject<ForgeFlowingFluid.Source> LPSTEAM_SOURCE = FLUIDS.register("lpsteam",
+            () -> new ForgeFlowingFluid.Source(makeLPSteamProperties()));
+
+    public static final RegistryObject<ForgeFlowingFluid.Flowing> LPSTEAM_FLOWING = FLUIDS.register("lpsteam_flowing",
+            () -> new ForgeFlowingFluid.Flowing(makeLPSteamProperties()));
+
 
     private static ForgeFlowingFluid.Properties makeSteamProperties() {
         return new ForgeFlowingFluid.Properties(STEAM_TYPE, STEAM_SOURCE, STEAM_FLOWING);
+    }
+    private static ForgeFlowingFluid.Properties makeLPSteamProperties() {
+        return new ForgeFlowingFluid.Properties(LPSTEAM_TYPE, LPSTEAM_SOURCE, LPSTEAM_FLOWING);
     }
 
     public static void register(IEventBus eventBus) {
