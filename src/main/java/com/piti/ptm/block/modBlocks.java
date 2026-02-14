@@ -40,7 +40,7 @@ public class modBlocks {
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_ORE)
                     .strength(3.0f)),5);
     public static final RegistryObject<Block> STEAM_TURBINE = registerBlock("steam_turbine",
-            () -> new RotatableBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
+            () -> new SteamTurbineBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
                     .strength(5.0f,5).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> LAVA_HEATER = registerBlock("lava_heater",
             () -> new LavaHeaterBlock(BlockBehaviour.Properties.copy(Blocks.STONE)
