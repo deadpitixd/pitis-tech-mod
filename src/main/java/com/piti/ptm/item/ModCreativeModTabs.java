@@ -29,6 +29,7 @@ public class ModCreativeModTabs
                         pOutput.accept(ModItems.GEIGERCOUNTER.get());
                         pOutput.accept(ModItems.INFINITE_WATER.get());
                         pOutput.accept(ModItems.SCREWDRIVER.get());
+                        pOutput.accept(ModItems.STEEL_INGOT.get());
                     })
                     .build());
 
@@ -40,6 +41,7 @@ public class ModCreativeModTabs
                         pOutput.accept(modBlocks.BRICK_CONCRETE.get());
                         pOutput.accept(modBlocks.CONCRETE.get());
                         pOutput.accept(modBlocks.REINFORCED_LIGHT.get());
+                        pOutput.accept(modBlocks.INDUSTRIAL_STEEL.get());
                     })
                     .build());
 
@@ -55,6 +57,10 @@ public class ModCreativeModTabs
                         pOutput.accept(modBlocks.BARREL_STEEL.get());
                         // ONLY ENABLE THIS WHEN THE GAS CENTRIFUGE WILL BE FIXED - piti
                         //pOutput.accept(modBlocks.GAS_CENTRIFUGE.get());
+                        pOutput.accept(modBlocks.INDUSTRIAL_STEEL.get());
+                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_ACCESSPORT.get());
+                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_CABLEPORT.get());
+                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_CORE.get());
                     })
                     .build());
 

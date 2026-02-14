@@ -21,5 +21,10 @@
   "creativetab.ptm.templates": "Piti's Tech Mod - Machine Templates",
   "item.ptm.screwdriver": "Screwdriver",
   "block.ptm.gas_centrifuge": "Gas Centrifuge",
-  "fluid.ptm.lpsteam": "Low-Pressure Steam"
+  "fluid.ptm.lpsteam": "Low-Pressure Steam",
+  "block.ptm.industrial_steel": "Industrial Steel",
+  "block.ptm.industrial_furnace_accessport": "Industrial Furnace Access Port",
+  "block.ptm.industrial_furnace_cableport": "Industrial Furnace Cable Port",
+  "block.ptm.industrial_furnace_core": "Industrial Furnace Core",
+  "item.ptm.steel_ingot": "Steel Ingot"
 }

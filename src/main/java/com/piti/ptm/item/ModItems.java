@@ -26,6 +26,8 @@ public class ModItems {
             () -> new FluidTemplateItem(new Item.Properties()));
     public static final RegistryObject<Item> SCREWDRIVER = ITEMS.register("screwdriver",
             () -> new ScrewdriverItem(new Item.Properties()));
+    public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot",
+            () -> new Item(new Item.Properties()));
 
 
     public static void register(IEventBus eventBus) {

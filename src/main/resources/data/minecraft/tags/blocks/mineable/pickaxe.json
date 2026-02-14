@@ -6,6 +6,10 @@
     "ptm:uranium_ore",
     "ptm:lava_heater",
     "ptm:steam_turbine",
-    "ptm:barrel_steel"
+    "ptm:barrel_steel",
+    "ptm:industrial_steel",
+    "ptm:industrial_furnace_accessport",
+    "ptm:industrial_furnace_cableport",
+    "ptm:industrial_furnace_core"
   ]
 }
