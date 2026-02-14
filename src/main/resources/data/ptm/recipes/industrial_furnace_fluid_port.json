@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "ptm:industrial_steel" },
+    { "item": "ptm:universal_pipe"}
+  ],
+  "result": {
+    "item": "ptm:industrial_furnace_fluidport",
+    "count": 1
+  }
+}

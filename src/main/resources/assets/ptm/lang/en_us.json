@@ -26,6 +26,8 @@
   "block.ptm.industrial_furnace_accessport": "Industrial Furnace Access Port",
   "block.ptm.industrial_furnace_cableport": "Industrial Furnace Cable Port",
   "block.ptm.industrial_furnace_core": "Industrial Furnace Core",
+  "block.ptm.industrial_furnace_fluidport": "Industrial Furnace Fluid Port",
+  "block.ptm.industrial_furnace_storage": "Industrial Furnace Storage",
   "item.ptm.steel_ingot": "Steel Ingot",
   "item.ptm.insulator": "Insulator",
   "fluid.ptm.electricfluid": "Electric Fluid"

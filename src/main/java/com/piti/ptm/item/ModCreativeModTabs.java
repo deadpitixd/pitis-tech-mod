@@ -61,6 +61,8 @@ public class ModCreativeModTabs
                         pOutput.accept(modBlocks.INDUSTRIAL_STEEL.get());
                         pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_ACCESSPORT.get());
                         pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_CABLEPORT.get());
+                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_FLUIDPORT.get());
+                        pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_STORAGE.get());
                         pOutput.accept(modBlocks.INDUSTRIAL_FURNACE_CORE.get());
                     })
                     .build());

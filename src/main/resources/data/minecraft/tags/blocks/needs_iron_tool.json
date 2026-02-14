@@ -11,6 +11,8 @@
     "ptm:industrial_furnace_accessport",
     "ptm:industrial_furnace_cableport",
     "ptm:industrial_furnace_core",
+    "ptm:industrial_furnace_fluidport",
+    "ptm:industrial_furnace_storage",
     "ptm:universal_pipe"
   ]
 }

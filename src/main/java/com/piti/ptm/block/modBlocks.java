@@ -71,6 +71,15 @@ public class modBlocks {
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 180)));
+    public static final RegistryObject<Block> INDUSTRIAL_FURNACE_FLUIDPORT = registerBlock("industrial_furnace_fluidport",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .requiresCorrectToolForDrops()
+                    .strength(4.5f, 180)));
+    public static final RegistryObject<Block> INDUSTRIAL_FURNACE_STORAGE = registerBlock("industrial_furnace_storage",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .requiresCorrectToolForDrops()
+                    .strength(4.5f, 180)));
+
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
         return ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(), new Item.Properties()));
