@@ -30,6 +30,7 @@ public class ModCreativeModTabs
                         pOutput.accept(ModItems.INFINITE_WATER.get());
                         pOutput.accept(ModItems.SCREWDRIVER.get());
                         pOutput.accept(ModItems.STEEL_INGOT.get());
+                        pOutput.accept(ModItems.INSULATOR.get());
                     })
                     .build());
 
