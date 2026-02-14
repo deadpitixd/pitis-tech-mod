@@ -55,9 +55,14 @@ public class PipeBlockEntity extends BlockEntity {
         if (id.equals(this.filterFluidID)) return;
         this.filterFluidID = id;
         this.color = computeTintFromFluidId(id);
-        setChanged();
-        if (level != null && !level.isClientSide) {
-            refreshSelfAndNeighbors();
+        this.setChanged();
+
+        if (level != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+
+            if (!level.isClientSide) {
+                refreshSelfAndNeighbors();
+            }
         }
     }
 
