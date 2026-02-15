@@ -35,5 +35,6 @@
   "fluid.ptm.electricfluid": "Electric Fluid",
   "item.ptm.binary_press": "Binary Press",
   "block.ptm.binary_press_bottom": "Binary Press",
-  "item.ptm.punched_card": "Punched Card"
+  "item.ptm.punched_card": "Punched Card",
+  "fluid.ptm.slag": "Slag"
 }

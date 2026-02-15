@@ -2,10 +2,7 @@ package com.piti.ptm.item;
 
 import com.piti.ptm.PitisTech;
 import com.piti.ptm.block.ModBlocks;
-import com.piti.ptm.item.custom.FluidTemplateItem;
-import com.piti.ptm.item.custom.InfiniteWaterItem;
-import com.piti.ptm.item.custom.RadioactiveItem;
-import com.piti.ptm.item.custom.ScrewdriverItem;
+import com.piti.ptm.item.custom.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -39,7 +36,7 @@ public class ModItems {
     public static final RegistryObject<Item> BINARY_PRESS = ITEMS.register("binary_press",
             () -> new BlockItem(ModBlocks.BINARY_PRESS_BOTTOM.get(), new Item.Properties()));
     public static final RegistryObject<Item> PUNCHED_CARD = ITEMS.register("punched_card",
-            () -> new Item(new Item.Properties()));
+            () -> new PunchedCardItem(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

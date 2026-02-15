@@ -2,12 +2,15 @@ package com.piti.ptm.screen;
 
 import com.piti.ptm.block.entity.machines.IndustrialFurnaceCoreBlockEntity;
 import com.piti.ptm.block.ModBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -16,8 +19,13 @@ public class IndustrialFurnaceMenu extends AbstractContainerMenu {
     private final ContainerData data;
     private final net.minecraft.world.level.Level level;
 
+    public IndustrialFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(8));
+    }
+
     public IndustrialFurnaceMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.INDUSTRIAL_FURNACE_MENU.get(), id);
+        checkContainerDataCount(data, 8);
         this.blockEntity = (IndustrialFurnaceCoreBlockEntity) entity;
         this.data = data;
         this.level = inv.player.level();
@@ -50,18 +58,37 @@ public class IndustrialFurnaceMenu extends AbstractContainerMenu {
         addDataSlots(data);
     }
 
-    public IndustrialFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+    public FluidStack getInputFluidStack() {
+        Fluid fluid = BuiltInRegistries.FLUID.byId(data.get(6));
+        return new FluidStack(fluid, data.get(2));
+    }
+
+    public FluidStack getOutputFluidStack() {
+        Fluid fluid = BuiltInRegistries.FLUID.byId(data.get(7));
+        return new FluidStack(fluid, data.get(3));
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player playerIn, int index) {
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack stack = slot.getItem();
+            ItemStack copy = stack.copy();
+            if (index < 14) {
+                if (!this.moveItemStackTo(stack, 14, 50, true)) return ItemStack.EMPTY;
+            } else {
+                if (!this.moveItemStackTo(stack, 0, 14, false)) return ItemStack.EMPTY;
+            }
+            if (stack.isEmpty()) slot.set(ItemStack.EMPTY);
+            else slot.setChanged();
+            return copy;
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(this.level, blockEntity.getBlockPos()),
-                player, ModBlocks.INDUSTRIAL_FURNACE_CORE.get()) && blockEntity.isFormed();
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.INDUSTRIAL_FURNACE_CORE.get());
     }
 
-    @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY;
-    }
 }

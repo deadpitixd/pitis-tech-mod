@@ -1,0 +1,15 @@
+{
+  "type": "ptm:industrial_furnace",
+  "ingredients": [
+    { "item": "minecraft:coal" },
+    { "item": "minecraft:iron_ingot" }
+  ],
+  "fluid_input": {
+    "fluid": "minecraft:lava",
+    "amount": 1000
+  },
+  "time": 100,
+  "result": [
+    { "item": "ptm:steel_ingot", "count": 1 }
+  ]
+}

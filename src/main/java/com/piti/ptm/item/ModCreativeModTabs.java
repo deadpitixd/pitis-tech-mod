@@ -3,6 +3,9 @@ package com.piti.ptm.item;
 import com.piti.ptm.PitisTech;
 import com.piti.ptm.block.ModBlocks;
 import com.piti.ptm.fluid.ModFluids;
+import com.piti.ptm.item.custom.PunchedCardItem;
+import com.piti.ptm.recipe.IndustrialFurnaceRecipe;
+import com.piti.ptm.recipe.ModRecipes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -73,6 +76,7 @@ public class ModCreativeModTabs
                     })
                     .build());
 
+
     public static final RegistryObject<CreativeModeTab> PTM_TAB = CREATIVE_MODE_TABS.register("ptm_machinetemplates",
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("creativetab.ptm.templates"))
@@ -83,13 +87,18 @@ public class ModCreativeModTabs
                         for (Fluid fluid : ForgeRegistries.FLUIDS) {
                             if (fluid.isSource(fluid.defaultFluidState())) {
                                 ItemStack stack = new ItemStack(ModItems.FLUID_TEMPLATE.get());
-                                CompoundTag nbt = stack.getOrCreateTag();
-
-                                String fluidId = ForgeRegistries.FLUIDS.getKey(fluid).toString();
-                                nbt.putString("FluidID", fluidId);
-
+                                stack.getOrCreateTag().putString("FluidID", ForgeRegistries.FLUIDS.getKey(fluid).toString());
                                 output.accept(stack);
                             }
+                        }
+
+                        output.accept(ModItems.PUNCHED_CARD.get());
+
+                        net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+                        if (mc.level != null && mc.level.getRecipeManager() != null) {
+                            mc.level.getRecipeManager()
+                                    .getAllRecipesFor(ModRecipes.INDUSTRIAL_FURNACE_TYPE.get())
+                                    .forEach(recipe -> output.accept(PunchedCardItem.of(recipe.getId())));
                         }
                     }).build());
 

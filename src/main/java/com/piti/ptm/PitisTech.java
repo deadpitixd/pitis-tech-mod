@@ -6,6 +6,9 @@ import com.piti.ptm.fluid.ModFluids;
 import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.block.ModBlocks;
+import com.piti.ptm.item.custom.PunchedCardItem;
+import com.piti.ptm.recipe.IndustrialFurnaceRecipe;
+import com.piti.ptm.recipe.ModRecipes;
 import com.piti.ptm.screen.BarrelScreen;
 import com.piti.ptm.screen.LavaHeaterScreen;
 import com.piti.ptm.screen.ModMenuTypes;
@@ -42,6 +45,7 @@ public class PitisTech
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModFluids.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
@@ -73,6 +77,7 @@ public class PitisTech
     public void onServerStarting(ServerStartingEvent event)
     {
     }
+
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
