@@ -20,5 +20,20 @@
 				"down": {"uv": [11, 0, 16, 5], "texture": "#0"}
 			}
 		}
-	]
+	],
+	"display": {
+		"ground": {
+			"scale": [2, 2, 2]
+		},
+		"gui": {
+			"rotation": [12, -43, 0],
+			"scale": [2, 2, 2]
+		},
+		"fixed": {
+			"scale": [2, 2, 2]
+		},
+		"on_shelf": {
+			"scale": [2, 2, 2]
+		}
+	}
 }
