@@ -1,5 +1,6 @@
 package com.piti.ptm.block.custom.machines;
 
+import com.piti.ptm.block.entity.machines.IndustrialHatchBlockEntity;
 import com.piti.ptm.item.custom.ScrewdriverItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -7,12 +8,15 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 
-public class IndustrialHatchBlock extends IndustrialFurnacePortBlock {
+public class IndustrialHatchBlock extends IndustrialFurnacePortBlock implements EntityBlock {
     public static final BooleanProperty IS_OUTPUT = BooleanProperty.create("is_output");
 
     public IndustrialHatchBlock(Properties properties) {
@@ -20,6 +24,12 @@ public class IndustrialHatchBlock extends IndustrialFurnacePortBlock {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FORMED, false)
                 .setValue(IS_OUTPUT, false));
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new IndustrialHatchBlockEntity(pos, state);
     }
 
     @Override

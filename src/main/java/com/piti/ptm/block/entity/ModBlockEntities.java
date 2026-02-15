@@ -4,6 +4,7 @@ import com.piti.ptm.PitisTech;
 import com.piti.ptm.block.entity.machines.IndustrialFurnaceCoreBlockEntity;
 import com.piti.ptm.block.ModBlocks;
 import com.piti.ptm.block.entity.machines.IndustrialFurnacePortBlockEntity;
+import com.piti.ptm.block.entity.machines.IndustrialHatchBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,6 +37,10 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(IndustrialFurnacePortBlockEntity::new,
                             ModBlocks.INDUSTRIAL_FURNACE_ACCESSPORT.get(),ModBlocks.INDUSTRIAL_FURNACE_CABLEPORT.get(),
                             ModBlocks.INDUSTRIAL_FURNACE_FLUIDPORT.get()).build(null));
+    public static final RegistryObject<BlockEntityType<IndustrialHatchBlockEntity>> INDUSTRIAL_HATCH_BE =
+            BLOCK_ENTITIES.register("indhatch_be", () ->
+                    BlockEntityType.Builder.of(IndustrialHatchBlockEntity::new,
+                            ModBlocks.INDUSTRIAL_FURNACE_STORAGE.get()).build(null));
 
 
 
