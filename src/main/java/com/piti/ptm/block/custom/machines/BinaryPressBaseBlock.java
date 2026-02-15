@@ -1,17 +1,22 @@
 package com.piti.ptm.block.custom.machines;
 
 import com.piti.ptm.block.ModBlocks;
+import com.piti.ptm.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.HitResult;
+
 import javax.annotation.Nullable;
 
 public class BinaryPressBaseBlock extends Block {
@@ -42,6 +47,10 @@ public class BinaryPressBaseBlock extends Block {
             level.setBlock(pos.above(), ModBlocks.BINARY_PRESS_TOP.get().defaultBlockState()
                     .setValue(FACING, state.getValue(FACING)), 3);
         }
+    }
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+        return new ItemStack(ModItems.BINARY_PRESS.get());
     }
 
     @Override
