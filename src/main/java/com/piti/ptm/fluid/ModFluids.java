@@ -49,11 +49,18 @@ public class ModFluids {
                     ResourceLocation.parse("block/water_still"),
                     ResourceLocation.parse("block/water_flow"),
                     0x80333333));
+    public static final RegistryObject<FluidType> SLAG_TYPE = FLUID_TYPES.register("slagfluid",
+            () -> new BaseFluidType(FluidType.Properties.create()
+                    .descriptionId("fluid.ptm.slag")
+                    .density(0)
+                    .viscosity(0),
+                    ResourceLocation.parse("block/water_still"),
+                    ResourceLocation.parse("block/water_flow"),
+                    0x4A4742));
 
 
     public static final RegistryObject<ForgeFlowingFluid.Source> STEAM_SOURCE = FLUIDS.register("steam",
             () -> new ForgeFlowingFluid.Source(makeSteamProperties()));
-
     public static final RegistryObject<ForgeFlowingFluid.Flowing> STEAM_FLOWING = FLUIDS.register("steam_flowing",
             () -> new ForgeFlowingFluid.Flowing(makeSteamProperties()));
     public static final RegistryObject<ForgeFlowingFluid.Source> LPSTEAM_SOURCE = FLUIDS.register("lpsteam",
@@ -64,10 +71,16 @@ public class ModFluids {
             () -> new ForgeFlowingFluid.Source(makeElectricFluidProperties()));
     public static final RegistryObject<ForgeFlowingFluid.Flowing> ELECTRICFLUID_FLOWING = FLUIDS.register("electricfluid_flowing",
             () -> new ForgeFlowingFluid.Flowing(makeElectricFluidProperties()));
-
     public static final RegistryObject<ForgeFlowingFluid.Source> NONE_SOURCE = FLUIDS.register("none",
             () -> new ForgeFlowingFluid.Source(makeNoneProperties()));
+    public static final RegistryObject<ForgeFlowingFluid.Source> SLAG_SOURCE = FLUIDS.register("slag",
+            () -> new ForgeFlowingFluid.Source(makeSlagProperties()));
+    public static final RegistryObject<ForgeFlowingFluid.Flowing> SLAG_FLOWING = FLUIDS.register("slag_flowing",
+            () -> new ForgeFlowingFluid.Flowing(makeSlagProperties()));
 
+    private static ForgeFlowingFluid.Properties makeSlagProperties() {
+        return new ForgeFlowingFluid.Properties(SLAG_TYPE, SLAG_SOURCE, SLAG_FLOWING);
+    }
     private static ForgeFlowingFluid.Properties makeNoneProperties() {
         return new ForgeFlowingFluid.Properties(NONE_TYPE, NONE_SOURCE, NONE_FLOWING);
     }
