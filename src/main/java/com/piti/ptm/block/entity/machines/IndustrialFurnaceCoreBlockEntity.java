@@ -154,6 +154,27 @@ public class IndustrialFurnaceCoreBlockEntity extends BlockEntity implements Men
         }
     }
 
+    @Override
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+        if (pTag.contains("inventory")) {
+            inventory.deserializeNBT(pTag.getCompound("inventory"));
+        }
+        this.isFormed = pTag.getBoolean("formed");
+        inputTank.readFromNBT(pTag.getCompound("inputTank"));
+        outputTank.readFromNBT(pTag.getCompound("outputTank"));
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag pTag) {
+        pTag.put("inventory", inventory.serializeNBT());
+        pTag.putBoolean("formed", this.isFormed);
+        pTag.put("inputTank", inputTank.writeToNBT(new CompoundTag()));
+        pTag.put("outputTank", outputTank.writeToNBT(new CompoundTag()));
+
+        super.saveAdditional(pTag);
+    }
+
     public IItemHandler getItemHandler() { return inventory; }
     public FluidTank getInputTank() { return inputTank; }
     public FluidTank getOutputTank() { return outputTank; }
