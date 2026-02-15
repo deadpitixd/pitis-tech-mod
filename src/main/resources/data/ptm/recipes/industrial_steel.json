@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    { "item": "ptm:steel_ingot" },
-    { "item": "ptm:steel_ingot" },
-    { "item": "ptm:steel_ingot" },
-    { "item": "ptm:steel_ingot" },
-    { "item": "ptm:steel_ingot" },
-    { "item": "ptm:steel_ingot" },
-    { "item": "ptm:steel_ingot" },
-    { "item": "ptm:steel_ingot" },
-    { "item": "ptm:steel_ingot" }
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" }
   ],
   "result": {
     "item": "ptm:industrial_steel",

@@ -6,13 +6,13 @@
 
     { "item": "minecraft:gravel" },
     { "item": "minecraft:gravel" },
-    { "item": "minecraft:iron_ingot" },
-    { "item": "minecraft:iron_ingot" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
 
-    { "item": "minecraft:iron_ingot" },
-    { "item": "minecraft:iron_ingot" },
-    { "item": "minecraft:iron_ingot" },
-    { "item": "minecraft:iron_ingot" }
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" }
   ],
   "result": {
     "item": "ptm:barrel_steel",

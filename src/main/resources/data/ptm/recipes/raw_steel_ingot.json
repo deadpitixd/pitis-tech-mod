@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "ptm:steel_dust" },
+    { "item": "ptm:steel_dust" },
+    { "item": "ptm:steel_dust" },
+    { "item": "ptm:steel_dust" }
+  ],
+  "result": {
+    "item": "ptm:raw_steel_ingot",
+    "count": 1
+  }
+}

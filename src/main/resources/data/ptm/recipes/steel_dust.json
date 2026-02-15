@@ -6,7 +6,7 @@
     { "item": "minecraft:iron_ingot" }
   ],
   "result": {
-    "item": "ptm:steel_ingot",
+    "item": "ptm:steel_dust",
     "count": 1
   }
 }

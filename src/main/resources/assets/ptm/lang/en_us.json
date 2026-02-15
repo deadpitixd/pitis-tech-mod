@@ -29,6 +29,8 @@
   "block.ptm.industrial_furnace_fluidport": "Industrial Furnace Fluid Port",
   "block.ptm.industrial_furnace_storage": "Industrial Furnace Storage",
   "item.ptm.steel_ingot": "Steel Ingot",
+  "item.ptm.steel_dust": "Steel Dust",
+  "item.ptm.raw_steel_ingot": "Raw Steel Ingot",
   "item.ptm.insulator": "Insulator",
   "fluid.ptm.electricfluid": "Electric Fluid"
 }

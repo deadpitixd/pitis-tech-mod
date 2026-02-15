@@ -28,6 +28,10 @@ public class ModItems {
             () -> new ScrewdriverItem(new Item.Properties()));
     public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> STEEL_DUST = ITEMS.register("steel_dust",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> RAW_STEEL_INGOT = ITEMS.register("raw_steel_ingot",
+            () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> INSULATOR = ITEMS.register("insulator",
             () -> new Item(new Item.Properties()));
 

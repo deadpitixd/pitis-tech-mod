@@ -8,7 +8,7 @@
   ],
   "key": {
     "I": {
-      "item": "ptm:steel_ingot"
+      "tag": "forge:ingots/steel"
     },
     "S": {
       "item": "ptm:industrial_steel"
