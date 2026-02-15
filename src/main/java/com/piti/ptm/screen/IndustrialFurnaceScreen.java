@@ -1,6 +1,6 @@
 package com.piti.ptm.screen;
 
-import com.piti.ptm.util.FluidRenderer;
+import com.piti.ptm.util.ModGuiUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -25,15 +25,14 @@ public class IndustrialFurnaceScreen extends AbstractContainerScreen<IndustrialF
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
-        FluidStack inputStack = menu.getInputFluidStack();
-        if (!inputStack.isEmpty()) {
-            FluidRenderer.renderFluid(guiGraphics, inputStack, x + 94, y + 55, 48, 14, 4000);
-        }
+        ModGuiUtils.renderFluidBox(guiGraphics, this.font, mouseX, mouseY, x, y, 94, 55, 48, 14,
+                menu.getInputFluidStack(), 16000, "Empty Input");
 
-        FluidStack outputStack = menu.getOutputFluidStack();
-        if (!outputStack.isEmpty()) {
-            FluidRenderer.renderFluid(guiGraphics, outputStack, x + 146, y + 17, 23, 52, 4000);
-        }
+        ModGuiUtils.renderFluidBox(guiGraphics, this.font, mouseX, mouseY, x, y, 146, 17, 23, 52,
+                menu.getOutputFluidStack(), 16000, "Empty Output");
+
+        ModGuiUtils.renderEnergyBar(guiGraphics, this.font, mouseX, mouseY, x, y, 7, 17, 6, 52,
+                menu.getEnergyStored(), menu.getMaxEnergyStored());
     }
 
     @Override
@@ -41,16 +40,5 @@ public class IndustrialFurnaceScreen extends AbstractContainerScreen<IndustrialF
         renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, delta);
         renderTooltip(guiGraphics, mouseX, mouseY);
-
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-
-        if (isHovering(94, 55, 48, 14, mouseX, mouseY)) {
-            guiGraphics.renderComponentTooltip(this.font, FluidRenderer.getFluidTooltip(menu.getInputFluidStack(), 16000), mouseX, mouseY);
-        }
-
-        if (isHovering(146, 17, 23, 52, mouseX, mouseY)) {
-            guiGraphics.renderComponentTooltip(this.font, FluidRenderer.getFluidTooltip(menu.getOutputFluidStack(), 16000), mouseX, mouseY);
-        }
     }
 }

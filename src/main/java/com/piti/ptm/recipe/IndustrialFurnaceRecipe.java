@@ -76,7 +76,7 @@ public class IndustrialFurnaceRecipe implements Recipe<SimpleContainer> {
     public int getTime() { return time; }
     public int getEnergy() { return energy; }
     public NonNullList<ItemStack> getOutputItems() { return outputItems; }
-    public FluidStack getInputFluid() { return inputFluid; }
+    public FluidStack  getInputFluid() { return inputFluid; }
     public FluidStack getOutputFluid() { return outputFluid; }
 
     public static class Type implements RecipeType<IndustrialFurnaceRecipe> {

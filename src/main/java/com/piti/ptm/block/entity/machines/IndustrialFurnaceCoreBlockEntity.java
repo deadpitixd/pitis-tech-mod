@@ -385,5 +385,19 @@ public class IndustrialFurnaceCoreBlockEntity extends BlockEntity implements Men
     public IItemHandler getItemHandler() {
         return this.inventory;
     }
+    public FluidStack getInputFluid() {
+        return inputTank.getFluid();
+    }
+
+    public FluidStack getOutputFluid() {
+        return outputTank.getFluid();
+    }
+    public FluidTank getInputTank() {
+        return this.inputTank;
+    }
+
+    public FluidTank getOutputTank() {
+        return this.outputTank;
+    }
 
 }

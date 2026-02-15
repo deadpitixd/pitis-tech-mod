@@ -1,13 +1,14 @@
 package com.piti.ptm.screen;
 
-import com.piti.ptm.block.entity.machines.IndustrialFurnaceCoreBlockEntity;
 import com.piti.ptm.block.ModBlocks;
+import com.piti.ptm.block.entity.machines.IndustrialFurnaceCoreBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,7 +18,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class IndustrialFurnaceMenu extends AbstractContainerMenu {
     private final IndustrialFurnaceCoreBlockEntity blockEntity;
     private final ContainerData data;
-    private final net.minecraft.world.level.Level level;
+    private final Level level;
 
     public IndustrialFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(8));
@@ -58,14 +59,22 @@ public class IndustrialFurnaceMenu extends AbstractContainerMenu {
         addDataSlots(data);
     }
 
+    public int getEnergyStored() {
+        return this.data.get(4);
+    }
+
+    public int getMaxEnergyStored() {
+        return this.data.get(5);
+    }
+
     public FluidStack getInputFluidStack() {
-        Fluid fluid = BuiltInRegistries.FLUID.byId(data.get(6));
-        return new FluidStack(fluid, data.get(2));
+        Fluid fluid = BuiltInRegistries.FLUID.byId(this.data.get(6));
+        return new FluidStack(fluid, this.data.get(2));
     }
 
     public FluidStack getOutputFluidStack() {
-        Fluid fluid = BuiltInRegistries.FLUID.byId(data.get(7));
-        return new FluidStack(fluid, data.get(3));
+        Fluid fluid = BuiltInRegistries.FLUID.byId(this.data.get(7));
+        return new FluidStack(fluid, this.data.get(3));
     }
 
     @Override
@@ -90,5 +99,4 @@ public class IndustrialFurnaceMenu extends AbstractContainerMenu {
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.INDUSTRIAL_FURNACE_CORE.get());
     }
-
 }
