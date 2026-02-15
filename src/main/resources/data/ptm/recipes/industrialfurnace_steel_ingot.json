@@ -11,5 +11,9 @@
   "time": 100,
   "result": [
     { "item": "ptm:steel_ingot", "count": 1 }
-  ]
+  ],
+  "fluid_output": {
+    "fluid": "ptm:slag",
+    "amount": 500
+  }
 }
