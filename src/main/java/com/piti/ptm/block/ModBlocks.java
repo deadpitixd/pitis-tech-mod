@@ -80,6 +80,11 @@ public class ModBlocks {
             () -> new IndustrialHatchBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
                     .strength(4.5f, 180)));
+    public static final RegistryObject<Block> BINARY_PRESS_BOTTOM = registerBlock("binary_press_bottom",
+            () -> new BinaryPressBaseBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+
+    public static final RegistryObject<Block> BINARY_PRESS_TOP = registerBlock("binary_press_upper",
+            () -> new BinaryPressTopBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){

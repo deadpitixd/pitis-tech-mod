@@ -1,10 +1,12 @@
 package com.piti.ptm.item;
 
 import com.piti.ptm.PitisTech;
+import com.piti.ptm.block.ModBlocks;
 import com.piti.ptm.item.custom.FluidTemplateItem;
 import com.piti.ptm.item.custom.InfiniteWaterItem;
 import com.piti.ptm.item.custom.RadioactiveItem;
 import com.piti.ptm.item.custom.ScrewdriverItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -34,6 +36,8 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> INSULATOR = ITEMS.register("insulator",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> BINARY_PRESS = ITEMS.register("binary_press",
+            () -> new BlockItem(ModBlocks.BINARY_PRESS_BOTTOM.get(), new Item.Properties()));
 
 
     public static void register(IEventBus eventBus) {

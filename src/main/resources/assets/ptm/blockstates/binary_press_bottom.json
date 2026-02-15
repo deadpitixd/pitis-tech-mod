@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "ptm:block/binary_press_bottom", "y": 90 },
+    "facing=east":  { "model": "ptm:block/binary_press_bottom", "y": 180 },
+    "facing=south": { "model": "ptm:block/binary_press_bottom", "y": 270 },
+    "facing=west":  { "model": "ptm:block/binary_press_bottom", "y": 360 }
+  }
+}
