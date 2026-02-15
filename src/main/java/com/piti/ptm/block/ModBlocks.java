@@ -26,17 +26,17 @@ public class ModBlocks {
     public static final RegistryObject<Block> BRICK_CONCRETE = registerRadShieldBlock("brick_concrete",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.LIGHT_GRAY_CONCRETE)
                     .requiresCorrectToolForDrops()
-                    .strength(5.0f, 300)));
+                    .strength(5.0f, 96)));
     public static final RegistryObject<Block> CONCRETE = registerBlock("concrete",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.LIGHT_GRAY_CONCRETE)
                     .requiresCorrectToolForDrops()
-                    .strength(4.0f, 120)));
+                    .strength(4.0f, 96)));
     public static final RegistryObject<Block> REINFORCED_LIGHT = registerBlock("reinforced_light",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SEA_LANTERN)
                     .lightLevel(state -> 15)
                     .sound(SoundType.STONE)
                     .requiresCorrectToolForDrops()
-                    .strength(4.5f, 260)));
+                    .strength(4.5f, 86)));
     public static final RegistryObject<Block> URANIUM_ORE = registerRadioactiveBlock("uranium_ore",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_ORE)
                     .strength(3.0f)),5);
@@ -63,23 +63,23 @@ public class ModBlocks {
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_ACCESSPORT = registerBlock("industrial_furnace_accessport",
             () -> new IndustrialFurnaceAccessPortBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
-                    .strength(4.5f, 180)));
+                    .strength(4.5f, 160)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_CABLEPORT = registerBlock("industrial_furnace_cableport",
             () -> new IndustrialCablePortBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
-                    .strength(4.5f, 180)));
+                    .strength(4.5f, 160)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_CORE = registerBlock("industrial_furnace_core",
             () -> new IndustrialFurnaceCoreBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
-                    .strength(4.5f, 180)));
+                    .strength(4.5f, 160)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_FLUIDPORT = registerBlock("industrial_furnace_fluidport",
             () -> new IndustrialFluidPortBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
-                    .strength(4.5f, 180)));
+                    .strength(4.5f, 160)));
     public static final RegistryObject<Block> INDUSTRIAL_FURNACE_STORAGE = registerBlock("industrial_furnace_storage",
             () -> new IndustrialHatchBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .requiresCorrectToolForDrops()
-                    .strength(4.5f, 180)));
+                    .strength(4.5f, 160)));
     public static final RegistryObject<Block> BINARY_PRESS_BOTTOM = registerBlock("binary_press_bottom",
             () -> new BinaryPressBaseBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
