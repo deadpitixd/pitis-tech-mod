@@ -2,6 +2,7 @@ package com.piti.ptm.item;
 
 import com.piti.ptm.PitisTech;
 import com.piti.ptm.block.ModBlocks;
+import com.piti.ptm.fluid.ModFluids;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,6 +30,8 @@ public class ModCreativeModTabs
                         pOutput.accept(ModItems.GEIGERCOUNTER.get());
                         pOutput.accept(ModItems.INFINITE_WATER.get());
                         pOutput.accept(ModItems.SCREWDRIVER.get());
+                        pOutput.accept(ModItems.FLUID_TEMPLATE.get());
+                        pOutput.accept(ModItems.PUNCHED_CARD.get());
                         pOutput.accept(ModItems.RAW_STEEL_INGOT.get());
                         pOutput.accept(ModItems.STEEL_INGOT.get());
                         pOutput.accept(ModItems.STEEL_DUST.get());

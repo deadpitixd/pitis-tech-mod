@@ -38,7 +38,8 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BINARY_PRESS = ITEMS.register("binary_press",
             () -> new BlockItem(ModBlocks.BINARY_PRESS_BOTTOM.get(), new Item.Properties()));
-
+    public static final RegistryObject<Item> PUNCHED_CARD = ITEMS.register("punched_card",
+            () -> new Item(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

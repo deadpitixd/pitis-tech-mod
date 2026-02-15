@@ -32,5 +32,8 @@
   "item.ptm.steel_dust": "Steel Dust",
   "item.ptm.raw_steel_ingot": "Raw Steel Ingot",
   "item.ptm.insulator": "Insulator",
-  "fluid.ptm.electricfluid": "Electric Fluid"
+  "fluid.ptm.electricfluid": "Electric Fluid",
+  "item.ptm.binary_press": "Binary Press",
+  "block.ptm.binary_press_bottom": "Binary Press",
+  "item.ptm.punched_card": "Punched Card"
 }
