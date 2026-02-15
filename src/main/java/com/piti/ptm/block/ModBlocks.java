@@ -85,6 +85,10 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> BINARY_PRESS_TOP = registerBlock("binary_press_upper",
             () -> new BinaryPressTopBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+    public static final RegistryObject<Block> CABLE = registerBlock("cable",
+            () -> new CableBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .strength(5.0f,5).noOcclusion().requiresCorrectToolForDrops()));
+
 
 
     private static <T extends Block>RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){

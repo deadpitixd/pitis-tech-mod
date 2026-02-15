@@ -59,6 +59,7 @@ public class ModCreativeModTabs
                     .title(Component.translatable("creativetab.ptm.fuelmachines_tab"))
                     .displayItems((pParameters, pOutput) ->{
                         pOutput.accept(ModBlocks.UNIVERSAL_PIPE.get());
+                        pOutput.accept(ModBlocks.CABLE.get());
                         pOutput.accept(ModBlocks.STEAM_TURBINE.get());
                         pOutput.accept(ModBlocks.URANIUM_ORE.get());
                         pOutput.accept(ModItems.URANIUM_INGOT.get());

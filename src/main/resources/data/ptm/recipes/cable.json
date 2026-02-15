@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "CCC",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "ptm:insulator"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "result": {
+    "item": "ptm:cable",
+    "count": 16
+  }
+}

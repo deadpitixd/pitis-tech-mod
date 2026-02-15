@@ -36,5 +36,6 @@
   "item.ptm.binary_press": "Binary Press",
   "block.ptm.binary_press_bottom": "Binary Press",
   "item.ptm.punched_card": "Punched Card",
-  "fluid.ptm.slag": "Slag"
+  "fluid.ptm.slag": "Slag",
+  "block.ptm.cable": "Copper Cable"
 }
