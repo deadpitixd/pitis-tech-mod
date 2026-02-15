@@ -20,7 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class PipeBlockEntity extends BlockEntity {
 
     public boolean toggleActive = false;
-    private String filterFluidID = "";
+    private String filterFluidID = "none";
     public int color = 0x80333333;
 
     public enum PipeMode { NEUTRAL, IMPORT, EXPORT }

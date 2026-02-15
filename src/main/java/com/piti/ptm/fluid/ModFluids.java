@@ -35,12 +35,20 @@ public class ModFluids {
                     0xB7DBE8));
     public static final RegistryObject<FluidType> ELECTRICFLUID_TYPE = FLUID_TYPES.register("electricfluid",
             () -> new BaseFluidType(FluidType.Properties.create()
-                    .descriptionId("fluid.ptm.lpsteam")
+                    .descriptionId("fluid.ptm.electricfluid")
                     .density(10)
                     .viscosity(1000),
                     ResourceLocation.parse("block/water_still"),
                     ResourceLocation.parse("block/water_flow"),
                     0xFF8CEF));
+    public static final RegistryObject<FluidType> NONE_TYPE = FLUID_TYPES.register("nonefluid",
+            () -> new BaseFluidType(FluidType.Properties.create()
+                    .descriptionId("fluid.ptm.none")
+                    .density(0)
+                    .viscosity(0),
+                    ResourceLocation.parse("block/water_still"),
+                    ResourceLocation.parse("block/water_flow"),
+                    0x80333333));
 
 
     public static final RegistryObject<ForgeFlowingFluid.Source> STEAM_SOURCE = FLUIDS.register("steam",
@@ -56,6 +64,16 @@ public class ModFluids {
             () -> new ForgeFlowingFluid.Source(makeElectricFluidProperties()));
     public static final RegistryObject<ForgeFlowingFluid.Flowing> ELECTRICFLUID_FLOWING = FLUIDS.register("electricfluid_flowing",
             () -> new ForgeFlowingFluid.Flowing(makeElectricFluidProperties()));
+
+    public static final RegistryObject<ForgeFlowingFluid.Source> NONE_SOURCE = FLUIDS.register("none",
+            () -> new ForgeFlowingFluid.Source(makeNoneProperties()));
+
+    private static ForgeFlowingFluid.Properties makeNoneProperties() {
+        return new ForgeFlowingFluid.Properties(NONE_TYPE, NONE_SOURCE, NONE_FLOWING);
+    }
+
+    public static final RegistryObject<ForgeFlowingFluid.Flowing> NONE_FLOWING = FLUIDS.register("none_flowing",
+            () -> new ForgeFlowingFluid.Flowing(makeNoneProperties()));
 
 
     private static ForgeFlowingFluid.Properties makeSteamProperties() {
