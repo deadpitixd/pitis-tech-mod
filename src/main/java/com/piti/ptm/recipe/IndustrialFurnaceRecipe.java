@@ -1,8 +1,8 @@
 package com.piti.ptm.recipe;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.piti.ptm.PitisTech;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,6 +12,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +41,7 @@ public class IndustrialFurnaceRecipe implements Recipe<SimpleContainer> {
         if (level.isClientSide()) return false;
         for (Ingredient ingredient : inputItems) {
             boolean found = false;
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < container.getContainerSize(); i++) {
                 if (ingredient.test(container.getItem(i))) {
                     found = true;
                     break;
@@ -76,7 +77,7 @@ public class IndustrialFurnaceRecipe implements Recipe<SimpleContainer> {
     public int getTime() { return time; }
     public int getEnergy() { return energy; }
     public NonNullList<ItemStack> getOutputItems() { return outputItems; }
-    public FluidStack  getInputFluid() { return inputFluid; }
+    public FluidStack getInputFluid() { return inputFluid; }
     public FluidStack getOutputFluid() { return outputFluid; }
 
     public static class Type implements RecipeType<IndustrialFurnaceRecipe> {
@@ -89,35 +90,59 @@ public class IndustrialFurnaceRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public IndustrialFurnaceRecipe fromJson(ResourceLocation id, JsonObject json) {
-            JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
-            for (int i = 0; i < ingredients.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-
-            JsonObject fluidInputJson = GsonHelper.getAsJsonObject(json, "fluid_input");
-            ResourceLocation fluidId = new ResourceLocation(GsonHelper.getAsString(fluidInputJson, "fluid"));
-            int fluidAmount = GsonHelper.getAsInt(fluidInputJson, "amount", 1000);
-            FluidStack inputFluid = new FluidStack(ForgeRegistries.FLUIDS.getValue(fluidId), fluidAmount);
-
-            JsonArray results = GsonHelper.getAsJsonArray(json, "result");
-            NonNullList<ItemStack> outputItems = NonNullList.create();
-            FluidStack outputFluid = FluidStack.EMPTY;
-
-            for (int i = 0; i < results.size(); i++) {
-                JsonObject entry = results.get(i).getAsJsonObject();
-                if (entry.has("item")) {
-                    ResourceLocation itemId = new ResourceLocation(GsonHelper.getAsString(entry, "item"));
-                    int count = GsonHelper.getAsInt(entry, "count", 1);
-                    outputItems.add(new ItemStack(ForgeRegistries.ITEMS.getValue(itemId), count));
-                } else if (entry.has("fluid")) {
-                    ResourceLocation outFluidId = new ResourceLocation(GsonHelper.getAsString(entry, "fluid"));
-                    int amount = GsonHelper.getAsInt(entry, "count", 1000);
-                    outputFluid = new FluidStack(ForgeRegistries.FLUIDS.getValue(outFluidId), amount);
+            NonNullList<Ingredient> inputs = NonNullList.create();
+            if (json.has("ingredients")) {
+                JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
+                for (JsonElement element : ingredients) {
+                    inputs.add(Ingredient.fromJson(element));
                 }
             }
 
-            return new IndustrialFurnaceRecipe(id, inputs, inputFluid, outputItems, outputFluid, GsonHelper.getAsInt(json, "time", 100));
+            FluidStack inputFluid = FluidStack.EMPTY;
+            if (json.has("fluid_input") && json.get("fluid_input").isJsonObject()) {
+                JsonObject fluidInputJson = json.getAsJsonObject("fluid_input");
+                ResourceLocation fluidId = parseLocation(GsonHelper.getAsString(fluidInputJson, "fluid"));
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(fluidId);
+
+                if (fluid != null) {
+                    int fluidAmount = GsonHelper.getAsInt(fluidInputJson, "amount", 1000);
+                    inputFluid = new FluidStack(fluid, fluidAmount);
+                }
+            }
+
+            NonNullList<ItemStack> outputItems = NonNullList.create();
+            if (json.has("result")) {
+                JsonArray results = GsonHelper.getAsJsonArray(json, "result");
+                for (JsonElement element : results) {
+                    JsonObject entry = element.getAsJsonObject();
+                    ResourceLocation itemId = parseLocation(GsonHelper.getAsString(entry, "item"));
+                    int count = GsonHelper.getAsInt(entry, "count", 1);
+                    outputItems.add(new ItemStack(ForgeRegistries.ITEMS.getValue(itemId), count));
+                }
+            }
+
+            FluidStack outputFluid = FluidStack.EMPTY;
+            if (json.has("fluid_output") && json.get("fluid_output").isJsonObject()) {
+                JsonObject fluidOutputJson = json.getAsJsonObject("fluid_output");
+                ResourceLocation outFluidId = parseLocation(GsonHelper.getAsString(fluidOutputJson, "fluid"));
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(outFluidId);
+
+                if (fluid != null) {
+                    int amount = GsonHelper.getAsInt(fluidOutputJson, "amount", 1000);
+                    outputFluid = new FluidStack(fluid, amount);
+                }
+            }
+
+            int time = GsonHelper.getAsInt(json, "time", 100);
+            return new IndustrialFurnaceRecipe(id, inputs, inputFluid, outputItems, outputFluid, time);
+        }
+
+        private ResourceLocation parseLocation(String s) {
+            if (s.contains(":")) {
+                String[] parts = s.split(":", 2);
+                return ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
+            }
+            return ResourceLocation.fromNamespaceAndPath("minecraft", s);
         }
 
         @Override
@@ -152,5 +177,13 @@ public class IndustrialFurnaceRecipe implements Recipe<SimpleContainer> {
             buffer.writeFluidStack(recipe.outputFluid);
             buffer.writeInt(recipe.time);
         }
+    }
+    public NonNullList<Ingredient> getInputItems() {
+        return this.inputItems;
+    }
+
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return this.inputItems;
     }
 }
