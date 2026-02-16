@@ -9,6 +9,7 @@ import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.item.custom.PunchedCardItem;
 import com.piti.ptm.recipe.IndustrialFurnaceRecipe;
+import com.piti.ptm.renderer.CableBlockRenderer;
 import com.piti.ptm.renderer.PipeBlockRenderer;
 import com.piti.ptm.screen.IndustrialFurnaceScreen;
 import com.piti.ptm.screen.ModMenuTypes;
@@ -71,6 +72,7 @@ public class ModClientEvents {
     @SubscribeEvent
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.PIPE.get(), PipeBlockRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.CABLE_BE.get(), CableBlockRenderer::new);
     }
     @SubscribeEvent
     public static void onModelRegister(ModelEvent.RegisterAdditional event) {

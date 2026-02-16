@@ -41,6 +41,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("indhatch_be", () ->
                     BlockEntityType.Builder.of(IndustrialHatchBlockEntity::new,
                             ModBlocks.INDUSTRIAL_FURNACE_STORAGE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<CableBlockEntity>> CABLE_BE =
+            BLOCK_ENTITIES.register("cable_be", () ->
+                    BlockEntityType.Builder.of(CableBlockEntity::new,
+                            ModBlocks.CABLE.get()).build(null));
 
 
 
