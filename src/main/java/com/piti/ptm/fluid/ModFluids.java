@@ -52,11 +52,11 @@ public class ModFluids {
     public static final RegistryObject<FluidType> SLAG_TYPE = FLUID_TYPES.register("slagfluid",
             () -> new BaseFluidType(FluidType.Properties.create()
                     .descriptionId("fluid.ptm.slag")
-                    .density(0)
-                    .viscosity(0),
+                    .density(3000)
+                    .viscosity(3000),
                     ResourceLocation.parse("block/water_still"),
                     ResourceLocation.parse("block/water_flow"),
-                    0x4A4742));
+                    0xFF4B3621));
 
 
     public static final RegistryObject<ForgeFlowingFluid.Source> STEAM_SOURCE = FLUIDS.register("steam",

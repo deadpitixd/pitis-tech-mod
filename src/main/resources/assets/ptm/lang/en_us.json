@@ -36,6 +36,7 @@
   "item.ptm.binary_press": "Binary Press",
   "block.ptm.binary_press_bottom": "Binary Press",
   "item.ptm.punched_card": "Punched Card",
-  "fluid.ptm.slag": "Slag",
-  "block.ptm.cable": "Copper Cable"
+  "fluid.ptm.slag": "Molten Slag",
+  "block.ptm.cable": "Copper Cable",
+  "jei.ptm.industrial_furnace": "Industrial Furnace"
 }
