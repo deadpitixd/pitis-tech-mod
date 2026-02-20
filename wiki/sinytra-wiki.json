@@ -1,8 +1,7 @@
 {
     "id": "pitis-tech-mod",
     "platforms": {
-        "curseforge": "pitis-tech-mod",
-        "modrinth": "pitis-tech-mod"
+        "curseforge": "pitis-tech-mod"
     },
     "modid": "ptm",
     "owners": [ "deadpitixd" ]
