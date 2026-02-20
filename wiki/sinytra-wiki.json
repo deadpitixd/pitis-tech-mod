@@ -1,8 +1,6 @@
 {
-    "id": "pitis-tech-mod",
-    "platforms": {
-        "curseforge": "https://www.curseforge.com/minecraft/mc-mods/pitis-tech-mod"
-    },
-    "modid": "ptm",
-    "owners": [ "deadpitixd" ]
+  "id": "pitis-tech-mod",
+  "modid": "ptm",
+  "platform": "curseforge",
+  "slug": "pitis-tech-mod"
 }
