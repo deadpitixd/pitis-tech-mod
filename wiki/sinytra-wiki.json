@@ -1,15 +1,4 @@
 {
-    "licenses": {
-      "project": {
-            "id": "GPL"
-        },
-        "project": {
-            "name": "GPL License"
-        "project": {
-            "id": "GPL",
-            "url": "https://github.com/deadpitixd/pitis-tech-mod/new/LICENSE"
-        }
-    }
     "id": "pitis-tech-mod",
     "platforms": {
         "curseforge": "pitis-tech-mod",
