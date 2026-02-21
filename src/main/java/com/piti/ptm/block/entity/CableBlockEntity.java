@@ -10,19 +10,67 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class CableBlockEntity extends BlockEntity {
     private EnergyNetwork network;
+    private final LazyOptional<IEnergyStorage> energyHandler = LazyOptional.of(this::createEnergyHandler);
 
     public enum CableMode { NEUTRAL, IMPORT, EXPORT }
     private CableMode mode = CableMode.NEUTRAL;
 
     public CableBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CABLE_BE.get(), pos, state);
+    }
+
+    private IEnergyStorage createEnergyHandler() {
+        return new IEnergyStorage() {
+            @Override
+            public int receiveEnergy(int maxReceive, boolean simulate) {
+                return network != null ? network.receiveEnergy(maxReceive, simulate) : 0;
+            }
+
+            @Override
+            public int extractEnergy(int maxExtract, boolean simulate) {
+                return network != null ? network.extractEnergy(maxExtract, simulate) : 0;
+            }
+
+            @Override
+            public int getEnergyStored() {
+                return 0;
+            }
+
+            @Override
+            public int getMaxEnergyStored() {
+                return 0;
+            }
+
+            @Override
+            public boolean canExtract() {
+                return mode == CableMode.NEUTRAL || mode == CableMode.EXPORT;
+            }
+
+            @Override
+            public boolean canReceive() {
+                return mode == CableMode.NEUTRAL || mode == CableMode.IMPORT;
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) {
+            return energyHandler.cast();
+        }
+        return super.getCapability(cap, side);
     }
 
     public void setMode(CableMode mode) {

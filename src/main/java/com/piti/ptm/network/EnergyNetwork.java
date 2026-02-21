@@ -22,6 +22,42 @@ public class EnergyNetwork {
         this.level = level;
     }
 
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        int totalReceived = 0;
+        int remaining = maxReceive;
+        for (MachineLocation loc : receivers) {
+            if (remaining <= 0) break;
+            BlockEntity be = level.getBlockEntity(loc.pos);
+            if (be != null) {
+                IEnergyStorage storage = be.getCapability(ForgeCapabilities.ENERGY, loc.side).orElse(null);
+                if (storage != null) {
+                    int received = storage.receiveEnergy(remaining, simulate);
+                    totalReceived += received;
+                    remaining -= received;
+                }
+            }
+        }
+        return totalReceived;
+    }
+
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        int totalExtracted = 0;
+        int remaining = maxExtract;
+        for (MachineLocation loc : providers) {
+            if (remaining <= 0) break;
+            BlockEntity be = level.getBlockEntity(loc.pos);
+            if (be != null) {
+                IEnergyStorage storage = be.getCapability(ForgeCapabilities.ENERGY, loc.side).orElse(null);
+                if (storage != null) {
+                    int extracted = storage.extractEnergy(remaining, simulate);
+                    totalExtracted += extracted;
+                    remaining -= extracted;
+                }
+            }
+        }
+        return totalExtracted;
+    }
+
     public void tick() {
         if (providers.isEmpty() || receivers.isEmpty()) return;
 
