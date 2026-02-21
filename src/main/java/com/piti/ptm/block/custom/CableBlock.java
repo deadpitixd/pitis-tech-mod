@@ -71,12 +71,16 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityB
             if (!level.isClientSide) {
                 BlockEntity be = level.getBlockEntity(pos);
                 if (be instanceof CableBlockEntity cable) {
-                    Direction side = hit.getDirection();
-                    cable.toggleSideMode(side);
-                    player.displayClientMessage(Component.literal("Cable Side " + side.getName() + ": " + cable.getSideMode(side).name()), true);
+                    CableBlockEntity.CableMode nextMode = switch (cable.getMode()) {
+                        case NEUTRAL -> CableBlockEntity.CableMode.IMPORT;
+                        case IMPORT -> CableBlockEntity.CableMode.EXPORT;
+                        case EXPORT -> CableBlockEntity.CableMode.NEUTRAL;
+                    };
+                    cable.setMode(nextMode);
+                    player.displayClientMessage(Component.literal("Cable Mode: " + nextMode.name()), true);
                 }
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return super.use(state, level, pos, player, hand, hit);
     }
