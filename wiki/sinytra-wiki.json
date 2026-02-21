@@ -1,6 +1,7 @@
 {
   "id": "pitis-tech-mod",
   "modid": "ptm",
-  "platform": "curseforge",
-  "slug": "pitis-tech-mod"
+  "platforms": {
+        "curseforge": "pitis-tech-mod",
+  }
 }
