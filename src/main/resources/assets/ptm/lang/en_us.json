@@ -38,5 +38,6 @@
   "item.ptm.punched_card": "Punched Card",
   "fluid.ptm.slag": "Molten Slag",
   "block.ptm.cable": "Copper Cable",
-  "jei.ptm.industrial_furnace": "Industrial Furnace"
+  "jei.ptm.industrial_furnace": "Industrial Furnace",
+  "subtitles.ptm.press_hit": "Press Hit"
 }
