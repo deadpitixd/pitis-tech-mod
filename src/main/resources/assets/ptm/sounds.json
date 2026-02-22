@@ -1,0 +1,8 @@
+{
+  "burner_press_hit": {
+    "subtitle": "subtitles.ptm.press_hit",
+    "sounds": [
+      "ptm:press_hit"
+    ]
+  }
+}
