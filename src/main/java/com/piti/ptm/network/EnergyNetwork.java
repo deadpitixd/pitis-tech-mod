@@ -22,6 +22,42 @@ public class EnergyNetwork {
         this.level = level;
     }
 
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        int totalReceived = 0;
+        int remaining = maxReceive;
+        for (MachineLocation loc : receivers) {
+            if (remaining <= 0) break;
+            BlockEntity be = level.getBlockEntity(loc.pos);
+            if (be != null) {
+                IEnergyStorage storage = be.getCapability(ForgeCapabilities.ENERGY, loc.side).orElse(null);
+                if (storage != null) {
+                    int received = storage.receiveEnergy(remaining, simulate);
+                    totalReceived += received;
+                    remaining -= received;
+                }
+            }
+        }
+        return totalReceived;
+    }
+
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        int totalExtracted = 0;
+        int remaining = maxExtract;
+        for (MachineLocation loc : providers) {
+            if (remaining <= 0) break;
+            BlockEntity be = level.getBlockEntity(loc.pos);
+            if (be != null) {
+                IEnergyStorage storage = be.getCapability(ForgeCapabilities.ENERGY, loc.side).orElse(null);
+                if (storage != null) {
+                    int extracted = storage.extractEnergy(remaining, simulate);
+                    totalExtracted += extracted;
+                    remaining -= extracted;
+                }
+            }
+        }
+        return totalExtracted;
+    }
+
     public void tick() {
         if (providers.isEmpty() || receivers.isEmpty()) return;
 
@@ -31,13 +67,12 @@ public class EnergyNetwork {
             if (be != null) {
                 IEnergyStorage storage = be.getCapability(ForgeCapabilities.ENERGY, loc.side).orElse(null);
                 if (storage != null && storage.canExtract()) {
-                    int extractable = storage.extractEnergy(Integer.MAX_VALUE, true);
-                    if (extractable > 0) {
-                        totalExtractable = Math.min(totalExtractable + extractable, Integer.MAX_VALUE);
-                    }
+                    totalExtractable += (long) storage.extractEnergy(Integer.MAX_VALUE, true);
                 }
             }
         }
+
+        if (totalExtractable <= 0) return;
 
         long totalDemand = 0;
         for (MachineLocation loc : receivers) {
@@ -45,20 +80,16 @@ public class EnergyNetwork {
             if (be != null) {
                 IEnergyStorage storage = be.getCapability(ForgeCapabilities.ENERGY, loc.side).orElse(null);
                 if (storage != null && storage.canReceive()) {
-                    int demand = storage.receiveEnergy(Integer.MAX_VALUE, true);
-                    if (demand > 0) {
-                        totalDemand = Math.min(totalDemand + demand, Integer.MAX_VALUE);
-                    }
+                    totalDemand += (long) storage.receiveEnergy(Integer.MAX_VALUE, true);
                 }
             }
         }
 
+        if (totalDemand <= 0) return;
+
         int toTransfer = (int) Math.min(totalExtractable, totalDemand);
-        if (toTransfer <= 0) return;
-
-        System.out.println("Network transferring: " + toTransfer + " FE");
-
         int extracted = 0;
+
         for (MachineLocation loc : providers) {
             if (extracted >= toTransfer) break;
             BlockEntity be = level.getBlockEntity(loc.pos);
@@ -73,23 +104,37 @@ public class EnergyNetwork {
         int remaining = extracted;
         int receiverCount = receivers.size();
         for (MachineLocation loc : receivers) {
-            if (remaining <= 0) break;
+            if (remaining <= 0 || receiverCount <= 0) break;
             BlockEntity be = level.getBlockEntity(loc.pos);
             if (be != null) {
                 IEnergyStorage storage = be.getCapability(ForgeCapabilities.ENERGY, loc.side).orElse(null);
                 if (storage != null && storage.canReceive()) {
-                    int share = Math.max(1, remaining / receiverCount);
-                    int inserted = storage.receiveEnergy(Math.min(remaining, share), false);
+                    int share = remaining / receiverCount;
+                    int inserted = storage.receiveEnergy(Math.max(share, 1), false);
                     remaining -= inserted;
-                    receiverCount--;
                 }
             }
+            receiverCount--;
         }
     }
 
-    public void addCable(BlockPos pos) { cables.add(pos); }
-    public void addProvider(BlockPos pos, Direction side) { providers.add(new MachineLocation(pos, side)); }
-    public void addReceiver(BlockPos pos, Direction side) { receivers.add(new MachineLocation(pos, side)); }
-    public Set<BlockPos> getCables() { return cables; }
-    public Level getLevel() { return level; }
+    public void addCable(BlockPos pos) {
+        cables.add(pos);
+    }
+
+    public void addProvider(BlockPos pos, Direction side) {
+        providers.add(new MachineLocation(pos, side));
+    }
+
+    public void addReceiver(BlockPos pos, Direction side) {
+        receivers.add(new MachineLocation(pos, side));
+    }
+
+    public Set<BlockPos> getCables() {
+        return cables;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
 }

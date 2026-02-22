@@ -26,42 +26,65 @@ public class CableBlockRenderer implements BlockEntityRenderer<CableBlockEntity>
     @Override
     public void render(CableBlockEntity entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         BlockState state = entity.getBlockState();
+        if (!(state.getBlock() instanceof CableBlock)) return;
+
+        CableBlockEntity.CableMode mode = entity.getMode();
+        if (mode == CableBlockEntity.CableMode.NEUTRAL) return;
+
         BakedModel toggleModel = dispatcher.getBlockModelShaper().getModelManager().getModel(TOGGLE_MODEL_RL);
 
         for (Direction dir : Direction.values()) {
-            CableBlockEntity.CableMode mode = entity.getSideMode(dir);
-            if (mode == CableBlockEntity.CableMode.BOTH) continue;
+            if (shouldRenderToggleOnFace(entity, state, dir)) {
+                poseStack.pushPose();
 
-            poseStack.pushPose();
-            poseStack.translate(0.5, 0.5, 0.5);
-            applyFaceRotation(poseStack, dir);
-            poseStack.translate(-0.5, -0.5, -0.5);
+                poseStack.translate(0.5, 0.5, 0.5);
+                applyFaceRotation(poseStack, dir);
+                poseStack.translate(0.0625 * 9 - (0.0625 / 2), 0, 0);
 
-            float r = mode == CableBlockEntity.CableMode.EXTRACT ? 0.2f : 1.0f;
-            float g = mode == CableBlockEntity.CableMode.EXTRACT ? 0.2f : 0.6f;
-            float b = mode == CableBlockEntity.CableMode.EXTRACT ? 1.0f : 0.2f;
+                if (mode == CableBlockEntity.CableMode.EXPORT) {
+                    poseStack.mulPose(Axis.YP.rotationDegrees(180f));
+                }
 
-            dispatcher.getModelRenderer().renderModel(
-                    poseStack.last(),
-                    bufferSource.getBuffer(RenderType.cutout()),
-                    state,
-                    toggleModel,
-                    r, g, b,
-                    packedLight,
-                    packedOverlay
-            );
-            poseStack.popPose();
+                poseStack.translate(-0.5, -0.5, -0.5);
+
+                dispatcher.getModelRenderer().renderModel(
+                        poseStack.last(),
+                        bufferSource.getBuffer(RenderType.cutout()),
+                        state,
+                        toggleModel,
+                        1.0f, 1.0f, 1.0f,
+                        packedLight,
+                        packedOverlay
+                );
+
+                poseStack.popPose();
+            }
         }
+    }
+
+    private boolean shouldRenderToggleOnFace(CableBlockEntity entity, BlockState state, Direction dir) {
+        boolean isConnected = switch (dir) {
+            case NORTH -> state.getValue(CableBlock.NORTH);
+            case SOUTH -> state.getValue(CableBlock.SOUTH);
+            case EAST -> state.getValue(CableBlock.EAST);
+            case WEST -> state.getValue(CableBlock.WEST);
+            case UP -> state.getValue(CableBlock.UP);
+            case DOWN -> state.getValue(CableBlock.DOWN);
+        };
+
+        if (!isConnected) return false;
+
+        return !(entity.getLevel().getBlockEntity(entity.getBlockPos().relative(dir)) instanceof CableBlockEntity);
     }
 
     private void applyFaceRotation(PoseStack poseStack, Direction direction) {
         switch (direction) {
+            case EAST -> { }
             case WEST -> poseStack.mulPose(Axis.YP.rotationDegrees(180f));
             case NORTH -> poseStack.mulPose(Axis.YP.rotationDegrees(90f));
             case SOUTH -> poseStack.mulPose(Axis.YP.rotationDegrees(-90f));
             case UP -> poseStack.mulPose(Axis.ZP.rotationDegrees(90f));
             case DOWN -> poseStack.mulPose(Axis.ZP.rotationDegrees(-90f));
-            default -> {}
         }
     }
 }
