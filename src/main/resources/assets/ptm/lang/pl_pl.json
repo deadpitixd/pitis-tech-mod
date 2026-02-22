@@ -35,5 +35,9 @@
   "fluid.ptm.electricfluid": "Płyn Elektryczny",
   "item.ptm.binary_press": "Prasa Binarna",
   "block.ptm.binary_press_bottom": "Prasa Binarna",
-  "item.ptm.punched_card": "Wybita Karta"
+  "item.ptm.punched_card": "Wybita Karta",
+  "fluid.ptm.slag": "Stopiony Żużel",
+  "block.ptm.cable": "Kabel Miedziany",
+  "jei.ptm.industrial_furnace": "Przemysłowy Piec",
+  "subtitles.ptm.press_hit": "Prasa Uderzyła"
 }
