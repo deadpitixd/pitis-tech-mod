@@ -6,9 +6,7 @@ import com.piti.ptm.fluid.ModFluids;
 import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.block.ModBlocks;
-import com.piti.ptm.item.custom.PunchedCardItem;
 import com.piti.ptm.network.NetworkManager;
-import com.piti.ptm.recipe.IndustrialFurnaceRecipe;
 import com.piti.ptm.recipe.ModRecipes;
 import com.piti.ptm.screen.BarrelScreen;
 import com.piti.ptm.screen.LavaHeaterScreen;
@@ -42,6 +40,7 @@ public class PitisTech
         IEventBus modEventBus = context.getModEventBus();
 
         ModCreativeModTabs.register(modEventBus);
+
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
