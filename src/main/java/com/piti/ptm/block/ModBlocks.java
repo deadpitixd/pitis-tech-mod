@@ -88,6 +88,12 @@ public class ModBlocks {
     public static final RegistryObject<Block> CABLE = registerBlock("cable",
             () -> new CableBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
                     .strength(5.0f,5).noOcclusion().requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> BATTERY_STORAGE_BLOCK = registerBlock("battery_storage_block",
+            () -> new BatteryStorageBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
+                    .strength(5.0f,5).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> INFINITE_ENERGY_BLOCK = registerBlock("infinite_energy_provider",
+            () -> new InfiniteEnergyBlock(BlockBehaviour.Properties.copy(Blocks.BEDROCK)));
+
 
 
 

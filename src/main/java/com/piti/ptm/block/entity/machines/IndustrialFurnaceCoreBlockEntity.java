@@ -98,8 +98,28 @@ public class IndustrialFurnaceCoreBlockEntity extends BlockEntity implements Men
                     case 3 -> IndustrialFurnaceCoreBlockEntity.this.outputTank.getFluidAmount();
                     case 4 -> IndustrialFurnaceCoreBlockEntity.this.energy.getEnergyStored();
                     case 5 -> IndustrialFurnaceCoreBlockEntity.this.energy.getMaxEnergyStored();
-                    case 6 -> BuiltInRegistries.FLUID.getId(IndustrialFurnaceCoreBlockEntity.this.inputTank.getFluid().getFluid());
-                    case 7 -> BuiltInRegistries.FLUID.getId(IndustrialFurnaceCoreBlockEntity.this.outputTank.getFluid().getFluid());
+                    case 6 -> {
+                        int id = BuiltInRegistries.FLUID.getId(IndustrialFurnaceCoreBlockEntity.this.inputTank.getFluid().getFluid());
+                        yield id & 0xFFFF;
+                    }
+                    case 7 -> {
+                        int id = BuiltInRegistries.FLUID.getId(IndustrialFurnaceCoreBlockEntity.this.inputTank.getFluid().getFluid());
+                        yield (id >>> 16) & 0xFFFF;
+                    }
+                    case 8 -> {
+                        if (IndustrialFurnaceCoreBlockEntity.this.recipe != null && IndustrialFurnaceCoreBlockEntity.this.recipe.isPresent()) {
+                            int id = BuiltInRegistries.FLUID.getId(IndustrialFurnaceCoreBlockEntity.this.recipe.get().getInputFluid().getFluid());
+                            yield id & 0xFFFF;
+                        }
+                        yield 0;
+                    }
+                    case 9 -> {
+                        if (IndustrialFurnaceCoreBlockEntity.this.recipe != null && IndustrialFurnaceCoreBlockEntity.this.recipe.isPresent()) {
+                            int id = BuiltInRegistries.FLUID.getId(IndustrialFurnaceCoreBlockEntity.this.recipe.get().getInputFluid().getFluid());
+                            yield (id >>> 16) & 0xFFFF;
+                        }
+                        yield 0;
+                    }
                     default -> 0;
                 };
             }
@@ -114,10 +134,12 @@ public class IndustrialFurnaceCoreBlockEntity extends BlockEntity implements Men
 
             @Override
             public int getCount() {
-                return 8;
+                return 10;
             }
         };
     }
+
+    Optional<IndustrialFurnaceRecipe> recipe;
 
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide()) return;
@@ -140,7 +162,7 @@ public class IndustrialFurnaceCoreBlockEntity extends BlockEntity implements Men
             return;
         }
 
-        Optional<IndustrialFurnaceRecipe> recipe = level.getRecipeManager().byKey(recipeId)
+        recipe = level.getRecipeManager().byKey(recipeId)
                 .filter(r -> r instanceof IndustrialFurnaceRecipe)
                 .map(r -> (IndustrialFurnaceRecipe) r);
 
@@ -388,6 +410,9 @@ public class IndustrialFurnaceCoreBlockEntity extends BlockEntity implements Men
     public FluidStack getInputFluid() {
         return inputTank.getFluid();
     }
+
+    public FluidStack getRecipeInputFluid() { return recipe.get().getInputFluid(); }
+    public FluidStack getRecipeOutputFluid() { return recipe.get().getOutputFluid(); }
 
     public FluidStack getOutputFluid() {
         return outputTank.getFluid();

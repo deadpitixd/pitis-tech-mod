@@ -74,6 +74,8 @@ public class ModCreativeModTabs
                         pOutput.accept(ModBlocks.INDUSTRIAL_FURNACE_STORAGE.get());
                         pOutput.accept(ModBlocks.INDUSTRIAL_FURNACE_CORE.get());
                         pOutput.accept(ModItems.BINARY_PRESS.get());
+                        pOutput.accept(ModBlocks.BATTERY_STORAGE_BLOCK.get());
+                        pOutput.accept(ModBlocks.INFINITE_ENERGY_BLOCK.get());
                     })
                     .build());
 

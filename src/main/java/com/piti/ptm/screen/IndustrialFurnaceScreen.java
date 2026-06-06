@@ -24,9 +24,21 @@ public class IndustrialFurnaceScreen extends AbstractContainerScreen<IndustrialF
         int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-
+        // im trying to make input fields show the required fluids
+        String inputFluidString="";
+        String outputFluidString = "";
+        FluidStack currentTankFluid = menu.getInputFluidStack();
+        FluidStack requiredRecipeFluid = menu.getRequiredRecipeFluidStack();
+        if (!currentTankFluid.isEmpty()){
+            inputFluidString = currentTankFluid.getDisplayName().getString();
+        }
+        else if (!requiredRecipeFluid.isEmpty() && requiredRecipeFluid.getFluid() != net.minecraft.world.level.material.Fluids.EMPTY){
+            inputFluidString = requiredRecipeFluid.getDisplayName().getString();
+        }
+        if (menu.getRequiredRecipeFluidStack().isEmpty() && !menu.getSlot(13).hasItem()) { inputFluidString = ""; }
+        inputFluidString = inputFluidString.isEmpty() ? Component.translatable("none").getString() : inputFluidString;
         ModGuiUtils.renderFluidBox(guiGraphics, this.font, mouseX, mouseY, x, y, 94, 55, 48, 14,
-                menu.getInputFluidStack(), 16000, "Empty Input");
+                menu.getInputFluidStack(), 16000, inputFluidString);
 
         ModGuiUtils.renderFluidBox(guiGraphics, this.font, mouseX, mouseY, x, y, 146, 17, 23, 52,
                 menu.getOutputFluidStack(), 16000, "Empty Output");

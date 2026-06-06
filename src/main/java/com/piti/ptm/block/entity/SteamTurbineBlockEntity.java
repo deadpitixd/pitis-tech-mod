@@ -127,6 +127,10 @@ public class SteamTurbineBlockEntity extends BlockEntity implements MenuProvider
             @Override
             public void set(int pIndex, int pValue) {
                 switch (pIndex) {
+                    case 0 -> lpsteamTank.getFluid().setAmount(pValue);
+                    case 1 -> lpsteamTank.setCapacity(pValue);
+                    case 2 -> steamTank.getFluid().setAmount(pValue);
+                    case 3 -> steamTank.setCapacity(pValue);
                 }
             }
 

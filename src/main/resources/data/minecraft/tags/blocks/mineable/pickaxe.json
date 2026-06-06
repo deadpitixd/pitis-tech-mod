@@ -14,6 +14,7 @@
     "ptm:industrial_furnace_fluidport",
     "ptm:industrial_furnace_storage",
     "ptm:universal_pipe",
-    "ptm:cable"
+    "ptm:cable",
+    "battery_storage_block"
   ]
 }

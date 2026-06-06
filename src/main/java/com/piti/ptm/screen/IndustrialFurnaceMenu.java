@@ -1,6 +1,7 @@
 package com.piti.ptm.screen;
 
 import com.piti.ptm.block.ModBlocks;
+import com.piti.ptm.block.entity.LavaHeaterBlockEntity;
 import com.piti.ptm.block.entity.machines.IndustrialFurnaceCoreBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,18 +21,20 @@ public class IndustrialFurnaceMenu extends AbstractContainerMenu {
     private final ContainerData data;
     private final Level level;
 
+    IndustrialFurnaceCoreBlockEntity entity;
+
     public IndustrialFurnaceMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(8));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(10));
     }
 
     public IndustrialFurnaceMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.INDUSTRIAL_FURNACE_MENU.get(), id);
-        checkContainerDataCount(data, 8);
+        checkContainerDataCount(data, 10);
         this.blockEntity = (IndustrialFurnaceCoreBlockEntity) entity;
         this.data = data;
         this.level = inv.player.level();
-
         IItemHandler handler = blockEntity.getItemHandler();
+        this.entity = this.blockEntity;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -68,8 +71,21 @@ public class IndustrialFurnaceMenu extends AbstractContainerMenu {
     }
 
     public FluidStack getInputFluidStack() {
-        Fluid fluid = BuiltInRegistries.FLUID.byId(this.data.get(6));
+        int low = this.data.get(6) & 0xFFFF;
+        int high = this.data.get(7) & 0xFFFF;
+        int fullId = low | (high << 16);
+
+        Fluid fluid = BuiltInRegistries.FLUID.byId(fullId);
         return new FluidStack(fluid, this.data.get(2));
+    }
+
+    public FluidStack getRequiredRecipeFluidStack() {
+        int low = this.data.get(8) & 0xFFFF;
+        int high = this.data.get(9) & 0xFFFF;
+        int fullId = low | (high << 16);
+
+        Fluid fluid = BuiltInRegistries.FLUID.byId(fullId);
+        return new FluidStack(fluid, 1);
     }
 
     public FluidStack getOutputFluidStack() {
@@ -98,5 +114,9 @@ public class IndustrialFurnaceMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.INDUSTRIAL_FURNACE_CORE.get());
+    }
+
+    public IndustrialFurnaceCoreBlockEntity getBlockEntity(){
+        return entity;
     }
 }

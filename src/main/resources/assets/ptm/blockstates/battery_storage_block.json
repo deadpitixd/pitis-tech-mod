@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "ptm:block/battery_storage_block"
+    }
+  }
+}

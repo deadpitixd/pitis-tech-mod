@@ -35,6 +35,7 @@ public class IndustrialFurnaceAccessPortBlock extends IndustrialFurnacePortBlock
 
         if (!level.isClientSide) {
             IndustrialFurnaceCoreBlockEntity core = findCore(level, pos);
+            core.checkStructure(player);
             if (core != null && core.isFormed()) {
                 NetworkHooks.openScreen((ServerPlayer) player, core, core.getBlockPos());
             }

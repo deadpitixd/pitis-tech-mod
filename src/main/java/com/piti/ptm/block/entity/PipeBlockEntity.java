@@ -82,14 +82,6 @@ public class PipeBlockEntity extends BlockEntity {
         }
     }
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        if (level != null && level.isClientSide) {
-            this.color = computeTintFromFluidId(this.filterFluidID);
-        }
-    }
-
     private void refreshSelfAndNeighbors() {
         if (level == null) return;
         BlockState state = getBlockState();
@@ -165,4 +157,16 @@ public class PipeBlockEntity extends BlockEntity {
             mode = PipeMode.NEUTRAL;
         }
     }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (level != null && level.isClientSide) {
+            this.color = computeTintFromFluidId(this.filterFluidID);
+        }
+        setFilterFluidID(this.filterFluidID);
+        refreshSelfAndNeighbors();
+        setChanged();
+    }
+
 }

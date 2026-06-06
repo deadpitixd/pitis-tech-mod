@@ -45,6 +45,14 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("cable_be", () ->
                     BlockEntityType.Builder.of(CableBlockEntity::new,
                             ModBlocks.CABLE.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BatteryStorageBlockEntity>> BATTERYSTORAGE_BE =
+            BLOCK_ENTITIES.register("batterystorage_be", () ->
+                    BlockEntityType.Builder.of(BatteryStorageBlockEntity::new,
+                            ModBlocks.BATTERY_STORAGE_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<InfiniteEnergyBlockEntity>> INFINITE_ENERGY_BE =
+            BLOCK_ENTITIES.register("infinite_energy_be", () ->
+                    BlockEntityType.Builder.of(InfiniteEnergyBlockEntity::new,
+                            ModBlocks.INFINITE_ENERGY_BLOCK.get()).build(null));
 
 
 

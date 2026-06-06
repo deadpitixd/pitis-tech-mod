@@ -15,6 +15,8 @@ public class IndustrialFurnacePortBlockEntity extends BlockEntity {
         super(ModBlockEntities.INDUSTRIALFURNACEPORT_BE.get(), pos, state);
     }
 
+    
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         IndustrialFurnaceCoreBlockEntity core = findCore();

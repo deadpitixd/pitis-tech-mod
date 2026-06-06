@@ -1,3 +1,6 @@
-Piti's Tech Mod
+# Piti's Tech Mod
+This is a mod based around cool tech.
 
-hello this is made by piti
+Has JEI Support
+
+Requires GeckoLib

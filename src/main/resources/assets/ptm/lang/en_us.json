@@ -39,5 +39,9 @@
   "fluid.ptm.slag": "Molten Slag",
   "block.ptm.cable": "Copper Cable",
   "jei.ptm.industrial_furnace": "Industrial Furnace",
-  "subtitles.ptm.press_hit": "Press Hit"
+  "subtitles.ptm.press_hit": "Press Hit",
+  "block.ptm.battery_storage_block": "Battery Storage Block",
+  "block.ptm.infinite_energy_provider": "Infinite Energy Provider",
+  "tooltip.ptm.creative_only": "Creative only item",
+  "none": "None"
 }
