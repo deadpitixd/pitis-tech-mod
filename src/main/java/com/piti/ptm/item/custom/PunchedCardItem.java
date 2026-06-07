@@ -9,7 +9,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,6 +48,33 @@ public class PunchedCardItem extends Item {
                         ItemStack result = furnaceRecipe.getOutputItems().get(0);
                         tooltip.add(Component.literal("Produces: ").withStyle(ChatFormatting.GRAY)
                                 .append(result.getHoverName().copy().withStyle(ChatFormatting.GOLD)));
+                        if (net.minecraft.client.gui.screens.Screen.hasShiftDown()){
+                            if (!furnaceRecipe.getIngredients().isEmpty()) {
+                                tooltip.add(Component.translatable("tooltip.ptm.punchcardin").withStyle(ChatFormatting.AQUA));
+                                for (Ingredient i : furnaceRecipe.getInputItems()) {
+                                    tooltip.add(Component.literal(String.valueOf((i.getItems()[0].getCount()))).append(" * ")
+                                            .append(i.getItems()[0].getHoverName()));
+                                }
+                                if (!furnaceRecipe.getInputFluid().isEmpty()){
+                                    FluidStack fluid = furnaceRecipe.getInputFluid();
+                                    tooltip.add(Component.literal(fluid.getAmount() + "mB of ")
+                                            .append(fluid.getDisplayName()));
+                                }
+                                tooltip.add(Component.translatable("tooltip.ptm.punchcardout").withStyle(ChatFormatting.AQUA));
+                                for (ItemStack i : furnaceRecipe.getOutputItems()) {
+                                    tooltip.add(Component.literal(String.valueOf((i.getCount()))).append(" * ")
+                                            .append(i.getHoverName()));
+                                }
+                                if (!furnaceRecipe.getOutputFluid().isEmpty()){
+                                    FluidStack fluid = furnaceRecipe.getOutputFluid();
+                                    tooltip.add(Component.literal(fluid.getAmount() + "mB of ")
+                                            .append(fluid.getDisplayName()));
+                                }
+                            }
+                        }
+                        else{
+                            tooltip.add(Component.translatable("tooltip.ptm.shift").withStyle(ChatFormatting.DARK_AQUA));
+                        }
                     }
                 }
             });

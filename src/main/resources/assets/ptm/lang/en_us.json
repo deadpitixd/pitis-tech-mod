@@ -43,5 +43,8 @@
   "block.ptm.battery_storage_block": "Battery Storage Block",
   "block.ptm.infinite_energy_provider": "Infinite Energy Provider",
   "tooltip.ptm.creative_only": "Creative only item",
+  "tooltip.ptm.punchcardin": "Input:",
+  "tooltip.ptm.punchcardout": "Output:",
+  "tooltip.ptm.shift": "Press shift to see more",
   "none": "None"
 }
