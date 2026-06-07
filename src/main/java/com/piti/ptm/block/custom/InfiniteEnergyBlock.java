@@ -38,18 +38,6 @@ public class InfiniteEnergyBlock extends BaseEntityBlock {
         return new InfiniteEnergyBlockEntity(pPos, pState);
     }
 
-    @Override
-    @ParametersAreNonnullByDefault
-    @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (pLevel.isClientSide()) {
-            return InteractionResult.SUCCESS;
-        } else {
-            BlockEntity be = pLevel.getBlockEntity(pPos);
-            return InteractionResult.CONSUME;
-        }
-    }
-
     @Nullable
     @Override
     @ParametersAreNonnullByDefault
