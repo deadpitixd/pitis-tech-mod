@@ -48,19 +48,6 @@ public class BatteryStorageBlock extends BaseEntityBlock{
     }
 
     @Override
-    @ParametersAreNonnullByDefault
-    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        ItemStack heldItem = pPlayer.getItemInHand(pHand);
-        if (heldItem.is(WRENCH_TAG))
-        {
-            BatteryStorageBlockEntity entity = (BatteryStorageBlockEntity) pLevel.getBlockEntity(pPos);
-            entity.toggleMode();
-            return InteractionResult.sidedSuccess(pLevel.isClientSide());
-        }
-        return InteractionResult.PASS;
-    }
-
-    @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new BatteryStorageBlockEntity(pPos, pState);
     }
