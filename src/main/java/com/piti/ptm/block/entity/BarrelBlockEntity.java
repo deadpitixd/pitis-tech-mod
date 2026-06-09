@@ -61,8 +61,6 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider, IFlu
 
     private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
 
-
-
     public BarrelBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.BARREL_BE.get(), pos, state);
 

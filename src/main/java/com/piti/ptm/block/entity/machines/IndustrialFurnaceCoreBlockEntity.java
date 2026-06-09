@@ -4,6 +4,7 @@ import com.piti.ptm.block.ModBlocks;
 import com.piti.ptm.block.custom.machines.IndustrialFurnaceCoreBlock;
 import com.piti.ptm.block.custom.machines.IndustrialFurnacePortBlock;
 import com.piti.ptm.block.entity.ModBlockEntities;
+import com.piti.ptm.fluid.ModFluids;
 import com.piti.ptm.item.custom.PunchedCardItem;
 import com.piti.ptm.recipe.IndustrialFurnaceRecipe;
 import com.piti.ptm.screen.IndustrialFurnaceMenu;

@@ -106,6 +106,7 @@ public class BatteryStorageBlockEntity extends BlockEntity implements IEnergySto
         }
         net.minecraft.world.Containers.dropContents(this.level, this.worldPosition, inventory);
     }
+    
 
     public static void tick(Level level, BlockPos pos, BlockState state, BatteryStorageBlockEntity pEntity){
     }

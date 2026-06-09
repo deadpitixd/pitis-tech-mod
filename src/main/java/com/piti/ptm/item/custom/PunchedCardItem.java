@@ -39,8 +39,12 @@ public class PunchedCardItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         ResourceLocation id = getRecipeId(stack);
         if (id != null && level != null) {
-            tooltip.add(Component.literal("ID: ").withStyle(ChatFormatting.DARK_GRAY)
-                    .append(Component.literal(id.toString()).withStyle(ChatFormatting.DARK_AQUA)));
+            // Hides and shows the id based on, if the player has the advanced mode activated
+            // (F3 + H)
+            if (flag.isAdvanced()) {
+                tooltip.add(Component.literal("ID: ").withStyle(ChatFormatting.DARK_GRAY)
+                        .append(Component.literal(id.toString()).withStyle(ChatFormatting.DARK_AQUA)));
+            }
 
             level.getRecipeManager().byKey(id).ifPresent(recipe -> {
                 if (recipe instanceof IndustrialFurnaceRecipe furnaceRecipe) {
@@ -70,6 +74,7 @@ public class PunchedCardItem extends Item {
                                     tooltip.add(Component.literal(fluid.getAmount() + "mB of ")
                                             .append(fluid.getDisplayName()));
                                 }
+                                if (flag.isAdvanced())  tooltip.add(Component.translatable("tooltip.ptm.advancedmodereq").withStyle(ChatFormatting.DARK_GRAY));
                             }
                         }
                         else{

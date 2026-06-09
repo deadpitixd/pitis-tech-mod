@@ -46,5 +46,6 @@
   "tooltip.ptm.punchcardin": "Input:",
   "tooltip.ptm.punchcardout": "Output:",
   "tooltip.ptm.shift": "Press shift to see more",
+  "tooltip.ptm.advancedmodereq": "Enable advanced mode (F3+H) to see debug info",
   "none": "None"
 }

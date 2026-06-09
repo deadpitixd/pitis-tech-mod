@@ -47,7 +47,7 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityB
 
     protected static final Map<Direction, VoxelShape> EXTENSIONS = Map.of(
             Direction.NORTH, Block.box(5.5, 5.5, 0, 10.5, 10.5, 5.5),
-            Direction.SOUTH, Block.box(5.5, 5.5, 10.5, 10.5, 16, 10.5),
+            Direction.SOUTH, Block.box(5.5, 5.5, 10.5, 10.5, 10.5, 16.0),
             Direction.EAST, Block.box(10.5, 5.5, 5.5, 16, 10.5, 10.5),
             Direction.WEST, Block.box(0, 5.5, 5.5, 5.5, 10.5, 10.5),
             Direction.UP, Block.box(5.5, 10.5, 5.5, 10.5, 16, 10.5),
