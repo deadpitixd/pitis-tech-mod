@@ -15,7 +15,7 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, PitisTech.MOD_ID);
 
     public static final RegistryObject<Item> GEIGERCOUNTER = ITEMS.register("geigercounter",
-            () -> new Item(new Item.Properties()));
+            () -> new GeigerCounterItem(new Item.Properties()));
     public static final RegistryObject<Item> URANIUM_INGOT = ModItems.ITEMS.register(
             "uranium_ingot",
             () -> new RadioactiveItem(new Item.Properties(), 1.0));

@@ -15,6 +15,7 @@
     "ptm:industrial_furnace_storage",
     "ptm:universal_pipe",
     "ptm:cable",
-    "battery_storage_block"
+    "ptm:battery_storage_block",
+    "ptm:steel_block"
   ]
 }

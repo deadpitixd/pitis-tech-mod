@@ -6,6 +6,7 @@ import com.piti.ptm.fluid.ModFluids;
 import com.piti.ptm.item.ModCreativeModTabs;
 import com.piti.ptm.item.ModItems;
 import com.piti.ptm.block.ModBlocks;
+import com.piti.ptm.item.custom.RadioactiveItem;
 import com.piti.ptm.network.NetworkManager;
 import com.piti.ptm.recipe.ModRecipes;
 import com.piti.ptm.screen.BarrelScreen;
@@ -50,6 +51,7 @@ public class PitisTech
         ModRecipes.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(NetworkManager.class);
+        MinecraftForge.EVENT_BUS.register(RadioactiveItem.class);
 
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);

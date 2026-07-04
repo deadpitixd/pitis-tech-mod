@@ -8,9 +8,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.Objects;
 
-public class RadioactiveBlockItem extends BlockItem {
+public class RadioactiveBlockItem extends BlockItem implements IRadioactive {
 
     private final double defaultRadPerSecond;
 
@@ -20,24 +22,24 @@ public class RadioactiveBlockItem extends BlockItem {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void appendHoverText(ItemStack stack, @Nullable Level level,
                                 List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.literal("[RADIOACTIVE]").withStyle(style -> style.withColor(TextColor.fromRgb(0x5f9b58))));
-
-        double rad = defaultRadPerSecond;
-        if (stack.hasTag() && stack.getTag().contains("RadPerSecond")) {
-            rad = stack.getTag().getDouble("RadPerSecond");
-        }
-
-        tooltip.add(Component.literal(String.format("§2Rad/s: %.2f", rad)));
+        this.addRadioactiveTooltip(tooltip);
         super.appendHoverText(stack, level, tooltip, flag);
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void onCraftedBy(ItemStack stack, Level level, net.minecraft.world.entity.player.Player player) {
-        if (!stack.hasTag() || !stack.getTag().contains("RadPerSecond")) {
+        if (!stack.hasTag() || !Objects.requireNonNull(stack.getTag()).contains("RadPerSecond")) {
             stack.getOrCreateTag().putDouble("RadPerSecond", defaultRadPerSecond);
         }
         super.onCraftedBy(stack, level, player);
+    }
+
+    @Override
+    public double radPerTick() {
+        return defaultRadPerSecond / 20;
     }
 }
