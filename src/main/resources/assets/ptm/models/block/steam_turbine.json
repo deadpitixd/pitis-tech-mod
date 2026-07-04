@@ -7,6 +7,6 @@
     "north": "ptm:block/steam_turbine_fluid_port",
     "south": "ptm:block/steam_turbine_fluid_port",
     "east": "ptm:block/steam_turbine_cable_port",
-    "west": "ptm:block/steam_turbine_steel"
+    "west": "ptm:block/steel_block"
   }
 }
