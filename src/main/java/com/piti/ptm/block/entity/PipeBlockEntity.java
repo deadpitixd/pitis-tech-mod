@@ -44,17 +44,6 @@ public class PipeBlockEntity extends BlockEntity {
         if (newMode == null) newMode = PipeMode.NEUTRAL;
         if (newMode == mode) return;
         this.mode = newMode;
-        setChanged();
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
-    }
-
-    public void setFilterFluidID(String id) {
-        if (id == null) id = "";
-        if (id.equals(this.filterFluidID)) return;
-        this.filterFluidID = id;
-        this.color = computeTintFromFluidId(id);
         this.setChanged();
 
         if (level != null) {
@@ -62,6 +51,23 @@ public class PipeBlockEntity extends BlockEntity {
 
             if (!level.isClientSide) {
                 refreshSelfAndNeighbors();
+            }
+        }
+    }
+
+    public void setFilterFluidID(String id) {
+        if (id == null) id = "";
+        if (id.equals(this.filterFluidID)) return;
+
+        this.filterFluidID = id;
+        this.color = computeTintFromFluidId(id);
+        this.setChanged();
+
+        if (level != null) {
+            if (!level.isClientSide) {
+                refreshSelfAndNeighbors();
+
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             }
         }
     }
@@ -81,23 +87,27 @@ public class PipeBlockEntity extends BlockEntity {
             return 0x80333333;
         }
     }
-
     private void refreshSelfAndNeighbors() {
-        if (level == null) return;
+        if (level == null || level.isClientSide) return;
+
         BlockState state = getBlockState();
         if (state.getBlock() instanceof PipeBlock pipe) {
             BlockState newState = pipe.updateConnections(level, worldPosition, state);
-            if (!newState.equals(state)) level.setBlock(worldPosition, newState, 3);
+            if (!newState.equals(state)) {
+                level.setBlock(worldPosition, newState, 3);
+            }
         }
+
         for (Direction d : Direction.values()) {
             BlockPos p = worldPosition.relative(d);
             BlockState s = level.getBlockState(p);
             if (s.getBlock() instanceof PipeBlock pipe) {
                 BlockState ns = pipe.updateConnections(level, p, s);
-                if (ns != s) level.setBlock(p, ns, 3);
+                if (!ns.equals(s)) {
+                    level.setBlock(p, ns, 3);
+                }
             }
         }
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
     }
 
     @Override
@@ -161,12 +171,12 @@ public class PipeBlockEntity extends BlockEntity {
     @Override
     public void onLoad() {
         super.onLoad();
-        if (level != null && level.isClientSide) {
-            this.color = computeTintFromFluidId(this.filterFluidID);
+        if (level != null) {
+            if (level.isClientSide) {
+                this.color = computeTintFromFluidId(this.filterFluidID);
+            } else {
+                refreshSelfAndNeighbors();
+            }
         }
-        setFilterFluidID(this.filterFluidID);
-        refreshSelfAndNeighbors();
-        setChanged();
     }
-
 }

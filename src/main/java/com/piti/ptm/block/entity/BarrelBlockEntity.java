@@ -55,7 +55,7 @@ public class BarrelBlockEntity extends BlockEntity implements MenuProvider, IFlu
         }
     };
     private int fluidID = 0; // ID of the fluid in tank
-    private int maxFluid = 16000;
+    final private int maxFluid = 16000;
 
     public final ContainerData data;
 

@@ -1,0 +1,14 @@
+{
+  "type": "ptm:industrial_furnace",
+  "ingredients": [
+    { "item": "ptm:steel_ingot" }
+  ],
+  "fluid_input": {
+    "fluid": "ptm:slag",
+    "amount": 100
+  },
+  "time": 100,
+  "result": [
+    { "item": "ptm:steel_block", "count": 1 }
+  ]
+}

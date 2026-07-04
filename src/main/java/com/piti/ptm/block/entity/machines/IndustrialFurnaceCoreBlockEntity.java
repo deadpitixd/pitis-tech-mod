@@ -370,7 +370,8 @@ public class IndustrialFurnaceCoreBlockEntity extends BlockEntity implements Men
     }
 
     @Override
-    public Component getDisplayName() { return Component.literal("Industrial Furnace"); }
+    @NotNull
+    public Component getDisplayName() { return Component.translatable("jei.ptm.industrial_furnace"); }
 
     @Nullable
     @Override

@@ -6,6 +6,7 @@ import com.piti.ptm.item.custom.ScrewdriverItem;
 import com.piti.ptm.network.IFluidReceiver;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,6 +38,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -70,34 +72,41 @@ public class PipeBlock extends Block implements EntityBlock {
     public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (!level.isClientSide) {
-            BlockEntity be = level.getBlockEntity(pos);
+        boolean isFluidTemplate = stack.getItem() instanceof FluidTemplateItem;
+        boolean isScrewdriver = stack.getItem() instanceof ScrewdriverItem;
+        BlockEntity be = level.getBlockEntity(pos);
 
-            if (stack.getItem() instanceof FluidTemplateItem && be instanceof PipeBlockEntity pipeBE) {
-                String newFluid = "";
-                if (stack.hasTag() && stack.getTag().contains("FluidID")) {
-                    newFluid = stack.getTag().getString("FluidID");
+        if (be instanceof PipeBlockEntity pipeBE && (isFluidTemplate || isScrewdriver)) {
+
+            if (!level.isClientSide) {
+                if (isFluidTemplate) {
+                    String newFluid = "";
+                    if (stack.hasTag()) {
+                        assert stack.getTag() != null;
+                        if (stack.getTag().contains("FluidID")) {
+                            newFluid = stack.getTag().getString("FluidID");
+                        }
+                    }
+
+                    if (player.isShiftKeyDown()) {
+                        updateConnectedPipes(level, pos, newFluid, new HashSet<>());
+                    } else {
+                        player.displayClientMessage(Component.literal("Setting filter fluid id"), true);
+                        pipeBE.setFilterFluidID(newFluid);
+                    }
+                    return InteractionResult.sidedSuccess(false);
                 }
-
-                if (player.isShiftKeyDown()) {
-                    updateConnectedPipes(level, pos, newFluid, new HashSet<>());
-                } else {
-                    pipeBE.setFilterFluidID(newFluid);
+                else {
+                    PipeBlockEntity.PipeMode next = switch (pipeBE.getMode()) {
+                        case NEUTRAL -> PipeBlockEntity.PipeMode.IMPORT;
+                        case IMPORT -> PipeBlockEntity.PipeMode.EXPORT;
+                        case EXPORT -> PipeBlockEntity.PipeMode.NEUTRAL;
+                    };
+                    pipeBE.setMode(next);
                 }
-
-                return InteractionResult.SUCCESS;
             }
 
-            if (stack.getItem() instanceof ScrewdriverItem && be instanceof PipeBlockEntity pipe) {
-                PipeBlockEntity.PipeMode next = switch (pipe.getMode()) {
-                    case NEUTRAL -> PipeBlockEntity.PipeMode.IMPORT;
-                    case IMPORT -> PipeBlockEntity.PipeMode.EXPORT;
-                    case EXPORT -> PipeBlockEntity.PipeMode.NEUTRAL;
-                };
-                pipe.setMode(next);
-
-                return InteractionResult.SUCCESS;
-            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
         return InteractionResult.PASS;

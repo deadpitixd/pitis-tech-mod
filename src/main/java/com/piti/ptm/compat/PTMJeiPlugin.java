@@ -11,13 +11,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import com.piti.ptm.block.ModBlocks;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 @JeiPlugin
 public class PTMJeiPlugin implements IModPlugin {
     @Override
-    public ResourceLocation getPluginUid() {
+    public @NotNull ResourceLocation getPluginUid() {
         return ResourceLocation.fromNamespaceAndPath(PitisTech.MOD_ID, "jei_plugin");
     }
 
@@ -27,11 +28,13 @@ public class PTMJeiPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerRecipes(IRecipeRegistration registration) {
+    public void registerRecipes(@NotNull IRecipeRegistration registration) {
         Minecraft world = Minecraft.getInstance();
-        List<IndustrialFurnaceRecipe> recipes = world.level.getRecipeManager()
-                .getAllRecipesFor(IndustrialFurnaceRecipe.Type.INSTANCE);
-        registration.addRecipes(IndustrialFurnaceRecipeCategory.TYPE, recipes);
+        if (world.level != null) {
+            List<IndustrialFurnaceRecipe> recipes = world.level.getRecipeManager()
+                    .getAllRecipesFor(IndustrialFurnaceRecipe.Type.INSTANCE);
+            registration.addRecipes(IndustrialFurnaceRecipeCategory.TYPE, recipes);
+        }
     }
 
     @Override
