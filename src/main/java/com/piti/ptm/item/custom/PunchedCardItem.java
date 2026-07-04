@@ -30,7 +30,7 @@ public class PunchedCardItem extends Item {
 
     public static ResourceLocation getRecipeId(ItemStack stack) {
         if (stack.hasTag() && stack.getTag().contains("RecipeId")) {
-            return new ResourceLocation(stack.getTag().getString("RecipeId"));
+            return ResourceLocation.parse(stack.getTag().getString("RecipeId"));
         }
         return null;
     }
