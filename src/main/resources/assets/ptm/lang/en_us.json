@@ -10,7 +10,7 @@
   "block.ptm.steam_turbine": "Steam Turbine",
   "creativetab.ptm.fuelmachines_tab": "Piti's Tech Mod - Fuel and Machines",
   "tooltip.ptm.radioactive.tooltip":"§a[RADIOACTIVE]",
-  "block.ptm.lava_heater": "Lava Steam Heater",
+  "block.ptm.lava_heater": "Lava Boiler",
   "block.ptm.barrel_steel": "Steel Barrel",
   "gui.ptm.empty": "Empty",
   "item.ptm.infinite_water": "Infinite Water Barrel",
@@ -47,5 +47,7 @@
   "tooltip.ptm.punchcardout": "Output:",
   "tooltip.ptm.shift": "Press shift to see more",
   "tooltip.ptm.advancedmodereq": "Enable advanced mode (F3+H) to see debug info",
+  "block.ptm.steel_block": "Block of Steel",
+  "tooltip.ptm.currentExposure": "Current Exposure: ",
   "none": "None"
 }

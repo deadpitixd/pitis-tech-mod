@@ -51,6 +51,7 @@ public class ModCreativeModTabs
                         pOutput.accept(ModBlocks.CONCRETE.get());
                         pOutput.accept(ModBlocks.REINFORCED_LIGHT.get());
                         pOutput.accept(ModBlocks.INDUSTRIAL_STEEL.get());
+                        pOutput.accept(ModBlocks.STEEL_BLOCK.get());
                     })
                     .build());
 

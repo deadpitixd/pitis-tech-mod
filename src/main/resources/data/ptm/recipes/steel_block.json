@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "item": "ptm:steel_ingot" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" },
+    { "tag": "forge:ingots/steel" }
+  ],
+  "result": {
+    "item": "ptm:steel_block",
+    "count": 1
+  }
+}

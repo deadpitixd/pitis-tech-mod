@@ -93,7 +93,10 @@ public class ModBlocks {
                     .strength(5.0f,5).requiresCorrectToolForDrops()));
     public static final RegistryObject<Block> INFINITE_ENERGY_BLOCK = registerBlock("infinite_energy_provider",
             () -> new InfiniteEnergyBlock(BlockBehaviour.Properties.copy(Blocks.BEDROCK)));
-
+    public static final RegistryObject<Block> STEEL_BLOCK = registerBlock("steel_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).requiresCorrectToolForDrops()
+                    .strength(5.0f, 12.0f))
+            );
 
 
 
