@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "ptm:block/radioactive_boiler" },
+    "facing=east":  { "model": "ptm:block/radioactive_boiler", "y": 90 },
+    "facing=south": { "model": "ptm:block/radioactive_boiler", "y": 180 },
+    "facing=west":  { "model": "ptm:block/radioactive_boiler", "y": 270 }
+  }
+}

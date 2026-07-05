@@ -49,5 +49,12 @@
   "tooltip.ptm.advancedmodereq": "Enable advanced mode (F3+H) to see debug info",
   "block.ptm.steel_block": "Block of Steel",
   "tooltip.ptm.currentExposure": "Current Exposure: ",
+  "block.ptm.radioactive_boiler": "Radioactive Boiler",
+  "item.ptm.uranium_powder": "Uranium Powder",
+  "item.ptm.thorium_powder": "Thorium-232 Powder",
+  "item.ptm.radium_powder": "Radium-228 Powder",
+  "tooltip.ptm.isotope": "Isotope",
+  "block.ptm.decayer_panel": "Decayer Panel",
+  "block.ptm.decayer_port": "Decayer Port",
   "none": "None"
 }

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "particle": "ptm:block/radioactive_boiler_panel",
+    "down": "ptm:block/radioactive_boiler_steel",
+    "up": "ptm:block/radioactive_boiler_steel",
+    "north": "ptm:block/radioactive_boiler_panel",
+    "south": "ptm:block/radioactive_boiler_steel",
+    "west": "ptm:block/radioactive_boiler_fluid",
+    "east": "ptm:block/radioactive_boiler_fluid"
+  }
+}

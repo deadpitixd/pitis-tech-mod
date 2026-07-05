@@ -37,6 +37,12 @@ public class ModItems {
             () -> new BlockItem(ModBlocks.BINARY_PRESS_BOTTOM.get(), new Item.Properties()));
     public static final RegistryObject<Item> PUNCHED_CARD = ITEMS.register("punched_card",
             () -> new PunchedCardItem(new Item.Properties()));
+    public static final RegistryObject<Item> URANIUM_POWDER = ITEMS.register("uranium_powder",
+            () -> new RadioactiveItem(new Item.Properties(), 0.5));
+    public static final RegistryObject<Item> THORIUM_POWDER = ITEMS.register("thorium_powder",
+            () -> new IsotopeItem(new Item.Properties(), 0.3, "Th-232"));
+    public static final RegistryObject<Item> RADIUM_POWDER = ITEMS.register("radium_powder",
+            () -> new IsotopeItem(new Item.Properties(), 5.0, "Ra-228"));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

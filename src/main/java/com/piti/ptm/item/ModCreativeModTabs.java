@@ -62,8 +62,6 @@ public class ModCreativeModTabs
                         pOutput.accept(ModBlocks.UNIVERSAL_PIPE.get());
                         pOutput.accept(ModBlocks.CABLE.get());
                         pOutput.accept(ModBlocks.STEAM_TURBINE.get());
-                        pOutput.accept(ModBlocks.URANIUM_ORE.get());
-                        pOutput.accept(ModItems.URANIUM_INGOT.get());
                         pOutput.accept(ModBlocks.LAVA_HEATER.get());
                         pOutput.accept(ModBlocks.BARREL_STEEL.get());
                         // ONLY ENABLE THIS WHEN THE GAS CENTRIFUGE WILL BE FIXED - piti
@@ -77,6 +75,12 @@ public class ModCreativeModTabs
                         pOutput.accept(ModItems.BINARY_PRESS.get());
                         pOutput.accept(ModBlocks.BATTERY_STORAGE_BLOCK.get());
                         pOutput.accept(ModBlocks.INFINITE_ENERGY_BLOCK.get());
+                        pOutput.accept(ModBlocks.RADIOACTIVE_BOILER.get());
+                        pOutput.accept(ModBlocks.URANIUM_ORE.get());
+                        pOutput.accept(ModItems.URANIUM_INGOT.get());
+                        pOutput.accept(ModItems.URANIUM_POWDER.get());
+                        pOutput.accept(ModItems.THORIUM_POWDER.get());
+                        pOutput.accept(ModItems.RADIUM_POWDER.get());
                     })
                     .build());
 

@@ -1,0 +1,10 @@
+{
+  "type": "ptm:industrial_furnace",
+  "ingredients": [
+    { "item": "ptm:uranium_ore" }
+  ],
+  "time": 100,
+  "result": [
+    { "item": "ptm:uranium_powder", "count": 2 }
+  ]
+}

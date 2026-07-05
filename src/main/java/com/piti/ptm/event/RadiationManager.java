@@ -3,6 +3,7 @@ package com.piti.ptm.event;
 import com.piti.ptm.PitisTech;
 import com.piti.ptm.capability.PlayerRadiationData;
 import com.piti.ptm.item.custom.IRadioactive;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
